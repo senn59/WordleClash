@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordleClash.Web", "WordleClash.Web\WordleClash.Web.csproj", "{054622B0-4E62-49CD-A497-61AC70E194D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordleClash.Core", "WordleClash.Core\WordleClash.Core.csproj", "{6E407B61-7545-46E4-9400-86339973E4A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordleClash.Data", "WordleClash.Data\WordleClash.Data.csproj", "{770E88D2-5BEB-453D-ACAE-682902891F34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{054622B0-4E62-49CD-A497-61AC70E194D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{054622B0-4E62-49CD-A497-61AC70E194D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{054622B0-4E62-49CD-A497-61AC70E194D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{054622B0-4E62-49CD-A497-61AC70E194D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E407B61-7545-46E4-9400-86339973E4A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E407B61-7545-46E4-9400-86339973E4A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E407B61-7545-46E4-9400-86339973E4A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E407B61-7545-46E4-9400-86339973E4A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{770E88D2-5BEB-453D-ACAE-682902891F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{770E88D2-5BEB-453D-ACAE-682902891F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{770E88D2-5BEB-453D-ACAE-682902891F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{770E88D2-5BEB-453D-ACAE-682902891F34}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
