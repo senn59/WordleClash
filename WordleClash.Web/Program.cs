@@ -1,7 +1,15 @@
+using WordleClash.Core;
+using WordleClash.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<DataAccess>(serviceProvider =>
+{
+    var config = serviceProvider.GetRequiredService<IConfiguration>();
+    return new DataAccess(config);
+});
 
 var app = builder.Build();
 
