@@ -63,4 +63,9 @@
       <Folder Include="wwwroot\lib\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\WordleClash.Core\WordleClash.Core.csproj" />
+      <ProjectReference Include="..\WordleClash.Data\WordleClash.Data.csproj" />
+    </ItemGroup>
+
 </Project>
