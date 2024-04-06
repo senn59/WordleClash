@@ -13,24 +13,22 @@ public class DataAccess: IDataAccess
         _conn = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
     }
 
-    public string GetRow(int id)
+    public List<string> GetWords()
     {
+        var words = new List<string>();
         try
         {
             _conn.Open();
 
             var cmd = new MySqlCommand();
             cmd.Connection = _conn;
-            cmd.CommandText = @"SELECT name FROM testing WHERE id = @id;";
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.CommandText = @"SELECT word FROM words";
 
-            var res = cmd.ExecuteScalar();
-            if (res != null)
+            var rdr = cmd.ExecuteReader();
+            while (rdr.Read())
             {
-                Console.WriteLine(res);
-                return res.ToString();
+                words.Add(rdr[0].ToString() ?? throw new InvalidOperationException());
             }
-
         }
         catch (Exception e)
         {
@@ -41,6 +39,6 @@ public class DataAccess: IDataAccess
             _conn.Close();
         }
 
-        return "";
+        return words;
     }
 }

@@ -4,21 +4,23 @@ namespace WordleClash.Core;
 
 public class Wordle
 {
-    private string word;
+    private string _word;
     private int _tries = 0;
     private int _maxTries;
     private IDataAccess _dataAccess;
+    private Random _random = new Random();
 
     public Wordle(int maxTries, IDataAccess dataAccess)
     {
         _dataAccess = dataAccess;
-        _dataAccess.GetRow(1);
         _maxTries = maxTries;
-        word = GenerateWord();
+        _word = GenerateWord();
+        Console.WriteLine(_word);
     }
 
     private string GenerateWord()
     {
-        return "word";
+        var words = _dataAccess.GetWords();
+        return words[_random.Next(1, words.Count + 1)];
     }
 }
