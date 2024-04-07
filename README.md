@@ -14,3 +14,5 @@ there are 3 different layers in which the application is divided namely:
 - .Web (Razor pages web application serving as the presentation layer)
 - .Core (Class library serving as the business layer)
 - .Data (Class library built around a MySQL database serving as the persistence layer)
+
+Furthermore there is a .Tests project which contains unit tests for the business layer
