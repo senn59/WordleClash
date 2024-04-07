@@ -4,15 +4,13 @@ using WordleClash.Core.Enums;
 
 namespace WordleClash.Tests;
 
-public class Tests
+public class WordFeedBackTests
 {
-    private Wordle _wordle;
-
     [Test]
     public void OneCorrectLetter()
     {
-        _wordle = new Wordle(6, new MockDataAccess("table"));
-        var res = _wordle.MakeMove("chime");
+        var wordle = new Wordle(6, new MockDataAccess("table"));
+        var res = wordle.MakeMove("chime");
 
         LetterFeedback[] expectedResult =
         [
@@ -28,8 +26,8 @@ public class Tests
     [Test]
     public void CorrectLetterMultipleOccurences()
     {
-        _wordle = new Wordle(6, new MockDataAccess("zzllz"));
-        var res = _wordle.MakeMove("xxxlx");
+        var wordle = new Wordle(6, new MockDataAccess("zzllz"));
+        var res = wordle.MakeMove("xxxlx");
 
         LetterFeedback[] expectedResult =
         [
@@ -45,8 +43,8 @@ public class Tests
     [Test]
     public void IncorrectPosition()
     {
-        _wordle = new Wordle(6, new MockDataAccess("zzzlz"));
-        var res = _wordle.MakeMove("lxxxx");
+        var wordle = new Wordle(6, new MockDataAccess("zzzlz"));
+        var res = wordle.MakeMove("lxxxx");
 
         LetterFeedback[] expectedResult =
         [
@@ -62,8 +60,8 @@ public class Tests
     [Test]
     public void AllDifferentFeedbackTypesAtOnce()
     {
-        _wordle = new Wordle(6, new MockDataAccess("abczz"));
-        var res = _wordle.MakeMove("xxcba");
+        var wordle = new Wordle(6, new MockDataAccess("abczz"));
+        var res = wordle.MakeMove("xxcba");
 
         LetterFeedback[] expectedResult =
         [
