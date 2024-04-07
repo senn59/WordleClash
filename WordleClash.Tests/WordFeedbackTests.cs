@@ -72,4 +72,21 @@ public class WordFeedBackTests
         ];
         Assert.That(res.Feedback, Is.EqualTo(expectedResult));
     }
+    
+    [Test]
+    public void SameLetterCorrectAndIncorrectPosition()
+    {
+        var wordle = new Wordle(6, new MockDataAccess("zzllz"));
+        var res = wordle.MakeMove("xxxll");
+
+        LetterFeedback[] expectedResult =
+        [
+            LetterFeedback.IncorrectLetter,
+            LetterFeedback.IncorrectLetter,
+            LetterFeedback.IncorrectLetter,
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.IncorrectPosition,
+        ];
+        Assert.That(res.Feedback, Is.EqualTo(expectedResult));
+    }
 }
