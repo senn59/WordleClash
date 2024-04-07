@@ -16,52 +16,52 @@ public class Wordle
         _dataAccess = dataAccess;
         _maxTries = maxTries;
         _word = GenerateWord();
-        Console.WriteLine(_word);
     }
 
     private string GenerateWord()
     {
         var words = _dataAccess.GetWords();
-        Console.WriteLine(words.Count);
         return words[_random.Next(0, words.Count)];
     }
 
     public MoveResult MakeMove(string input)
     {
+        var feedback = GetWordFeedback(input);
+        //TODO: handle possible exception?
+        bool hasWon = CheckForWin(feedback);
         return new MoveResult()
         {
-            HasWon = false,
-            Feedback = GetWordFeedback(input),
+            HasWon = hasWon,
+            Feedback = feedback,
         };
     }
 
     private LetterFeedback[] GetWordFeedback(string input)
     {
-        LetterFeedback[] arr = new LetterFeedback[_word.Length];
+        LetterFeedback[] feedback = new LetterFeedback[_word.Length];
 
         for (int i = 0; i < input.Length; i++)
         {
             var letter = input[i];
             if (!_word.Contains(letter))
             {
-                arr[i] = LetterFeedback.IncorrectLetter;
+                feedback[i] = LetterFeedback.IncorrectLetter;
                 continue;
             }
 
-
-            if (AllIndexesOf(_word, letter).Contains(i))
+            if (GetAllIndexesOf(_word, letter).Contains(i))
             {
-                arr[i] = LetterFeedback.CorrectPosition;
+                feedback[i] = LetterFeedback.CorrectPosition;
                 continue;
             }
 
-            arr[i] = LetterFeedback.IncorrectPosition;
+            feedback[i] = LetterFeedback.IncorrectPosition;
         }
 
-        return arr;
+        return feedback;
     }
 
-    private List<int> AllIndexesOf(string input, char letter)
+    private List<int> GetAllIndexesOf(string input, char letter)
     {
         var occurences = new List<int>();
         int index = input.IndexOf(letter);
@@ -72,5 +72,22 @@ public class Wordle
         }
 
         return occurences;
+    }
+
+    private bool CheckForWin(LetterFeedback[] feedback)
+    {
+
+        bool won = true;
+        //TODO: has flaw that if array is empty true is returned
+        foreach (var letterFeedback in feedback)
+        {
+            if (letterFeedback == LetterFeedback.IncorrectLetter ||
+                letterFeedback == LetterFeedback.IncorrectPosition)
+            {
+                return false;
+            }
+        }
+        
+        return won;
     }
 }
