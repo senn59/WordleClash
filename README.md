@@ -1,3 +1,5 @@
+
+[![Tests](https://github.com/senn59/WordleClash/actions/workflows/test.yml/badge.svg)](https://github.com/senn59/WordleClash/actions/workflows/test.yml)
 # WordleClash
 WordleClash is a web platform for playing Wordle both alone, or online with friends. 
 The platorm has 3 different gamemodes namely:
