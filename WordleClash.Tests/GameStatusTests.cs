@@ -1,6 +1,7 @@
 using WordleClash.Core;
 using WordleClash.Core.DataAccess;
 using WordleClash.Core.Enums;
+using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Tests;
 
@@ -9,8 +10,9 @@ public class GameStatusTests
     [Test]
     public void NoCommonLetters()
     {
-        var wordle = new Game(6, new MockDataAccess("zzzzz"));
-        var res = wordle.MakeMove("xxxxx");
+        var dataAccess = new MockDataAccess("zzzzz", "xxxxx");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.Guess);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
     }
@@ -18,8 +20,9 @@ public class GameStatusTests
     [Test]
     public void OneLetterOff()
     {
-        var wordle = new Game(6, new MockDataAccess("abcde"));
-        var res = wordle.MakeMove("abcdf");
+        var dataAccess = new MockDataAccess("abcde", "abcdf");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.Guess);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
     }
@@ -27,8 +30,9 @@ public class GameStatusTests
     [Test]
     public void CorrectInput()
     {
-        var wordle = new Game(6, new MockDataAccess("abcde"));
-        var res = wordle.MakeMove("abcde");
+        var dataAccess = new MockDataAccess("abcde", "abcde");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.TargetWord);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.Won));
     }
@@ -36,12 +40,31 @@ public class GameStatusTests
     [Test]
     public void TooManyTries()
     {
-        var wordle = new Game(3, new MockDataAccess("vwxyz"));
-        wordle.MakeMove("abcde");
-        wordle.MakeMove("abcde");
-        var res = wordle.MakeMove("abcde");
+        var dataAccess = new MockDataAccess("abcde", "vwxyz");
+        var wordle = new Game(3, dataAccess);
+        wordle.MakeMove(dataAccess.Guess);
+        wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.MakeMove(dataAccess.Guess);
         Assert.That(res.Status, Is.EqualTo(GameStatus.Lost));
-        res = wordle.MakeMove("vwxyz");
+        res = wordle.MakeMove(dataAccess.TargetWord);
         Assert.That(res.Status, Is.EqualTo(GameStatus.Lost));
+    }
+    
+    [Test]
+    public void GuessCorrectOnLastTry()
+    {
+        var dataAccess = new MockDataAccess("abcde", "vwxyz");
+        var wordle = new Game(3, dataAccess);
+        wordle.MakeMove(dataAccess.Guess);
+        wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.MakeMove(dataAccess.TargetWord);
+        Assert.That(res.Status, Is.EqualTo(GameStatus.Won));
+    }
+    
+    [Test]
+    public void GuessEmptyWord()
+    {
+        var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
+        Assert.Throws<IncorrectLengthException>(() => wordle.MakeMove(""));
     }
 }

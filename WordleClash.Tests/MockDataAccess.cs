@@ -3,23 +3,25 @@ using WordleClash.Core.DataAccess;
 namespace WordleClash.Tests;
 public class MockDataAccess : IDataAccess
 {
-    private string _word;
-    public MockDataAccess(string word)
+    public string TargetWord { get; private set; }
+    public string Guess { get; private set; }
+    public MockDataAccess(string targetWord, string guess)
     {
-        _word = word;
+        TargetWord = targetWord;
+        Guess = guess;
     }
     public List<string> GetWords()
     {
-        return [_word];
+        return [TargetWord, Guess];
     }
 
     public string GetRandomWord()
     {
-        return _word;
+        return TargetWord;
     }
 
     public string? GetWord(string word)
     {
-        throw new NotImplementedException();
+        return word == TargetWord || word == Guess ? word : null;
     }
 }
