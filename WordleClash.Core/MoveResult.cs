@@ -4,6 +4,6 @@ namespace WordleClash.Core;
 
 public class MoveResult
 {
-    public bool HasWon { get; set; }
-    public LetterFeedback[] Feedback { get; set; }
+    public required GameStatus Status { get; set; }
+    public required LetterFeedback[] Feedback { get; set; }
 }
