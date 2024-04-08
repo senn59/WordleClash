@@ -50,12 +50,12 @@ public class Game
     {
         if (!_wordHandler.IsCorrectLength(input))
         {
-            throw new InvalidWordException($"Word is not the correct length of {_wordHandler.Word.Length}");
+            throw new IncorrectLengthException(_wordHandler.Word.Length);
         }
 
         if (!_wordHandler.IsExistingWord(input))
         {
-            throw new InvalidWordException($"Word is not a valid word");
+            throw new InvalidWordException(input);
         }
     }
 }
