@@ -18,6 +18,6 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        var wordle = new Wordle(6, _dataAccess);
+        var wordle = new Game(6, _dataAccess);
     }
 }
