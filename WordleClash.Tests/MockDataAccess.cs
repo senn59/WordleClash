@@ -12,4 +12,14 @@ public class MockDataAccess : IDataAccess
     {
         return [_word];
     }
+
+    public string GetRandomWord()
+    {
+        return _word;
+    }
+
+    public string? GetWord(string word)
+    {
+        throw new NotImplementedException();
+    }
 }
