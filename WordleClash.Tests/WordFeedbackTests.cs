@@ -1,4 +1,5 @@
 using WordleClash.Core;
+using WordleClash.Core.DataAccess;
 using WordleClash.Core.Enums;
 
 namespace WordleClash.Tests;
@@ -8,8 +9,9 @@ public class WordFeedBackTests
     [Test]
     public void OneCorrectLetter()
     {
-        var wordle = new Wordle(6, new MockDataAccess("table"));
-        var res = wordle.MakeMove("chime");
+        var dataAccess = new MockDataAccess("table", "chime");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -25,8 +27,9 @@ public class WordFeedBackTests
     [Test]
     public void CorrectLetterMultipleOccurences()
     {
-        var wordle = new Wordle(6, new MockDataAccess("zzllz"));
-        var res = wordle.MakeMove("xxxlx");
+        var dataAccess = new MockDataAccess("zzllz", "xxxlx");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -42,8 +45,9 @@ public class WordFeedBackTests
     [Test]
     public void IncorrectPosition()
     {
-        var wordle = new Wordle(6, new MockDataAccess("zzzlz"));
-        var res = wordle.MakeMove("lxxxx");
+        var dataAccess = new MockDataAccess("zzzlz", "lxxxx");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -59,8 +63,9 @@ public class WordFeedBackTests
     [Test]
     public void AllDifferentFeedbackTypesAtOnce()
     {
-        var wordle = new Wordle(6, new MockDataAccess("abczz"));
-        var res = wordle.MakeMove("xxcba");
+        var dataAccess = new MockDataAccess("abczz", "xxcba");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -76,8 +81,9 @@ public class WordFeedBackTests
     [Test]
     public void SameLetterCorrectAndIncorrectPosition()
     {
-        var wordle = new Wordle(6, new MockDataAccess("zzllz"));
-        var res = wordle.MakeMove("xxxll");
+        var dataAccess = new MockDataAccess("zzllz", "xxxll");
+        var wordle = new Game(6, dataAccess);
+        var res = wordle.MakeMove(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
