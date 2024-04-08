@@ -67,4 +67,11 @@ public class GameStatusTests
         var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
         Assert.Throws<IncorrectLengthException>(() => wordle.MakeMove(""));
     }
+    
+    [Test]
+    public void GuessTooShortWord()
+    {
+        var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
+        Assert.Throws<IncorrectLengthException>(() => wordle.MakeMove("vwxy"));
+    }
 }
