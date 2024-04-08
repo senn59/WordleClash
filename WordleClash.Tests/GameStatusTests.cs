@@ -3,7 +3,7 @@ using WordleClash.Core.DataAccess;
 
 namespace WordleClash.Tests;
 
-public class HasWonConditionTests
+public class GameStatusTests
 {
     [Test]
     public void NoCommonLetters()
