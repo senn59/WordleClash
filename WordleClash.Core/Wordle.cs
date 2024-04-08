@@ -6,29 +6,33 @@ namespace WordleClash.Core;
 public class Wordle
 {
     private string _word;
-    private int _tries = 0;
+    private int _tries;
     private int _maxTries;
     private IDataAccess _dataAccess;
-    private Random _random = new Random();
 
     public Wordle(int maxTries, IDataAccess dataAccess)
     {
         _dataAccess = dataAccess;
         _maxTries = maxTries;
-        _word = GenerateWord();
-    }
-
-    private string GenerateWord()
-    {
-        var words = _dataAccess.GetWords();
-        return words[_random.Next(0, words.Count)];
+        _word = dataAccess.GetRandomWord();
     }
 
     public MoveResult MakeMove(string input)
     {
+        if (input.Length != _word.Length)
+        {
+            throw new Exception();
+        }
+
+        if (_dataAccess.GetWord(input) == null)
+        {
+            throw new Exception();
+        }
+        
         _tries++;
         var feedback = GetWordFeedback(input);
         GameStatus status;
+        
         //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways
         if (IsCorrectWord(feedback) && _tries <= _maxTries) 
         {
@@ -52,7 +56,7 @@ public class Wordle
 
     private LetterFeedback[] GetWordFeedback(string input)
     {
-        LetterFeedback[] feedback = new LetterFeedback[_word.Length];
+        var feedback = new LetterFeedback[_word.Length];
 
         for (int i = 0; i < input.Length; i++)
         {
@@ -78,7 +82,7 @@ public class Wordle
     private List<int> GetAllIndexesOf(string input, char letter)
     {
         var occurences = new List<int>();
-        int index = input.IndexOf(letter);
+        var index = input.IndexOf(letter);
         while (index != -1)
         {
             occurences.Add(index);
