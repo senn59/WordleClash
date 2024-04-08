@@ -41,4 +41,55 @@ public class DataAccess: IDataAccess
 
         return words;
     }
+
+    public string GetRandomWord()
+    {
+        try
+        {
+            _conn.Open();
+
+            var cmd = new MySqlCommand();
+            cmd.Connection = _conn;
+            cmd.CommandText = @"SELECT word FROM words ORDER BY RAND() LIMIT 1";
+
+            var res = cmd.ExecuteScalar();
+            return res.ToString() ?? throw new InvalidOperationException();
+        }
+        catch (Exception e)
+        {
+            //TODO: throw custom exception with e as inner exception
+            Console.WriteLine(e.ToString());
+        }
+        finally
+        {
+            _conn.Close();
+        }
+
+        throw new Exception("Could not find a word");
+    }
+
+    public string? GetWord(string word)
+    {
+        try
+        {
+            _conn.Open();
+
+            var cmd = new MySqlCommand();
+            cmd.Connection = _conn;
+            cmd.CommandText = @"SELECT word FROM words ORDER BY RAND() LIMIT 1";
+
+            var res = cmd.ExecuteScalar();
+            return res!.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        finally
+        {
+            _conn.Close();
+        }
+
+        return null;
+    }
 }
