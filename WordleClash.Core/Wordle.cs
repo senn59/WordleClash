@@ -1,14 +1,16 @@
 using WordleClash.Core.DataAccess;
 using WordleClash.Core.Enums;
+using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Core;
 
 public class Wordle
 {
-    private string _word;
-    private int _tries;
-    private int _maxTries;
-    private IDataAccess _dataAccess;
+    private readonly string _word;
+    private readonly int _maxTries;
+    private readonly IDataAccess _dataAccess;
+    
+    public int Tries { get; private set; }
 
     public Wordle(int maxTries, IDataAccess dataAccess)
     {
@@ -19,26 +21,17 @@ public class Wordle
 
     public MoveResult MakeMove(string input)
     {
-        if (input.Length != _word.Length)
-        {
-            throw new Exception();
-        }
-
-        if (_dataAccess.GetWord(input) == null)
-        {
-            throw new Exception();
-        }
-        
-        _tries++;
+        ValidateMove(input);
+        Tries++;
         var feedback = GetWordFeedback(input);
         GameStatus status;
         
         //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways
-        if (IsCorrectWord(feedback) && _tries <= _maxTries) 
+        if (IsCorrectWord(feedback) && Tries <= _maxTries) 
         {
             status = GameStatus.Won;
         }
-        else if (_tries >= _maxTries)
+        else if (Tries >= _maxTries)
         {
             status = GameStatus.Lost;
         }
@@ -52,6 +45,19 @@ public class Wordle
             Status = status,
             Feedback = feedback
         };
+    }
+
+    private void ValidateMove(string input)
+    {
+        if (input.Length != _word.Length)
+        {
+            throw new InvalidWordException($"Word is not the correct length of {_word.Length}");
+        }
+
+        if (_dataAccess.GetWord(input) == null)
+        {
+            throw new InvalidWordException($"Word is not a valid word");
+        }
     }
 
     private LetterFeedback[] GetWordFeedback(string input)
