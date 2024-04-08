@@ -26,13 +26,27 @@ public class Wordle
 
     public MoveResult MakeMove(string input)
     {
+        _tries++;
         var feedback = GetWordFeedback(input);
-        //TODO: handle possible exception?
-        bool hasWon = CheckForWin(feedback);
+        GameStatus status;
+        //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways
+        if (IsCorrectWord(feedback) && _tries <= _maxTries) 
+        {
+            status = GameStatus.Won;
+        }
+        else if (_tries >= _maxTries)
+        {
+            status = GameStatus.Lost;
+        }
+        else
+        {
+            status = GameStatus.InProgress;
+        }
+        
         return new MoveResult()
         {
-            HasWon = hasWon,
-            Feedback = feedback,
+            Status = status,
+            Feedback = feedback
         };
     }
 
@@ -74,20 +88,17 @@ public class Wordle
         return occurences;
     }
 
-    private bool CheckForWin(LetterFeedback[] feedback)
+    private bool IsCorrectWord(LetterFeedback[] feedback)
     {
 
-        bool won = true;
         //TODO: has flaw that if array is empty true is returned
         foreach (var letterFeedback in feedback)
         {
-            if (letterFeedback == LetterFeedback.IncorrectLetter ||
-                letterFeedback == LetterFeedback.IncorrectPosition)
+            if (letterFeedback is LetterFeedback.IncorrectLetter or LetterFeedback.IncorrectPosition)
             {
                 return false;
             }
         }
-        
-        return won;
+        return true;
     }
 }
