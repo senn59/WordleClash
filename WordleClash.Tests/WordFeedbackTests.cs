@@ -8,7 +8,7 @@ public class WordFeedBackTests
     [Test]
     public void OneCorrectLetter()
     {
-        var wordle = new Wordle(6, new MockDataAccess("table"));
+        var wordle = new Game(6, new MockDataAccess("table"));
         var res = wordle.MakeMove("chime");
 
         LetterFeedback[] expectedResult =
@@ -25,7 +25,7 @@ public class WordFeedBackTests
     [Test]
     public void CorrectLetterMultipleOccurences()
     {
-        var wordle = new Wordle(6, new MockDataAccess("zzllz"));
+        var wordle = new Game(6, new MockDataAccess("zzllz"));
         var res = wordle.MakeMove("xxxlx");
 
         LetterFeedback[] expectedResult =
@@ -42,7 +42,7 @@ public class WordFeedBackTests
     [Test]
     public void IncorrectPosition()
     {
-        var wordle = new Wordle(6, new MockDataAccess("zzzlz"));
+        var wordle = new Game(6, new MockDataAccess("zzzlz"));
         var res = wordle.MakeMove("lxxxx");
 
         LetterFeedback[] expectedResult =
@@ -59,7 +59,7 @@ public class WordFeedBackTests
     [Test]
     public void AllDifferentFeedbackTypesAtOnce()
     {
-        var wordle = new Wordle(6, new MockDataAccess("abczz"));
+        var wordle = new Game(6, new MockDataAccess("abczz"));
         var res = wordle.MakeMove("xxcba");
 
         LetterFeedback[] expectedResult =
@@ -76,7 +76,7 @@ public class WordFeedBackTests
     [Test]
     public void SameLetterCorrectAndIncorrectPosition()
     {
-        var wordle = new Wordle(6, new MockDataAccess("zzllz"));
+        var wordle = new Game(6, new MockDataAccess("zzllz"));
         var res = wordle.MakeMove("xxxll");
 
         LetterFeedback[] expectedResult =

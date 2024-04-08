@@ -4,7 +4,7 @@ using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Core;
 
-public class Wordle
+public class Game
 {
     private readonly string _word;
     private readonly int _maxTries;
@@ -12,7 +12,7 @@ public class Wordle
     
     public int Tries { get; private set; }
 
-    public Wordle(int maxTries, IDataAccess dataAccess)
+    public Game(int maxTries, IDataAccess dataAccess)
     {
         _dataAccess = dataAccess;
         _maxTries = maxTries;

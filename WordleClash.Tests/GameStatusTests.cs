@@ -9,7 +9,7 @@ public class GameStatusTests
     [Test]
     public void NoCommonLetters()
     {
-        var wordle = new Wordle(6, new MockDataAccess("zzzzz"));
+        var wordle = new Game(6, new MockDataAccess("zzzzz"));
         var res = wordle.MakeMove("xxxxx");
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
@@ -18,7 +18,7 @@ public class GameStatusTests
     [Test]
     public void OneLetterOff()
     {
-        var wordle = new Wordle(6, new MockDataAccess("abcde"));
+        var wordle = new Game(6, new MockDataAccess("abcde"));
         var res = wordle.MakeMove("abcdf");
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
@@ -27,7 +27,7 @@ public class GameStatusTests
     [Test]
     public void CorrectInput()
     {
-        var wordle = new Wordle(6, new MockDataAccess("abcde"));
+        var wordle = new Game(6, new MockDataAccess("abcde"));
         var res = wordle.MakeMove("abcde");
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.Won));
@@ -36,7 +36,7 @@ public class GameStatusTests
     [Test]
     public void TooManyTries()
     {
-        var wordle = new Wordle(3, new MockDataAccess("vwxyz"));
+        var wordle = new Game(3, new MockDataAccess("vwxyz"));
         wordle.MakeMove("abcde");
         wordle.MakeMove("abcde");
         var res = wordle.MakeMove("abcde");
