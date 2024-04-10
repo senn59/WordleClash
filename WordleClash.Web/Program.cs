@@ -1,15 +1,16 @@
 using WordleClash.Core;
+using WordleClash.Core.DataAccess;
 using WordleClash.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<DataAccess>(serviceProvider =>
-{
-    var config = serviceProvider.GetRequiredService<IConfiguration>();
-    return new DataAccess(config);
-});
+
+var connString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
+builder.Services.AddScoped<IDataAccess>(s => new DataAccess(connString));
+builder.Services.AddScoped<Game>(s => new Game(6, s.GetRequiredService<IDataAccess>()));
 
 var app = builder.Build();
 
