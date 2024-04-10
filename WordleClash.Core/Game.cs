@@ -23,6 +23,8 @@ public class Game
     {
         ValidateMove(input);
         Tries++;
+        Console.WriteLine(_wordHandler.Word);
+        Console.WriteLine(Tries);
         GameStatus status;
         
         //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways

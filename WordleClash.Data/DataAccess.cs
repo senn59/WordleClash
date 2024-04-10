@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using WordleClash.Core.DataAccess;
 
@@ -8,9 +7,9 @@ public class DataAccess: IDataAccess
 {
     private MySqlConnection _conn;
 
-    public DataAccess(IConfiguration configuration)
+    public DataAccess(string connString)
     {
-        _conn = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
+        _conn = new MySqlConnection(connString);
     }
 
     public List<string> GetWords()
