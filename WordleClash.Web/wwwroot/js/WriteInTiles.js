@@ -2,11 +2,11 @@ let activeRow = null;
 document.addEventListener("keydown", (event) => {
     if (event.key.length === 1 && /[a-zA-Z]/.test(event.key)) {
         TryPlaceChar(event.key)
-    }else if (["Backspace", "Delete"].includes(event.key)) {
+    } else if (["Backspace", "Delete"].includes(event.key)) {
         if (activeRow === null) return;
-        DeleteChar()
+        TryDeleteChar()
     } else if (event.key === "Enter") {
-        console.log("Guess")
+        TryTakeGuess()
     }
 });
 
@@ -20,7 +20,7 @@ const TryPlaceChar = char => {
         return;
     }
 }
-const DeleteChar = () => {
+const TryDeleteChar = () => {
     if (activeRow === null) return;
     let tiles = activeRow.querySelectorAll(".wordle-tile");
     tiles = Array.from(tiles).reverse()
@@ -45,4 +45,16 @@ const RowIsEmpty = row => {
         }
     }
     return true;
+}
+const TryTakeGuess = () => {
+    document.querySelector("#guessInput").value = ExtractWordFromTiles();
+    document.forms["guessForm"].submit();
+}
+const ExtractWordFromTiles = () => {
+    if (activeRow === null) return;
+    let word = ""
+    for (let tile of activeRow.querySelectorAll(".wordle-tile")) {
+        word += tile.textContent;
+    }
+    return word;
 }
