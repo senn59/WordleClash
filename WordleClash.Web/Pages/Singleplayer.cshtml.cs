@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WordleClash.Core;
 using Exception = System.Exception;
 
 namespace WordleClash.Web.Pages;
@@ -7,10 +8,13 @@ namespace WordleClash.Web.Pages;
 public class SingleplayerModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    public const string GameSessionKey = "Game";
+    private const string GameSessionKey = "_Game";
     private GameService _gameService;
 
     [BindProperty] public string Guess { get; set; }
+    public int Tries { get; set; }
+    public int MaxTries { get; set; }
+    public IReadOnlyList<MoveResult> MoveHistory { get; set; }
     
     public SingleplayerModel(ILogger<IndexModel> logger, GameService gameService)
     {
@@ -21,10 +25,13 @@ public class SingleplayerModel : PageModel
     public void OnGet()
     {
         var wordle = _gameService.GetOrCreate(GetGameId());
+        Tries = wordle.Tries;
+        MaxTries = wordle.MaxTries;
+        MoveHistory = wordle.MoveHistory;
         _logger.LogInformation("Got the game instance");
     }
 
-    public void OnPost()
+    public IActionResult OnPost()
     {
         var wordle = _gameService.GetOrCreate(GetGameId());
         _logger.LogInformation("Got the game instance");
@@ -38,6 +45,7 @@ public class SingleplayerModel : PageModel
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
         }
         _logger.LogInformation($"{wordle.Tries}");
+        return new RedirectToPageResult("Singleplayer");
     }
 
     private string GetGameId()

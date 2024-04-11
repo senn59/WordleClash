@@ -6,6 +6,28 @@
 }
 
 
+<h1>Tries: @Model.Tries / @Model.MaxTries</h1>
+@for (var i = 0; i < Model.MaxTries; i++)
+{
+    <div class="d-flex">
+    @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
+    {
+        Console.WriteLine(Model.MoveHistory.Count);
+        Console.WriteLine(i);
+        @foreach (var res in Model.MoveHistory[i].Feedback)
+        {
+            <div class="@res">[ @res ]</div>
+        }
+    }
+    else
+    {
+        @for (var j = 0; j < 5; j++)
+        {
+            <div>[  ]</div>
+        }
+    }
+    </div>
+}
 <form method="post">
     <input name="Guess" maxlength="5" minlength="5" />
     <input type="submit"/>
