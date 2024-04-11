@@ -6,13 +6,12 @@
     --tile-outline-size: 6px;
     --background-color: #F0EDE8;
 }
-body {
-    background: var(--background-color);
-}
 * {
     font-family: "Darker Grotesque", sans-serif;
 }
-
+body {
+    background: var(--background-color);
+}
 .wordle-tile {
     width: var(--tile-size);
     height: var(--tile-size);
