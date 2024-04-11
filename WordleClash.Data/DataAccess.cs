@@ -75,7 +75,7 @@ public class DataAccess: IDataAccess
 
             var cmd = new MySqlCommand();
             cmd.Connection = _conn;
-            cmd.CommandText = @"SELECT word FROM words WHERE word = @word";
+            cmd.CommandText = @"SELECT word FROM words WHERE UPPER(word) = UPPER(@word)";
             cmd.Parameters.AddWithValue("@word", word);
 
             var res = cmd.ExecuteScalar();
