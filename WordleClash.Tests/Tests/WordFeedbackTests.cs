@@ -1,7 +1,6 @@
-using WordleClash.Core;
 using WordleClash.Core.Enums;
 
-namespace WordleClash.Tests;
+namespace WordleClash.Tests.Tests;
 
 public class WordFeedBackTests
 {

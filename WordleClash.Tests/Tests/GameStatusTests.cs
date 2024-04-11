@@ -1,9 +1,7 @@
 using WordleClash.Core;
-using WordleClash.Core.DataAccess;
 using WordleClash.Core.Enums;
-using WordleClash.Core.Exceptions;
 
-namespace WordleClash.Tests;
+namespace WordleClash.Tests.Tests;
 
 public class GameStatusTests
 {
