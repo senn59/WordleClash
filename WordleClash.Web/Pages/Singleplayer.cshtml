@@ -7,25 +7,27 @@
 
 
 <h1>Tries: @Model.Tries / @Model.MaxTries</h1>
-@for (var i = 0; i < Model.MaxTries; i++)
-{
-    <div class="d-flex">
-    @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
+<div class="wordle">
+    @for (var i = 0; i < Model.MaxTries; i++)
     {
-        @foreach (var lr in Model.MoveHistory[i].WordAnalysis)
-        {
-            <div class="@lr.Feedback">[ @lr.Letter ]</div>
-        }
+        <div class="d-flex wordle-row">
+            @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
+            {
+                @foreach (var lr in Model.MoveHistory[i].WordAnalysis)
+                {
+                    <div class="wordle-tile @lr.Feedback">@lr.Letter</div>
+                }
+            }
+            else
+            {
+                @for (var j = 0; j < 5; j++)
+                {
+                    <div class="wordle-tile"></div>
+                }
+            }
+        </div>
     }
-    else
-    {
-        @for (var j = 0; j < 5; j++)
-        {
-            <div>[  ]</div>
-        }
-    }
-    </div>
-}
+</div>
 <form method="post">
     <input name="Guess" maxlength="5" minlength="5" />
     <input type="submit"/>

@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&display=swap');
+
+:root {
+    --tile-size: 80px;
+    --tile-spacing: 2px; /*relative to outline-size */
+    --tile-outline-size: 6px;
+    --background-color: #F0EDE8;
+}
+body {
+    background: var(--background-color);
+}
+* {
+    font-family: "Darker Grotesque", sans-serif;
+}
+
+.wordle-tile {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    background: #D4D4D4;
+    margin: calc(var(--tile-spacing) + var(--tile-outline-size));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    font-weight: bolder;
+    outline: var(--tile-outline-size) solid black;
+}
+.IncorrectLetter { background: #909090 }
+.CorrectPosition { background: #30F110 }
+.IncorrectPosition { background: #FFCB01 }
