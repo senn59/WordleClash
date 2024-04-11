@@ -10,28 +10,28 @@ public class WordValidationTests
     public void GuessEmptyWord()
     {
         var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
-        Assert.Throws<IncorrectLengthException>(() => wordle.MakeMove(""));
+        Assert.Throws<IncorrectLengthException>(() => wordle.TakeGuess(""));
     }
     
     [Test]
     public void GuessTooShortWord()
     {
         var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
-        Assert.Throws<IncorrectLengthException>(() => wordle.MakeMove("vwxy"));
+        Assert.Throws<IncorrectLengthException>(() => wordle.TakeGuess("vwxy"));
     }
     
     [Test]
     public void GuessInvalidWord()
     {
         var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
-        Assert.Throws<InvalidWordException>(() => wordle.MakeMove("abcde"));
+        Assert.Throws<InvalidWordException>(() => wordle.TakeGuess("abcde"));
     }
     
     [Test]
     public void GuessValidWord()
     {
         var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
-        Assert.DoesNotThrow(() => wordle.MakeMove("vwxyz"));
+        Assert.DoesNotThrow(() => wordle.TakeGuess("vwxyz"));
     }
     
 }

@@ -14,7 +14,7 @@ public class SingleplayerModel : PageModel
     [BindProperty] public string Guess { get; set; }
     public int Tries { get; set; }
     public int MaxTries { get; set; }
-    public IReadOnlyList<MoveResult> MoveHistory { get; set; }
+    public IReadOnlyList<GuessResult> MoveHistory { get; set; }
     
     public SingleplayerModel(ILogger<IndexModel> logger, GameService gameService)
     {
@@ -37,7 +37,7 @@ public class SingleplayerModel : PageModel
         _logger.LogInformation("Got the game instance");
         try
         {
-            wordle.MakeMove(Guess);
+            wordle.TakeGuess(Guess);
             _logger.LogInformation($"user guesses {Guess}");
         }
         catch (Exception e)

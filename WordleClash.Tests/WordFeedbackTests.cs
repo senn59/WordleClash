@@ -11,7 +11,7 @@ public class WordFeedBackTests
     {
         var dataAccess = new MockDataAccess("table", "chime");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -29,7 +29,7 @@ public class WordFeedBackTests
     {
         var dataAccess = new MockDataAccess("zzllz", "xxxlx");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -47,7 +47,7 @@ public class WordFeedBackTests
     {
         var dataAccess = new MockDataAccess("zzzlz", "lxxxx");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -65,7 +65,7 @@ public class WordFeedBackTests
     {
         var dataAccess = new MockDataAccess("abczz", "xxcba");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
@@ -83,7 +83,7 @@ public class WordFeedBackTests
     {
         var dataAccess = new MockDataAccess("zzllz", "xxxll");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
 
         LetterFeedback[] expectedResult =
         [
