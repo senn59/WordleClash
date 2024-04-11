@@ -1,5 +1,6 @@
 using WordleClash.Core;
 using WordleClash.Core.Enums;
+using WordleClash.Tests.Tests;
 
 namespace WordleClash.Tests;
 
