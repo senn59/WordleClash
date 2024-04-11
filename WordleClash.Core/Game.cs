@@ -21,6 +21,7 @@ public class Game
 
     public GuessResult TakeGuess(string input)
     {
+        input = input.ToUpper();
         ValidateMove(input);
         Tries++;
         Console.WriteLine(_wordHandler.Word);
