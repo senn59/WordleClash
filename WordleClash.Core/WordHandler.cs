@@ -11,7 +11,7 @@ public class WordHandler
     public WordHandler(IDataAccess dataAccess)
     {
         _dataAccess = dataAccess;
-        Word = _dataAccess.GetRandomWord();
+        Word = _dataAccess.GetRandomWord().ToUpper();
     }
     
     
