@@ -15,29 +15,36 @@ public class WordHandler
     }
     
     
-    public LetterFeedback[] GetFeedback(string guessedWord)
+    public LetterResult[] GetFeedback(string guessedWord)
     {
-        var feedback = new LetterFeedback[Word.Length];
+        var feedbackList = new LetterResult[Word.Length];
 
         for (int i = 0; i < guessedWord.Length; i++)
         {
+            LetterFeedback feedback;
             var letter = guessedWord[i];
+            
             if (!Word.Contains(letter))
             {
-                feedback[i] = LetterFeedback.IncorrectLetter;
-                continue;
-            }
-
-            if (GetAllIndexesOf(letter).Contains(i))
+                feedback = LetterFeedback.IncorrectLetter;
+            } 
+            else if (GetAllIndexesOf(letter).Contains(i))
             {
-                feedback[i] = LetterFeedback.CorrectPosition;
-                continue;
+                feedback = LetterFeedback.CorrectPosition;
+            }
+            else
+            {
+                feedback = LetterFeedback.IncorrectPosition;
             }
 
-            feedback[i] = LetterFeedback.IncorrectPosition;
+            feedbackList[i] = new LetterResult()
+            {
+                Letter = letter,
+                Feedback = feedback
+            };
         }
 
-        return feedback;
+        return feedbackList;
     }
     
     private List<int> GetAllIndexesOf(char letter)

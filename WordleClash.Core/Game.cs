@@ -43,7 +43,7 @@ public class Game
         var result = new GuessResult()
         {
             Status = status,
-            Feedback = _wordHandler.GetFeedback(input)
+            WordAnalysis = _wordHandler.GetFeedback(input),
         };
         
         _moveHistory.Add(result);
