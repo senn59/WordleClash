@@ -8,7 +8,7 @@ public class WordFeedBackTests
     [Test]
     public void OneCorrectLetter()
     {
-        var feedback = ExtractFeedbackFromGuess("table", "chime");
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("table", "chime");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectLetter,
@@ -23,7 +23,7 @@ public class WordFeedBackTests
     [Test]
     public void CorrectLetterMultipleOccurences()
     {
-        var feedback = ExtractFeedbackFromGuess("zzllz", "xxxlx");
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("zzllz", "xxxlx");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectLetter,
@@ -38,7 +38,7 @@ public class WordFeedBackTests
     [Test]
     public void IncorrectPosition()
     {
-        var feedback = ExtractFeedbackFromGuess("zzzlz", "lxxxx");
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("zzzlz", "lxxxx");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectPosition,
@@ -53,7 +53,7 @@ public class WordFeedBackTests
     [Test]
     public void AllDifferentFeedbackTypesAtOnce()
     {
-        var feedback = ExtractFeedbackFromGuess("abczz", "xxcba");
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("abczz", "xxcba");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectLetter,
@@ -68,7 +68,7 @@ public class WordFeedBackTests
     [Test]
     public void SameLetterCorrectAndIncorrectPosition()
     {
-        var feedback = ExtractFeedbackFromGuess("zzllz", "xxxll");
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("zzllz", "xxxll");
         LetterFeedback[] expectedFeedback =
         [
             LetterFeedback.IncorrectLetter,
@@ -80,17 +80,4 @@ public class WordFeedBackTests
         Assert.That(feedback, Is.EqualTo(expectedFeedback));
     }
 
-    private LetterFeedback[] ExtractFeedbackFromGuess(string targetWord, string guess)
-    {
-        var dataAccess = new MockDataAccess(targetWord, guess);
-        var wordle = new Game(6, dataAccess);
-        var res = wordle.TakeGuess(dataAccess.Guess);
-        var feedback = new LetterFeedback[res.WordAnalysis.Length];
-        for (var i = 0; i < res.WordAnalysis.Length; i++)
-        {
-            feedback[i] = res.WordAnalysis[i].Feedback;
-        }
-
-        return feedback;
-    }
 }
