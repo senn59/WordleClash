@@ -12,9 +12,9 @@
     <div class="d-flex">
     @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
     {
-        @foreach (var res in Model.MoveHistory[i].Feedback)
+        @foreach (var lr in Model.MoveHistory[i].WordAnalysis)
         {
-            <div class="@res">[ @res ]</div>
+            <div class="@lr.Feedback">[ @lr.Letter ]</div>
         }
     }
     else
