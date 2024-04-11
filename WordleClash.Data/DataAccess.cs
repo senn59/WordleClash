@@ -75,10 +75,11 @@ public class DataAccess: IDataAccess
 
             var cmd = new MySqlCommand();
             cmd.Connection = _conn;
-            cmd.CommandText = @"SELECT word FROM words ORDER BY RAND() LIMIT 1";
+            cmd.CommandText = @"SELECT word FROM words WHERE word = @word";
+            cmd.Parameters.AddWithValue("@word", word);
 
             var res = cmd.ExecuteScalar();
-            return res!.ToString();
+            return res?.ToString();
         }
         catch (Exception e)
         {
