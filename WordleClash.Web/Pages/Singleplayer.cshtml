@@ -5,8 +5,6 @@
     ViewData["Title"] = "Singleplayer";
 }
 
-
-<h1>Tries: @Model.Tries / @Model.MaxTries</h1>
 <div class="wordle">
     @for (var i = 0; i < Model.MaxTries; i++)
     {
@@ -30,5 +28,15 @@
 </div>
 <form method="post">
     <input name="Guess" maxlength="5" minlength="5" />
-    <input type="submit"/>
+    <input type="submit" value="Take Guess"/>
 </form>
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+    }
+</style>
