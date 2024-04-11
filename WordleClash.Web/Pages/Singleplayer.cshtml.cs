@@ -10,21 +10,24 @@ public class SingleplayerModel : PageModel
     private readonly ILogger<IndexModel> _logger;
     private const string GameSessionKey = "_Game";
     private GameService _gameService;
+    private SessionService _sessionService;
 
     [BindProperty] public string Guess { get; set; }
     public int Tries { get; set; }
     public int MaxTries { get; set; }
     public IReadOnlyList<GuessResult> MoveHistory { get; set; }
     
-    public SingleplayerModel(ILogger<IndexModel> logger, GameService gameService)
+    public SingleplayerModel(ILogger<IndexModel> logger, GameService gameService, SessionService sessionService)
     {
         _logger = logger;
         _gameService = gameService;
+        _sessionService = sessionService;
     }
 
     public void OnGet()
     {
-        var wordle = _gameService.GetOrCreate(GetGameId());
+        var id = _sessionService.GetOrCreateGameId(HttpContext, GameSessionKey);
+        var wordle = _gameService.GetOrCreate(id);
         Tries = wordle.Tries;
         MaxTries = wordle.MaxTries;
         MoveHistory = wordle.MoveHistory;
@@ -33,7 +36,8 @@ public class SingleplayerModel : PageModel
 
     public IActionResult OnPost()
     {
-        var wordle = _gameService.GetOrCreate(GetGameId());
+        var id = _sessionService.GetOrCreateGameId(HttpContext, GameSessionKey);
+        var wordle = _gameService.GetOrCreate(id);
         _logger.LogInformation("Got the game instance");
         try
         {
@@ -46,14 +50,5 @@ public class SingleplayerModel : PageModel
         }
         _logger.LogInformation($"{wordle.Tries}");
         return new RedirectToPageResult("Singleplayer");
-    }
-
-    private string GetGameId()
-    {
-        if (string.IsNullOrEmpty(HttpContext.Session.GetString(GameSessionKey)))
-        {
-            HttpContext.Session.SetString(GameSessionKey, Guid.NewGuid().ToString());
-        }
-        return HttpContext.Session.GetString(GameSessionKey) ?? throw new NullReferenceException("Couldnt find gameId");
     }
 }
