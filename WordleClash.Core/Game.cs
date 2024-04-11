@@ -7,16 +7,16 @@ namespace WordleClash.Core;
 public class Game
 {
     private readonly WordHandler _wordHandler;
-    private readonly int _maxTries;
-    private readonly IDataAccess _dataAccess;
     
+    public int MaxTries { get; private set; }
     public int Tries { get; private set; }
+    private readonly List<MoveResult> _moveHistory = [];
+    public IReadOnlyList<MoveResult> MoveHistory => _moveHistory;
 
     public Game(int maxTries, IDataAccess dataAccess)
     {
-        _dataAccess = dataAccess;
-        _maxTries = maxTries;
-        _wordHandler = new WordHandler(_dataAccess);
+        MaxTries = maxTries;
+        _wordHandler = new WordHandler(dataAccess);
     }
 
     public MoveResult MakeMove(string input)
@@ -28,11 +28,11 @@ public class Game
         GameStatus status;
         
         //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways
-        if (_wordHandler.IsMatchingWord(input) && Tries <= _maxTries) 
+        if (_wordHandler.IsMatchingWord(input) && Tries <= MaxTries) 
         {
             status = GameStatus.Won;
         }
-        else if (Tries >= _maxTries)
+        else if (Tries >= MaxTries)
         {
             status = GameStatus.Lost;
         }
@@ -40,12 +40,15 @@ public class Game
         {
             status = GameStatus.InProgress;
         }
-        
-        return new MoveResult()
+
+        var result = new MoveResult()
         {
             Status = status,
             Feedback = _wordHandler.GetFeedback(input)
         };
+        
+        _moveHistory.Add(result);
+        return result;
     }
 
     private void ValidateMove(string input)
