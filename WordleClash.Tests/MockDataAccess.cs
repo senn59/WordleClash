@@ -7,8 +7,8 @@ public class MockDataAccess : IDataAccess
     public string Guess { get; private set; }
     public MockDataAccess(string targetWord, string guess)
     {
-        TargetWord = targetWord;
-        Guess = guess;
+        TargetWord = targetWord.ToUpper();
+        Guess = guess.ToUpper();
     }
     public List<string> GetWords()
     {
@@ -22,6 +22,7 @@ public class MockDataAccess : IDataAccess
 
     public string? GetWord(string word)
     {
+        word = word.ToUpper();
         return word == TargetWord || word == Guess ? word : null;
     }
 }

@@ -4,6 +4,6 @@ namespace WordleClash.Core;
 
 public class GuessResult
 {
-    public required GameStatus Status { get; set; }
-    public required LetterResult[] WordAnalysis { get; set; }
+    public required GameStatus Status { get; init; }
+    public required LetterResult[] WordAnalysis { get; init; }
 }
