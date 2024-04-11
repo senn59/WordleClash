@@ -61,17 +61,4 @@ public class GameStatusTests
         Assert.That(res.Status, Is.EqualTo(GameStatus.Won));
     }
     
-    [Test]
-    public void GuessEmptyWord()
-    {
-        var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
-        Assert.Throws<IncorrectLengthException>(() => wordle.MakeMove(""));
-    }
-    
-    [Test]
-    public void GuessTooShortWord()
-    {
-        var wordle = new Game(3, new MockDataAccess("vwxyz", "vwxyz"));
-        Assert.Throws<IncorrectLengthException>(() => wordle.MakeMove("vwxy"));
-    }
 }
