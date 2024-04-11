@@ -12,8 +12,6 @@
     <div class="d-flex">
     @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
     {
-        Console.WriteLine(Model.MoveHistory.Count);
-        Console.WriteLine(i);
         @foreach (var res in Model.MoveHistory[i].Feedback)
         {
             <div class="@res">[ @res ]</div>
