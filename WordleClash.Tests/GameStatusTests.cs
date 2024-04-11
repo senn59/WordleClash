@@ -12,7 +12,7 @@ public class GameStatusTests
     {
         var dataAccess = new MockDataAccess("zzzzz", "xxxxx");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
     }
@@ -22,7 +22,7 @@ public class GameStatusTests
     {
         var dataAccess = new MockDataAccess("abcde", "abcdf");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
     }
@@ -32,7 +32,7 @@ public class GameStatusTests
     {
         var dataAccess = new MockDataAccess("abcde", "abcde");
         var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.TargetWord);
+        var res = wordle.TakeGuess(dataAccess.TargetWord);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.Won));
     }
@@ -42,11 +42,11 @@ public class GameStatusTests
     {
         var dataAccess = new MockDataAccess("abcde", "vwxyz");
         var wordle = new Game(3, dataAccess);
-        wordle.MakeMove(dataAccess.Guess);
-        wordle.MakeMove(dataAccess.Guess);
-        var res = wordle.MakeMove(dataAccess.Guess);
+        wordle.TakeGuess(dataAccess.Guess);
+        wordle.TakeGuess(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.Guess);
         Assert.That(res.Status, Is.EqualTo(GameStatus.Lost));
-        res = wordle.MakeMove(dataAccess.TargetWord);
+        res = wordle.TakeGuess(dataAccess.TargetWord);
         Assert.That(res.Status, Is.EqualTo(GameStatus.Lost));
     }
     
@@ -55,9 +55,9 @@ public class GameStatusTests
     {
         var dataAccess = new MockDataAccess("abcde", "vwxyz");
         var wordle = new Game(3, dataAccess);
-        wordle.MakeMove(dataAccess.Guess);
-        wordle.MakeMove(dataAccess.Guess);
-        var res = wordle.MakeMove(dataAccess.TargetWord);
+        wordle.TakeGuess(dataAccess.Guess);
+        wordle.TakeGuess(dataAccess.Guess);
+        var res = wordle.TakeGuess(dataAccess.TargetWord);
         Assert.That(res.Status, Is.EqualTo(GameStatus.Won));
     }
     
