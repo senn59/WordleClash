@@ -1,9 +1,22 @@
 @page
+@using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.SingleplayerModel
 
 @{
     ViewData["Title"] = "Singleplayer";
 }
+<div class="d-flex">
+    <h1>@Model.Status</h1>
+    @{
+        if (Model.Status is GameStatus.Won or GameStatus.Lost)
+        {
+            <form method="post" id="restartForm">
+                <button type="submit">New Game</button>
+                <input type="hidden" name="NewGame" value="true"/>
+            </form>
+        }
+    }
+</div>
 
 <div class="wordle">
     @for (var i = 0; i < Model.MaxTries; i++)

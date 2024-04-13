@@ -1,7 +1,7 @@
-using WordleClash.Core;
 using WordleClash.Core.DataAccess;
 using WordleClash.Data;
 using WordleClash.Web;
+using WordleClash.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
