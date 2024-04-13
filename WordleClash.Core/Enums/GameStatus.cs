@@ -4,5 +4,6 @@ public enum GameStatus
 {
     Won,
     InProgress,
-    Lost
+    Lost,
+    AwaitStart
 }

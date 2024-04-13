@@ -12,38 +12,76 @@ public class Game
     public int Tries { get; private set; }
     private readonly List<GuessResult> _moveHistory = [];
     public IReadOnlyList<GuessResult> MoveHistory => _moveHistory;
+    public GameStatus GameStatus { get; private set; } = GameStatus.AwaitStart;
+
+    public Game(IDataAccess dataAccess)
+    {
+        _wordHandler = new WordHandler(dataAccess);
+    }
 
     public Game(int maxTries, IDataAccess dataAccess)
     {
-        MaxTries = maxTries;
         _wordHandler = new WordHandler(dataAccess);
+        Start(maxTries);
+    }
+
+    public void Start(int maxTries)
+    {
+        if (GameStatus != GameStatus.AwaitStart)
+        {
+            throw new Exception("Game already started.");
+        }
+        MaxTries = maxTries;
+        GameStatus = GameStatus.InProgress;
     }
 
     public GuessResult TakeGuess(string input)
     {
+        if (GameStatus != GameStatus.InProgress)
+        {
+            return new GuessResult
+            {
+                Status = GameStatus,
+                WordAnalysis = new LetterResult[5]
+            };
+        }
+        /*
+        if (GameStatus == GameStatus.AwaitStart)
+        {
+            throw new Exception("Game has not been started");
+        }
+        if (GameStatus is GameStatus.Lost or GameStatus.Won)
+        {
+            return new GuessResult
+            {
+                Status = GameStatus,
+                WordAnalysis = new LetterResult[5]
+            };
+        }
+        */
+        
         input = input.ToUpper();
         ValidateMove(input);
         Tries++;
         Console.WriteLine(_wordHandler.Word);
-        GameStatus status;
         
         //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways
         if (_wordHandler.IsMatchingWord(input) && Tries <= MaxTries) 
         {
-            status = GameStatus.Won;
+            GameStatus = GameStatus.Won;
         }
         else if (Tries >= MaxTries)
         {
-            status = GameStatus.Lost;
+            GameStatus = GameStatus.Lost;
         }
         else
         {
-            status = GameStatus.InProgress;
+            GameStatus = GameStatus.InProgress;
         }
 
         var result = new GuessResult()
         {
-            Status = status,
+            Status = GameStatus,
             WordAnalysis = _wordHandler.GetFeedback(input),
         };
         
