@@ -8,9 +8,19 @@
 }
 * {
     font-family: "Darker Grotesque", sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 body {
     background: rgb(var(--background-color));
+}
+
+.wordle-wrapper {
+    position: relative;
+}
+.wordle-row {
+    display: flex;
 }
 .wordle-tile {
     width: var(--tile-size);
@@ -24,10 +34,25 @@ body {
     font-weight: bolder;
     outline: var(--tile-outline-size) solid black;
 }
-.IncorrectLetter { background: #909090 }
-.CorrectPosition { background: #30F110 }
-.IncorrectPosition { background: #FFCB01 }
+.wordle .IncorrectLetter { background: #909090 }
+.wordle .CorrectPosition { background: #30F110 }
+.wordle .IncorrectPosition { background: #FFCB01 }
 
+.letters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: absolute;
+    bottom: -130px;
+    padding: 0 30px;
+    font-weight: 900;
+    font-size: 2.5em;
+    letter-spacing: 6px;
+}
+.letters .IncorrectLetter { color: #909090 }
+.letters .CorrectPosition { color: #30F110 }
+.letters .IncorrectPosition { color: #FFCB01 }
+.letters .Unused { color: lightgray }
 
 .game-end-overlay {
     background-color: rgba(var(--background-color), 0.9);
@@ -38,6 +63,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    z-index: 98;
 }
 .game-end-overlay-wrapper form {
     position: relative;

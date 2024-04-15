@@ -1,5 +1,6 @@
 @page
 @using Org.BouncyCastle.Crypto.Engines
+@using WordleClash.Core
 @using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.SingleplayerModel
 
@@ -33,38 +34,83 @@
             </div>
         }
     }
-
-    <div class="wordle">
-        @for (var i = 0; i < Model.MaxTries; i++)
-        {
-            <div class="d-flex wordle-row">
-                @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
-                {
-                    @foreach (var lr in Model.MoveHistory[i].WordAnalysis)
+    <div class="wordle-wrapper">
+        <div class="wordle">
+            @for (var i = 0; i < Model.MaxTries; i++)
+            {
+                <div class="wordle-row">
+                    @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
                     {
-                        <div class="wordle-tile @lr.Feedback">@lr.Letter</div>
+                        @foreach (var lr in Model.MoveHistory[i].WordAnalysis)
+                        {
+                            <div class="wordle-tile @lr.Feedback">@lr.Letter</div>
+                        }
                     }
-                }
-                else
-                {
-                    @for (var j = 0; j < 5; j++)
+                    else
                     {
-                        <div class="wordle-tile"></div>
+                        @for (var j = 0; j < 5; j++)
+                        {
+                            <div class="wordle-tile"></div>
+                        }
                     }
+                </div>
+            }
+        </div>
+        <div class="letters">
+            @{
+                var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+                foreach (var letter in alphabet)
+                {
+                    <span class="@GetClassName(letter)">@letter</span>
                 }
-            </div>
-        }
+            }
+        </div>
     </div>
+
 </div>
 <form method="post" id="guessForm">
     <input type="hidden" name="Guess" id="guessInput">
 </form>
 
-@section Scripts {
-    <script src="~/js/WriteInTiles.js"></script>
-    <script>
-        const CloseOverlay = () => {
-            document.querySelector(".game-end-overlay").remove();
+@functions
+{
+    List<LetterResult> GetUsedLetters()
+    {
+        List<LetterResult> usedLetters = [];
+        foreach (var guessResult in Model.MoveHistory)
+        {
+            usedLetters.AddRange(guessResult.WordAnalysis);
         }
-    </script>
+        return usedLetters;
+    }
+
+    string GetClassName(char letter)
+    {
+        var className = "Unused";
+        var occurences = GetUsedLetters()
+            .Where(l => l.Letter == letter)
+            .Select(l => l.Feedback)
+            .ToList();
+        if (occurences.Count == 1)
+        {
+            className = occurences[0].ToString();
+        }
+        else if (occurences.Count > 1)
+        {
+            className = 
+                occurences.Contains(LetterFeedback.CorrectPosition)
+                ? LetterFeedback.CorrectPosition.ToString()
+                : occurences[0].ToString();
+        }
+        return className;
+    }
+}
+
+@section Scripts {
+<script src="~/js/WriteInTiles.js"></script>
+<script>
+    const CloseOverlay = () => {
+        document.querySelector(".game-end-overlay").remove();
+    }
+</script>
 }
