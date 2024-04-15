@@ -10,7 +10,6 @@ namespace WordleClash.Web.Pages;
 public class SingleplayerModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    private const string GameSessionKey = "_Game";
     private GameService _gameService;
     private SessionService _sessionService;
 
@@ -30,7 +29,7 @@ public class SingleplayerModel : PageModel
 
     public void OnGet()
     {
-        var id = _sessionService.GetOrCreateGameId(HttpContext, GameSessionKey);
+        var id = _sessionService.GetOrCreateGameId(HttpContext);
         var wordle = _gameService.GetOrCreate(id);
         if (wordle.GameStatus == GameStatus.AwaitStart)
         {
@@ -45,7 +44,7 @@ public class SingleplayerModel : PageModel
 
     public IActionResult OnPost()
     {
-        var id = _sessionService.GetOrCreateGameId(HttpContext, GameSessionKey);
+        var id = _sessionService.GetOrCreateGameId(HttpContext);
         if (NewGame)
         {
             _gameService.DicardInstance(id);
