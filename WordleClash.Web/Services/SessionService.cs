@@ -1,22 +1,38 @@
+using System.Data;
+
 namespace WordleClash.Web;
 
 public class SessionService
 {
     private const string GameSessionKey = "_Game";
-    public string GetOrCreateGameId(HttpContext context)
+    
+    private ISession _session;
+    public SessionService(IHttpContextAccessor httpContextAccessor)
     {
-        
-        if (string.IsNullOrEmpty(context.Session.GetString(GameSessionKey)))
+        if (httpContextAccessor.HttpContext == null)
         {
-            context.Session.SetString(GameSessionKey, Guid.NewGuid().ToString());
+            throw new InvalidOperationException("HTTPContext cant be null");
         }
-        return context.Session.GetString(GameSessionKey) ?? throw new NullReferenceException("Couldnt find gameId");
+        _session = httpContextAccessor.HttpContext.Session;
+    }
+    public string GetOrCreateGameId()
+    {
+        if (string.IsNullOrEmpty(_session.GetString(GameSessionKey)))
+        {
+            _session.SetString(GameSessionKey, Guid.NewGuid().ToString());
+        }
+        return _session.GetString(GameSessionKey) ?? throw new NullReferenceException("Couldnt find gameId");
     }
 
-    public void ClearGameId(HttpContext context)
+    public void ClearGameId()
     {
-        var id = context.Session.GetString(GameSessionKey);
+        var id = _session.GetString(GameSessionKey);
         if (id == null) return;
-        context.Session.Remove(GameSessionKey);
+        _session.Remove(GameSessionKey);
+    }
+
+    public string? GetGameId()
+    {
+        return _session.GetString(GameSessionKey);
     }
 }

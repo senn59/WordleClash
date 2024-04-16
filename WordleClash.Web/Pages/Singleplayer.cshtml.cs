@@ -29,7 +29,7 @@ public class SingleplayerModel : PageModel
 
     public void OnGet()
     {
-        var id = _sessionService.GetOrCreateGameId(HttpContext);
+        var id = _sessionService.GetOrCreateGameId();
         var wordle = _gameService.GetOrCreate(id);
         if (wordle.GameStatus == GameStatus.AwaitStart)
         {
@@ -44,7 +44,7 @@ public class SingleplayerModel : PageModel
 
     public IActionResult OnPost()
     {
-        var id = _sessionService.GetOrCreateGameId(HttpContext);
+        var id = _sessionService.GetOrCreateGameId();
         if (NewGame)
         {
             _gameService.DicardInstance(id);

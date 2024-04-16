@@ -5,7 +5,6 @@ using WordleClash.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSession(options =>
@@ -15,6 +14,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddHttpContextAccessor();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
