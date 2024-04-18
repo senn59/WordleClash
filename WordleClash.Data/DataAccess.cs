@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using WordleClash.Core.DataAccess;
 
@@ -8,9 +7,9 @@ public class DataAccess: IDataAccess
 {
     private MySqlConnection _conn;
 
-    public DataAccess(IConfiguration configuration)
+    public DataAccess(string connString)
     {
-        _conn = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
+        _conn = new MySqlConnection(connString);
     }
 
     public List<string> GetWords()
@@ -76,10 +75,11 @@ public class DataAccess: IDataAccess
 
             var cmd = new MySqlCommand();
             cmd.Connection = _conn;
-            cmd.CommandText = @"SELECT word FROM words ORDER BY RAND() LIMIT 1";
+            cmd.CommandText = @"SELECT word FROM words WHERE UPPER(word) = UPPER(@word)";
+            cmd.Parameters.AddWithValue("@word", word);
 
             var res = cmd.ExecuteScalar();
-            return res!.ToString();
+            return res?.ToString();
         }
         catch (Exception e)
         {

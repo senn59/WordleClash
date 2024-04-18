@@ -7,43 +7,80 @@ namespace WordleClash.Core;
 public class Game
 {
     private readonly WordHandler _wordHandler;
-    private readonly int _maxTries;
-    private readonly IDataAccess _dataAccess;
     
+    public int MaxTries { get; private set; }
     public int Tries { get; private set; }
+    private readonly List<GuessResult> _moveHistory = [];
+    public IReadOnlyList<GuessResult> MoveHistory => _moveHistory;
+    public GameStatus GameStatus { get; private set; } = GameStatus.AwaitStart;
 
-    public Game(int maxTries, IDataAccess dataAccess)
+    public Game(IDataAccess dataAccess)
     {
-        _dataAccess = dataAccess;
-        _maxTries = maxTries;
-        _wordHandler = new WordHandler(_dataAccess);
+        _wordHandler = new WordHandler(dataAccess);
+    }
+    
+    public void Start(int maxTries)
+    {
+        if (GameStatus != GameStatus.AwaitStart)
+        {
+            throw new Exception("Game already started.");
+        }
+        MaxTries = maxTries;
+        GameStatus = GameStatus.InProgress;
     }
 
-    public MoveResult MakeMove(string input)
+    public GuessResult TakeGuess(string input)
     {
+        if (GameStatus != GameStatus.InProgress)
+        {
+            return new GuessResult
+            {
+                Status = GameStatus,
+                WordAnalysis = new LetterResult[5]
+            };
+        }
+        /*
+        if (GameStatus == GameStatus.AwaitStart)
+        {
+            throw new Exception("Game has not been started");
+        }
+        if (GameStatus is GameStatus.Lost or GameStatus.Won)
+        {
+            return new GuessResult
+            {
+                Status = GameStatus,
+                WordAnalysis = new LetterResult[5]
+            };
+        }
+        */
+        
+        input = input.ToUpper();
         ValidateMove(input);
         Tries++;
-        GameStatus status;
+        Console.WriteLine(_wordHandler.Word);
         
         //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways
-        if (_wordHandler.IsMatchingWord(input) && Tries <= _maxTries) 
+        if (_wordHandler.IsMatchingWord(input) && Tries <= MaxTries) 
         {
-            status = GameStatus.Won;
+            GameStatus = GameStatus.Won;
         }
-        else if (Tries >= _maxTries)
+        else if (Tries >= MaxTries)
         {
-            status = GameStatus.Lost;
+            GameStatus = GameStatus.Lost;
         }
         else
         {
-            status = GameStatus.InProgress;
+            GameStatus = GameStatus.InProgress;
         }
-        
-        return new MoveResult()
+
+        var result = new GuessResult()
         {
-            Status = status,
-            Feedback = _wordHandler.GetFeedback(input)
+            Status = GameStatus,
+            WordAnalysis = _wordHandler.GetFeedback(input),
         };
+        
+        _moveHistory.Add(result);
+        return result;
     }
 
     private void ValidateMove(string input)
