@@ -12,9 +12,11 @@ public class SingleplayerModel : PageModel
     private readonly ILogger<IndexModel> _logger;
     private GameService _gameService;
     private SessionService _sessionService;
+    private const int DefaultMaxTries = 6;
 
     [BindProperty] public string Guess { get; set; }
     [BindProperty] public bool NewGame { get; set; }
+    
     public int Tries { get; set; }
     public int MaxTries { get; set; }
     public GameStatus Status { get; set; }
@@ -33,7 +35,7 @@ public class SingleplayerModel : PageModel
         var wordle = _gameService.GetOrCreate(id);
         if (wordle.GameStatus == GameStatus.AwaitStart)
         {
-            wordle.Start(6);
+            wordle.Start(DefaultMaxTries);
         }
         Tries = wordle.Tries;
         MaxTries = wordle.MaxTries;
