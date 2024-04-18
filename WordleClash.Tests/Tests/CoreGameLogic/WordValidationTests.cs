@@ -1,7 +1,7 @@
 using WordleClash.Core;
 using WordleClash.Core.Exceptions;
 
-namespace WordleClash.Tests.Tests;
+namespace WordleClash.Tests.Tests.CoreGameLogic;
 
 public class WordValidationTests
 {
