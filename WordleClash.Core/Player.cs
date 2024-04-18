@@ -8,14 +8,10 @@ public class Player
     public bool IsOwner { get; set; }
     public string Name { get; private set; }
     public Color Color { get; private set; }
+    public bool? IsTurn { get; set; }
 
     public Player()
     {
         Id = 1;
-    }
-
-    public void Join(Lobby lobby)
-    {
-        
     }
 }
