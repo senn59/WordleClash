@@ -1,18 +1,13 @@
-using WordleClash.Core;
-using WordleClash.Core.DataAccess;
 using WordleClash.Core.Enums;
 
-namespace WordleClash.Tests;
+namespace WordleClash.Tests.Tests;
 
 public class WordFeedBackTests
 {
     [Test]
     public void OneCorrectLetter()
     {
-        var dataAccess = new MockDataAccess("table", "chime");
-        var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
-
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("table", "chime");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectLetter,
@@ -21,16 +16,13 @@ public class WordFeedBackTests
             LetterFeedback.IncorrectLetter,
             LetterFeedback.CorrectPosition
         ];
-        Assert.That(res.Feedback, Is.EqualTo(expectedResult));
+        Assert.That(feedback, Is.EqualTo(expectedResult));
     }
     
     [Test]
     public void CorrectLetterMultipleOccurences()
     {
-        var dataAccess = new MockDataAccess("zzllz", "xxxlx");
-        var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
-
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("zzllz", "xxxlx");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectLetter,
@@ -39,16 +31,13 @@ public class WordFeedBackTests
             LetterFeedback.CorrectPosition,
             LetterFeedback.IncorrectLetter,
         ];
-        Assert.That(res.Feedback, Is.EqualTo(expectedResult));
+        Assert.That(feedback, Is.EqualTo(expectedResult));
     }
     
     [Test]
     public void IncorrectPosition()
     {
-        var dataAccess = new MockDataAccess("zzzlz", "lxxxx");
-        var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
-
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("zzzlz", "lxxxx");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectPosition,
@@ -57,16 +46,13 @@ public class WordFeedBackTests
             LetterFeedback.IncorrectLetter,
             LetterFeedback.IncorrectLetter,
         ];
-        Assert.That(res.Feedback, Is.EqualTo(expectedResult));
+        Assert.That(feedback, Is.EqualTo(expectedResult));
     }
     
     [Test]
     public void AllDifferentFeedbackTypesAtOnce()
     {
-        var dataAccess = new MockDataAccess("abczz", "xxcba");
-        var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
-
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("abczz", "xxcba");
         LetterFeedback[] expectedResult =
         [
             LetterFeedback.IncorrectLetter,
@@ -75,17 +61,14 @@ public class WordFeedBackTests
             LetterFeedback.IncorrectPosition,
             LetterFeedback.IncorrectPosition,
         ];
-        Assert.That(res.Feedback, Is.EqualTo(expectedResult));
+        Assert.That(feedback, Is.EqualTo(expectedResult));
     }
     
     [Test]
     public void SameLetterCorrectAndIncorrectPosition()
     {
-        var dataAccess = new MockDataAccess("zzllz", "xxxll");
-        var wordle = new Game(6, dataAccess);
-        var res = wordle.MakeMove(dataAccess.Guess);
-
-        LetterFeedback[] expectedResult =
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("zzllz", "xxxll");
+        LetterFeedback[] expectedFeedback =
         [
             LetterFeedback.IncorrectLetter,
             LetterFeedback.IncorrectLetter,
@@ -93,6 +76,7 @@ public class WordFeedBackTests
             LetterFeedback.CorrectPosition,
             LetterFeedback.IncorrectPosition,
         ];
-        Assert.That(res.Feedback, Is.EqualTo(expectedResult));
+        Assert.That(feedback, Is.EqualTo(expectedFeedback));
     }
+
 }
