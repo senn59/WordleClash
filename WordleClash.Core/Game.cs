@@ -18,13 +18,7 @@ public class Game
     {
         _wordHandler = new WordHandler(dataAccess);
     }
-
-    public Game(int maxTries, IDataAccess dataAccess)
-    {
-        _wordHandler = new WordHandler(dataAccess);
-        Start(maxTries);
-    }
-
+    
     public void Start(int maxTries)
     {
         if (GameStatus != GameStatus.AwaitStart)
