@@ -30,15 +30,49 @@ public class VersusLobby: BaseLobby
         Status = LobbyStatus.InGame;
     }
 
+    //TODO: Player class should probably be responsible for this
+    public void TakeGuess(Player player, string guess)
+    {
+        if (!PlayerList.Contains(player))
+        {
+            throw new Exception("Player not in lobby");
+        }
+        
+        if (player.IsTurn == false)
+        {
+            throw new Exception("It's not the player's turn");
+        }
+        
+        //TODO: check if other players also have IsTurn state
+        _game.TakeGuess(guess);
+        SetNextTurn(player);
+    }
+
+    private void SetNextTurn(Player player)
+    {
+        var playerIndex = PlayerList.IndexOf(player);
+        int nextPlayerIndex;
+        if (playerIndex == PlayerList.Count - 1)
+        {
+            nextPlayerIndex = 0;
+        }
+        else
+        {
+            nextPlayerIndex = playerIndex + 1;
+        }
+        ResetTurnState();
+        PlayerList[nextPlayerIndex].IsTurn = true;
+    }
+
     private void SetFirstTurn()
     {
         var r = new Random();
         var playerIndex = r.Next(0, Players.Count);
-        ResetTurns();
+        ResetTurnState();
         PlayerList[playerIndex].IsTurn = true;
     }
 
-    private void ResetTurns()
+    private void ResetTurnState()
     {
         PlayerList.ForEach(p => p.IsTurn = false);
     }
