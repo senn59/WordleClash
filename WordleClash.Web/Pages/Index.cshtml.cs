@@ -1,23 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WordleClash.Core;
-using WordleClash.Data;
+using WordleClash.Web.Services;
 
 namespace WordleClash.Web.Pages;
 
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    private readonly DataAccess _dataAccess;
+    private GameService _gameService;
+    private SessionService _sessionService;
 
-    public IndexModel(ILogger<IndexModel> logger, DataAccess dataAccess)
+    public IndexModel(ILogger<IndexModel> logger, GameService gameService, SessionService sessionService)
     {
         _logger = logger;
-        _dataAccess = dataAccess;
+        _gameService = gameService;
+        _sessionService = sessionService;
     }
 
-    public void OnGet()
+    public IActionResult OnGet()
     {
-        var wordle = new Game(6, _dataAccess);
+        var gameSession = _sessionService.GetGameId();
+        if (gameSession == null) return Page();
+        _logger.LogInformation($"Game instance found, discarding {gameSession}");
+        _gameService.DicardInstance(gameSession);
+        _sessionService.ClearGameId();
+        return Page();
     }
 }
