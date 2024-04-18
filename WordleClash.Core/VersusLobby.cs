@@ -8,10 +8,7 @@ public class VersusLobby: BaseLobby
     private const int MaxTries = 9;
     private Game _game;
     
-    public VersusLobby(IDataAccess dataAccess): base(dataAccess)
-    {
-        RequiredPlayers = MaxPlayers = 2;
-    }
+    public VersusLobby(IDataAccess dataAccess, Player creator): base(dataAccess, creator, 2, 2) {}
     
     public override void StartGame()
     {
@@ -30,8 +27,7 @@ public class VersusLobby: BaseLobby
         Status = LobbyStatus.InGame;
     }
 
-    //TODO: Player class should probably be responsible for this
-    public void TakeGuess(Player player, string guess)
+    public void HandleGuess(Player player, string guess)
     {
         if (!PlayerList.Contains(player))
         {
