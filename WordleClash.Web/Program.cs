@@ -1,4 +1,4 @@
-using WordleClash.Core.DataAccess;
+using WordleClash.Core.Interfaces;
 using WordleClash.Data;
 using WordleClash.Web;
 using WordleClash.Web.Services;
