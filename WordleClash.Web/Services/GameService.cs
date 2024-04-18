@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using WordleClash.Core;
-using WordleClash.Core.DataAccess;
+using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Web.Services;
 
