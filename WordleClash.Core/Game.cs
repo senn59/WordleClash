@@ -1,4 +1,4 @@
-using WordleClash.Core.DataAccess;
+using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 

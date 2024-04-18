@@ -1,4 +1,4 @@
-namespace WordleClash.Core.DataAccess;
+namespace WordleClash.Core.Interfaces;
 
 public interface IDataAccess
 {
