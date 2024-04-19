@@ -10,7 +10,7 @@ namespace WordleClash.Web.Pages;
 
 public class SingleplayerModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private readonly ILogger<SingleplayerModel> _logger;
     private GameService _gameService;
     private SessionService _sessionService;
     private const int DefaultMaxTries = 6;
@@ -18,10 +18,10 @@ public class SingleplayerModel : PageModel
     [BindProperty] public string Guess { get; set; }
     [BindProperty] public bool NewGame { get; set; }
     
-    public GameModel GameModel { get; set; }
+    public GameViewModel Game { get; set; }
     
     
-    public SingleplayerModel(ILogger<IndexModel> logger, GameService gameService, SessionService sessionService)
+    public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionService sessionService)
     {
         _logger = logger;
         _gameService = gameService;
@@ -36,7 +36,7 @@ public class SingleplayerModel : PageModel
         {
             wordle.Start(DefaultMaxTries);
         }
-        GameModel = GameModel.FromGame(wordle);
+        Game = GameViewModel.FromGame(wordle);
         _logger.LogInformation($"Got game {id}");
     }
 

@@ -9,12 +9,12 @@
 
 <div class="wrapper">
     @{
-        if (Model.GameModel.Status is GameStatus.Won or GameStatus.Lost)
+        if (Model.Game.Status is GameStatus.Won or GameStatus.Lost)
         {
             <div class="game-end-overlay">
                 <div class="game-end-overlay-wrapper">
                     <form method="post" id="restartForm">
-                        @if (Model.GameModel.Status == GameStatus.Won)
+                        @if (Model.Game.Status == GameStatus.Won)
                         {
                             <div class="icon">&#127942;</div>
                             <h1>YOU WIN!</h1>
@@ -35,12 +35,12 @@
     }
     <div class="wordle-wrapper">
         <div class="wordle">
-            @for (var i = 0; i < Model.GameModel.MaxTries; i++)
+            @for (var i = 0; i < Model.Game.MaxTries; i++)
             {
                 <div class="wordle-row">
-                    @if (i < Model.GameModel.MoveHistory.Count && Model.GameModel.MoveHistory.Count > 0)
+                    @if (i < Model.Game.MoveHistory.Count && Model.Game.MoveHistory.Count > 0)
                     {
-                        @foreach (var lr in Model.GameModel.MoveHistory[i].WordAnalysis)
+                        @foreach (var lr in Model.Game.MoveHistory[i].WordAnalysis)
                         {
                             <div class="wordle-tile @lr.Feedback">@lr.Letter</div>
                         }
@@ -76,7 +76,7 @@
     List<LetterResult> GetUsedLetters()
     {
         List<LetterResult> usedLetters = [];
-        foreach (var guessResult in Model.GameModel.MoveHistory)
+        foreach (var guessResult in Model.Game.MoveHistory)
         {
             usedLetters.AddRange(guessResult.WordAnalysis);
         }
