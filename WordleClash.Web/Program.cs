@@ -1,6 +1,6 @@
+using WordleClash.Core;
 using WordleClash.Core.DataAccess;
 using WordleClash.Data;
-using WordleClash.Web;
 using WordleClash.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,10 +18,9 @@ builder.Services.AddHttpContextAccessor();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
-builder.Services.AddScoped<IDataAccess>(s => new DataAccess(connString));
-builder.Services.AddSingleton<GameService>();
+builder.Services.AddSingleton<IDataAccess>(s => new DataAccess(connString));
+builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IDataAccess>()));
 builder.Services.AddScoped<SessionService>();
-// builder.Services.AddScoped<Game>(s => new Game(6, s.GetRequiredService<IDataAccess>()));
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
