@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
 using WordleClash.Core.Enums;
+using WordleClash.Web.Models;
 using WordleClash.Web.Services;
 using Exception = System.Exception;
 
@@ -17,10 +18,8 @@ public class SingleplayerModel : PageModel
     [BindProperty] public string Guess { get; set; }
     [BindProperty] public bool NewGame { get; set; }
     
-    public int Tries { get; set; }
-    public int MaxTries { get; set; }
-    public GameStatus Status { get; set; }
-    public IReadOnlyList<GuessResult> MoveHistory { get; set; }
+    public GameModel GameModel { get; set; }
+    
     
     public SingleplayerModel(ILogger<IndexModel> logger, GameService gameService, SessionService sessionService)
     {
@@ -37,10 +36,7 @@ public class SingleplayerModel : PageModel
         {
             wordle.Start(DefaultMaxTries);
         }
-        Tries = wordle.Tries;
-        MaxTries = wordle.MaxTries;
-        MoveHistory = wordle.MoveHistory;
-        Status = wordle.GameStatus;
+        GameModel = GameModel.FromGame(wordle);
         _logger.LogInformation($"Got game {id}");
     }
 
