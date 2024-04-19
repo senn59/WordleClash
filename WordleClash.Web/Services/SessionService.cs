@@ -1,12 +1,10 @@
-using System.Data;
-
-namespace WordleClash.Web;
+namespace WordleClash.Web.Services;
 
 public class SessionService
 {
     private const string GameSessionKey = "_Game";
     
-    private ISession _session;
+    private readonly ISession _session;
     public SessionService(IHttpContextAccessor httpContextAccessor)
     {
         if (httpContextAccessor.HttpContext == null)
