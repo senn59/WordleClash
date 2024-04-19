@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WordleClash.Core;
 using WordleClash.Web.Services;
 
 namespace WordleClash.Web.Pages;
