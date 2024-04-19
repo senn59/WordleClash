@@ -23,7 +23,7 @@ public class Game
     {
         if (GameStatus != GameStatus.AwaitStart)
         {
-            throw new Exception("Game already started.");
+            throw new GameAlreadyStartedException();
         }
         MaxTries = maxTries;
         GameStatus = GameStatus.InProgress;

@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Data;
@@ -64,7 +65,7 @@ public class DataAccess: IDataAccess
             _conn.Close();
         }
 
-        throw new Exception("Could not find a word");
+        throw new CouldNotFindWordException();
     }
 
     public string? GetWord(string word)
