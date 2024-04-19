@@ -14,7 +14,7 @@ public abstract class BaseLobby
     public int RequiredPlayers { get; init; }
     public IReadOnlyList<Player> Players => PlayerList.AsReadOnly();
     public Player? Winner { get; protected set; }
-    public string Code {get; set; }
+    public string Code {get; private set; }
 
     protected BaseLobby(IDataAccess dataAccess, Player creator, int maxPlayers, int requiredPlayers)
     {
