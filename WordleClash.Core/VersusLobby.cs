@@ -1,5 +1,6 @@
 using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
+using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Core;
 
@@ -14,11 +15,11 @@ public class VersusLobby: BaseLobby
     {
         if (Status != LobbyStatus.InLobby)
         {
-            throw new Exception("Game already started");
+            throw new GameAlreadyStartedException();
         }
         if (Players.Count != RequiredPlayers)
         {
-            throw new Exception($"Not enough players to start the game");
+            throw new InvalidPlayerCountException();
         }
         //TODO: create overloading constructor that calls start
         _game = new Game(DataAccess);
@@ -29,14 +30,15 @@ public class VersusLobby: BaseLobby
 
     public void HandleGuess(Player player, string guess)
     {
+        //TODO: could also just return instead of throwing exceptions
         if (!PlayerList.Contains(player))
         {
-            throw new Exception("Player not in lobby");
+            throw new InvalidPlayerException();
         }
         
         if (player.IsTurn == false)
         {
-            throw new Exception("It's not the player's turn");
+            throw new NotPlayersTurnException(player);
         }
         
         //TODO: check if other players also have IsTurn state
