@@ -1,4 +1,4 @@
-@page
+@page "{code?}"
 @model WordleClash.Web.Pages.Lobby.JoinModel
 
 @{
@@ -6,4 +6,9 @@
 }
 <div class="wrapper">
     <h1>Join a lobby</h1>
+    <form method="post">
+        <input asp-for="Name" placeholder="username" />
+        <input asp-for="Code" value="@Model.Code" placeholder="lobby code" />
+        <button type="submit">Join</button>
+    </form>
 </div>
