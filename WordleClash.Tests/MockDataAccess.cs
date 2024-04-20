@@ -1,4 +1,4 @@
-using WordleClash.Core.DataAccess;
+using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Tests;
 public class MockDataAccess : IDataAccess

@@ -1,5 +1,6 @@
 using WordleClash.Core;
 using WordleClash.Core.Enums;
+using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Tests;
 
@@ -18,5 +19,14 @@ public class TestHelpers
         }
 
         return feedback;
+    }
+
+    public static MockLobby CreateVersusLobby(IDataAccess dataAccess, int additionalPlayers = 0)
+    {
+        var creator = new Player()
+        {
+            Name = "player1"
+        };
+        return new MockLobby(dataAccess, creator);
     }
 }
