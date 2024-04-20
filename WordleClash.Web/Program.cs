@@ -20,6 +20,7 @@ var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
 builder.Services.AddSingleton<IDataAccess>(s => new DataAccess(connString));
 builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IDataAccess>()));
+builder.Services.AddSingleton<LobbyService>(s => new LobbyService(s.GetRequiredService<IDataAccess>()));
 builder.Services.AddScoped<SessionService>();
 
 var app = builder.Build();
