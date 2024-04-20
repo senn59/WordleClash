@@ -6,6 +6,8 @@ namespace WordleClash.Core;
 
 public abstract class BaseLobby
 {
+    private const int CodeLength = 6;
+    
     protected List<Player> PlayerList = new List<Player>();
     protected IDataAccess DataAccess { get; private set; }
     
@@ -54,6 +56,14 @@ public abstract class BaseLobby
 
     private string GenerateCode()
     {
-        return "A1B2C3";
+        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        char[] codeArr = new char[CodeLength];
+        var r = new Random();
+        for (int i = 0; i < CodeLength; i++)
+        {
+            codeArr[i] = chars[r.Next(chars.Length)];
+        }
+        
+        return new string(codeArr);
     }
 }
