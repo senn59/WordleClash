@@ -22,7 +22,7 @@ public class CreateModel : PageModel
     }
     public void OnGet() {}
 
-    public void OnPost()
+    public IActionResult OnPost()
     {
         var player = new Player()
         {
@@ -32,5 +32,6 @@ public class CreateModel : PageModel
         var code = _lobby.Create(player);
         _sessionService.SetLobbySession(code);
         _logger.LogInformation(Name);
+        return new RedirectToPageResult("/Play/Index", new {code});
     }
 }
