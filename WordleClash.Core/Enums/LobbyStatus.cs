@@ -5,4 +5,5 @@ public enum LobbyStatus
     Initialising,
     InLobby,
     InGame,
+    PostGame,
 }

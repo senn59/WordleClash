@@ -13,19 +13,19 @@ public class VersusLobby: BaseLobby
     
     public override void StartGame()
     {
-        if (Status != LobbyStatus.InLobby)
-        {
-            throw new GameAlreadyStartedException();
-        }
-        if (Players.Count != RequiredPlayers)
-        {
-            throw new InvalidPlayerCountException();
-        }
-        //TODO: create overloading constructor that calls start
-        _game = new Game(DataAccess);
-        _game.Start(MaxTries);
-        SetFirstTurn();
-        Status = LobbyStatus.InGame;
+       if (Status != LobbyStatus.InLobby && Status != LobbyStatus.PostGame)
+       {
+           throw new GameAlreadyStartedException();
+       }
+       if (Players.Count != RequiredPlayers)
+       {
+           throw new InvalidPlayerCountException();
+       }
+       //TODO: create overloading constructor that calls start
+       _game = new Game(DataAccess);
+       _game.Start(MaxTries);
+       SetFirstTurn();
+       Status = LobbyStatus.InGame;
     }
 
     public void HandleGuess(Player player, string guess)
@@ -40,9 +40,18 @@ public class VersusLobby: BaseLobby
         {
             throw new NotPlayersTurnException(player);
         }
+
+        if (Players.Count(p => p.IsTurn == true) != 1)
+        {
+            throw new Exception("More than one player is a turn holder");
+        }
         
-        //TODO: check if other players also have IsTurn state
-        _game.TakeGuess(guess);
+        var guessResult = _game.TakeGuess(guess);
+        if (guessResult.Status == GameStatus.Won)
+        {
+            Winner = player;
+            Status = LobbyStatus.PostGame;
+        }
         SetNextTurn(player);
     }
 
