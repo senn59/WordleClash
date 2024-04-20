@@ -13,11 +13,11 @@ public class LobbyService
         _dataAccess = dataAccess;
     }
 
-    public VersusLobby Create(string id, Player creator)
+    public string Create(string id, Player creator)
     {
         var lobby = new VersusLobby(_dataAccess, creator);
-        _lobbies.TryAdd(id, lobby);
-        return lobby;
+        _lobbies.TryAdd(lobby.Code, lobby);
+        return lobby.Code;
     }
 
     public VersusLobby Get(string id)

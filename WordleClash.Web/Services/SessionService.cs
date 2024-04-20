@@ -3,6 +3,8 @@ namespace WordleClash.Web.Services;
 public class SessionService
 {
     private const string GameSessionKey = "_Game";
+    private const string Lobby = "_Lobby";
+    private const string Player = "_Player";
     
     private readonly ISession _session;
     public SessionService(IHttpContextAccessor httpContextAccessor)
@@ -34,8 +36,13 @@ public class SessionService
         return _session.GetString(GameSessionKey);
     }
 
-    public string GetLobbyId()
+    public void SetLobbySession(string id)
     {
-        return "";
+        _session.SetString(Lobby, id);
+    }
+
+    public void SetPlayerSession(string id)
+    {
+        _session.SetString(Player, id);
     }
 }
