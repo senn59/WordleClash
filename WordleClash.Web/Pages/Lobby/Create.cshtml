@@ -4,4 +4,10 @@
 @{
     Layout = "Shared/_Layout";
 }
-<h1>Create a lobby</h1>
+<div class="wrapper">
+    <h1>Create a lobby</h1>
+    <form method="post">
+        <input asp-for="Name"/>
+        <button type="submit">Create</button>
+    </form>
+</div>
