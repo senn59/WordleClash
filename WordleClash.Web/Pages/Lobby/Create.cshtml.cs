@@ -29,7 +29,7 @@ public class CreateModel : PageModel
             Name = Name
         };
         _sessionService.SetPlayerSession(player.Id);
-        var code = _lobby.Create("", player);
+        var code = _lobby.Create(player);
         _sessionService.SetLobbySession(code);
         _logger.LogInformation(Name);
     }
