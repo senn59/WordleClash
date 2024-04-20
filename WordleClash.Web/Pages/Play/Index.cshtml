@@ -1,0 +1,15 @@
+@page "{code}"
+@model WordleClash.Web.Pages.Play.IndexModel
+
+@{
+    Layout = "Shared/_Layout";
+}
+<div class="wrapper">
+    <h1>@Model.Code</h1>
+    <div>
+        @foreach (var p in Model.Players)
+        {
+            <h2>@p.Id | @p.Name</h2>
+        }
+    </div>
+</div>

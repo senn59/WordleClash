@@ -35,6 +35,16 @@ public class SessionService
     {
         return _session.GetString(GameSessionKey);
     }
+    
+    public string? GetPlayerId()
+    {
+        return _session.GetString(Player);
+    }
+    
+    public string? GetLobbyId()
+    {
+        return _session.GetString(Lobby);
+    }
 
     public void SetLobbySession(string id)
     {
@@ -45,4 +55,5 @@ public class SessionService
     {
         _session.SetString(Player, id);
     }
+
 }
