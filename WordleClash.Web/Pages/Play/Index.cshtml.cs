@@ -7,6 +7,7 @@ namespace WordleClash.Web.Pages.Play;
 
 public class IndexModel : PageModel
 {
+    private ILogger<IndexModel> _logger;
     private LobbyService _lobby;
     private string? _playerId;
     private string? _lobbyId;
@@ -14,8 +15,9 @@ public class IndexModel : PageModel
     public string Code { get; set; }
     public IReadOnlyList<Player> Players { get; set; }
 
-    public IndexModel(SessionService sessionService, LobbyService lobbyService)
+    public IndexModel(ILogger<IndexModel> logger,SessionService sessionService, LobbyService lobbyService)
     {
+        _logger = logger;
         _lobby = lobbyService;
         _playerId = sessionService.GetPlayerId();
         _lobbyId = sessionService.GetLobbyId();
