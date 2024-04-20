@@ -33,4 +33,9 @@ public class SessionService
     {
         return _session.GetString(GameSessionKey);
     }
+
+    public string GetLobbyId()
+    {
+        return "";
+    }
 }
