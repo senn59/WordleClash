@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using WordleClash.Core.DataAccess;
+using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Core;
 
