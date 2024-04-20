@@ -12,6 +12,6 @@ public class Player
 
     public Player()
     {
-        Id = "1";
+        Id = Guid.NewGuid().ToString();
     }
 }
