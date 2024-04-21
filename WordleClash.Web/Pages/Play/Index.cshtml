@@ -7,9 +7,25 @@
 <div class="wrapper">
     <h1>@Model.Code</h1>
     <div>
+        <h2>@Model.Players.Count</h2>
         @foreach (var p in Model.Players)
         {
-            <h2>@p.Id | @p.Name</h2>
+            <h2>
+                @p.Id | @p.Name
+                @if (p.IsOwner)
+                {
+                    <span>(Owner)</span>
+                }
+            </h2>
         }
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        window.onbeforeunload = () => {
+            return true;
+        }
+    </script>
+}
