@@ -45,8 +45,13 @@ public abstract class BaseLobby
         PlayerList.Add(player);
     }
 
-    public void Remove(Player player)
+    public void RemoveById(string id)
     {
+        var player = PlayerList.FirstOrDefault(p => p.Id == id);
+        if (player == null)
+        {
+            return;
+        }
         PlayerList.Remove(player);
         if (player.IsOwner && PlayerList.Count >= 1)
         {
