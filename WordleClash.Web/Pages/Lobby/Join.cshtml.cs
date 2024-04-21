@@ -10,6 +10,8 @@ public class JoinModel : PageModel
     private ILogger<JoinModel> _logger;
     private LobbyService _lobby;
     private SessionService _sessionService;
+    private string? _playerId;
+    private string? _lobbyId;
 
     [BindProperty]
     public string? Code { get; set; }
@@ -21,6 +23,8 @@ public class JoinModel : PageModel
         _logger = logger;
         _lobby = lobbyService;
         _sessionService = sessionService;
+        _playerId = sessionService.GetPlayerId();
+        _lobbyId = sessionService.GetLobbyId();
     }
     
     public IActionResult OnGet(string? code)
@@ -42,6 +46,11 @@ public class JoinModel : PageModel
 
     public IActionResult OnPost()
     {
+        if (_playerId != null || _lobbyId != null)
+        {
+            _logger.LogWarning($"Player {_playerId} is already in lobby {_lobbyId}");
+            return new RedirectToPageResult("/Play/Index", new {code = _lobbyId});
+        }
         if (Code == null)
         {
             _logger.LogInformation("Code has a value of null");
@@ -58,8 +67,15 @@ public class JoinModel : PageModel
         {
             Name = Name
         };
-        _logger.LogInformation($"Player {player.Id} created");
-        lobby.Add(player);
+        try
+        {
+            lobby.Add(player);
+        }
+        catch (Exception e)
+        {
+            _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
+            return new RedirectToPageResult("/Index");
+        }
         _sessionService.SetPlayerSession(player.Id);
         _sessionService.SetLobbySession(lobby.Code);
         _logger.LogInformation($"Player {player.Id} added to lobby {lobby.Code}");

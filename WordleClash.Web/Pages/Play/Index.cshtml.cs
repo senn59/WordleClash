@@ -24,16 +24,27 @@ public class IndexModel : PageModel
     }
     public IActionResult OnGet(string code)
     {
-        if (_playerId == null || _lobbyId == null || _lobbyId != code)
-        {
-            return Redirect("/");
-        }
-        Console.WriteLine(code);
-        
         var lobby = _lobby.Get(code);
+        if (_playerId == null || _lobbyId == null)
+        {
+            _logger.LogWarning($"PlayerId or LobbyId is null");
+            if (lobby == null)
+            {
+                return Redirect("/Index");
+            }
+
+            return new RedirectToPageResult("/Lobby/Join", new { code });
+        }
+
+        if (_lobbyId != code)
+        {
+            return new RedirectToPageResult("/Player/Index", new {code = _lobbyId});
+        }
+        
         if (lobby == null)
         {
-            return Redirect("/");
+            _logger.LogInformation($"Lobby with code \"{code}\" does not exist");
+            return Redirect("/Index");
         }
         Code = code;
         Players = lobby.Players;
