@@ -9,8 +9,7 @@ public class IndexModel : PageModel
 {
     private ILogger<IndexModel> _logger;
     private LobbyService _lobby;
-    private string? _playerId;
-    private string? _lobbyId;
+    private SessionService _sessionService;
     
     public string Code { get; set; }
     public IReadOnlyList<Player> Players { get; set; }
@@ -19,33 +18,33 @@ public class IndexModel : PageModel
     {
         _logger = logger;
         _lobby = lobbyService;
-        _playerId = sessionService.GetPlayerId();
-        _lobbyId = sessionService.GetLobbyId();
+        _sessionService = sessionService;
     }
     public IActionResult OnGet(string code)
     {
         var lobby = _lobby.Get(code);
-        if (_playerId == null || _lobbyId == null)
+        if (!_sessionService.HasLobbySessions())
         {
-            _logger.LogWarning($"PlayerId or LobbyId is null");
             if (lobby == null)
             {
                 return RedirectToPage("/Index");
             }
-
             return RedirectToPage("/Lobby/Join", new { code });
         }
 
-        if (_lobbyId != code)
+        var lobbyCode = _sessionService.GetLobbyCode();
+        if (lobbyCode != code)
         {
-            return RedirectToPage("/Player/Index", new {code = _lobbyId});
+            _logger.LogWarning($"Player in lobby {lobbyCode} is trying to access {code}");
+            return RedirectToPage("/Player/Index", new {code = lobbyCode});
         }
         
         if (lobby == null)
         {
-            _logger.LogInformation($"Lobby with code \"{code}\" does not exist");
+            _logger.LogWarning($"Lobby \"{code}\" does not exist");
             return RedirectToPage("/Index");
         }
+        
         Code = code;
         Players = lobby.Players;
         return Page();
