@@ -30,21 +30,21 @@ public class IndexModel : PageModel
             _logger.LogWarning($"PlayerId or LobbyId is null");
             if (lobby == null)
             {
-                return Redirect("/Index");
+                return RedirectToPage("/Index");
             }
 
-            return new RedirectToPageResult("/Lobby/Join", new { code });
+            return RedirectToPage("/Lobby/Join", new { code });
         }
 
         if (_lobbyId != code)
         {
-            return new RedirectToPageResult("/Player/Index", new {code = _lobbyId});
+            return RedirectToPage("/Player/Index", new {code = _lobbyId});
         }
         
         if (lobby == null)
         {
             _logger.LogInformation($"Lobby with code \"{code}\" does not exist");
-            return Redirect("/Index");
+            return RedirectToPage("/Index");
         }
         Code = code;
         Players = lobby.Players;
