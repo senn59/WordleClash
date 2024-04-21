@@ -31,7 +31,7 @@ public class CreateModel : PageModel
         if (_playerId != null || _lobbyId != null)
         {
             _logger.LogWarning($"Player {_playerId} is already in lobby {_lobbyId}");
-            return new RedirectToPageResult("/Play/Index", new {code = _lobbyId});
+            return RedirectToPage("/Play/Index", new {code = _lobbyId});
         }
         var player = new Player()
         {
@@ -46,10 +46,10 @@ public class CreateModel : PageModel
         catch
         {
             _logger.LogCritical("Something went wrong while creating a lobby");
-            return new RedirectToPageResult("/Index");
+            return RedirectToPage("/Index");
         }
         _sessionService.SetPlayerSession(player.Id);
         _sessionService.SetLobbySession(code);
-        return new RedirectToPageResult("/Play/Index", new {code});
+        return RedirectToPage("/Play/Index", new {code});
     }
 }

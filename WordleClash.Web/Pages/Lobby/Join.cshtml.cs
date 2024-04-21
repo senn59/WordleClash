@@ -49,19 +49,19 @@ public class JoinModel : PageModel
         if (_playerId != null || _lobbyId != null)
         {
             _logger.LogWarning($"Player {_playerId} is already in lobby {_lobbyId}");
-            return new RedirectToPageResult("/Play/Index", new {code = _lobbyId});
+            return RedirectToPage("/Play/Index", new {code = _lobbyId});
         }
         if (Code == null)
         {
             _logger.LogInformation("Code has a value of null");
-            return new RedirectToPageResult("/Lobby/Join");
+            return RedirectToPage("/Lobby/Join");
         }
 
         var lobby = _lobby.Get(Code);
         if (lobby == null)
         {
             _logger.LogInformation("Lobby not found");
-            return new RedirectToPageResult("/Lobby/Join");
+            return RedirectToPage("/Lobby/Join");
         }
         var player = new Player()
         {
@@ -74,11 +74,11 @@ public class JoinModel : PageModel
         catch (Exception e)
         {
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
-            return new RedirectToPageResult("/Index");
+            return RedirectToPage("/Index");
         }
         _sessionService.SetPlayerSession(player.Id);
         _sessionService.SetLobbySession(lobby.Code);
         _logger.LogInformation($"Player {player.Id} added to lobby {lobby.Code}");
-        return new RedirectToPageResult("/Play/Index", new {Code});
+        return RedirectToPage("/Play/Index", new {Code});
     }
 }
