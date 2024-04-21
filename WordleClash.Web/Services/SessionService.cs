@@ -51,11 +51,11 @@ public class SessionService
     
     public bool HasLobbySessions()
     {
-        var lobbyCode = _session.GetString(Lobby);
         var playerId = _session.GetString(Player);
-        _logger.LogInformation($"Lobby session available? {lobbyCode != null}");
+        var lobbyCode = _session.GetString(Lobby);
         _logger.LogInformation($"Player session available? {playerId != null}");
-        return lobbyCode == null || playerId == null;
+        _logger.LogInformation($"Lobby session available? {lobbyCode != null}");
+        return lobbyCode != null || playerId != null;
     }
 
     public void SetLobbySessions(string playerId, string lobbyCode)
@@ -63,6 +63,12 @@ public class SessionService
         _logger.LogInformation($"Setting sessions: player {playerId} to lobby {lobbyCode}");
         _session.SetString(Player, playerId);
         _session.SetString(Lobby, lobbyCode);
+    }
+
+    public void RemoveLobbySessions()
+    {
+        _session.Remove(Player);
+        _session.Remove(Lobby);
     }
 
 }

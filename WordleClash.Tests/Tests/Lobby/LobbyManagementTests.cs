@@ -40,7 +40,7 @@ public class LobbyManagementTests
     {
         var lobby = TestHelpers.CreateVersusLobby(new MockDataAccess("", ""));
         lobby.Add(new Player(){Name = "player2"});
-        lobby.Remove(lobby.Players[0]);
+        lobby.RemoveById(lobby.Players[0].Id);
         Assert.Multiple(() =>
         {
             Assert.That(lobby.Players, Has.Count.EqualTo(1));
