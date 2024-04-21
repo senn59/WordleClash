@@ -29,7 +29,7 @@ public class LobbyService
         return _lobbies.GetValueOrDefault(id);
     }
 
-    public void DicardInstance(string id)
+    public void Dicard(string id)
     {
         _lobbies.Remove(id, out _);
     }

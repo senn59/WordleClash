@@ -68,7 +68,7 @@ public class JoinModel : PageModel
         }
         catch (Exception e)
         {
-            _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
+            _logger.LogWarning($"{e.GetType()} thrown while trying to add player to lobby.");
             return RedirectToPage("/Index");
         }
         
