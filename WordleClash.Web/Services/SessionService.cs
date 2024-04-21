@@ -7,8 +7,11 @@ public class SessionService
     private const string Player = "_Player";
     
     private readonly ISession _session;
-    public SessionService(IHttpContextAccessor httpContextAccessor)
+    private ILogger<SessionService> _logger;
+    
+    public SessionService(IHttpContextAccessor httpContextAccessor, ILogger<SessionService> logger)
     {
+        _logger = logger;
         if (httpContextAccessor.HttpContext == null)
         {
             throw new InvalidOperationException("HTTPContext cant be null");
@@ -41,19 +44,25 @@ public class SessionService
         return _session.GetString(Player);
     }
     
-    public string? GetLobbyId()
+    public string? GetLobbyCode()
     {
         return _session.GetString(Lobby);
     }
-
-    public void SetLobbySession(string id)
+    
+    public bool HasLobbySessions()
     {
-        _session.SetString(Lobby, id);
+        var lobbyCode = _session.GetString(Lobby);
+        var playerId = _session.GetString(Player);
+        _logger.LogInformation($"Lobby session available? {lobbyCode != null}");
+        _logger.LogInformation($"Player session available? {playerId != null}");
+        return lobbyCode == null || playerId == null;
     }
 
-    public void SetPlayerSession(string id)
+    public void SetLobbySessions(string playerId, string lobbyCode)
     {
-        _session.SetString(Player, id);
+        _logger.LogInformation($"Setting sessions: player {playerId} to lobby {lobbyCode}");
+        _session.SetString(Player, playerId);
+        _session.SetString(Lobby, lobbyCode);
     }
 
 }

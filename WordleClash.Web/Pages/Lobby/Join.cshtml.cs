@@ -10,8 +10,6 @@ public class JoinModel : PageModel
     private ILogger<JoinModel> _logger;
     private LobbyService _lobby;
     private SessionService _sessionService;
-    private string? _playerId;
-    private string? _lobbyId;
 
     [BindProperty]
     public string? Code { get; set; }
@@ -23,8 +21,6 @@ public class JoinModel : PageModel
         _logger = logger;
         _lobby = lobbyService;
         _sessionService = sessionService;
-        _playerId = sessionService.GetPlayerId();
-        _lobbyId = sessionService.GetLobbyId();
     }
     
     public IActionResult OnGet(string? code)
@@ -46,27 +42,26 @@ public class JoinModel : PageModel
 
     public IActionResult OnPost()
     {
-        if (_playerId != null || _lobbyId != null)
+        if (_sessionService.HasLobbySessions())
         {
-            _logger.LogWarning($"Player {_playerId} is already in lobby {_lobbyId}");
-            return RedirectToPage("/Play/Index", new {code = _lobbyId});
+            _logger.LogWarning($"Player is already in lobby, redirecting");
+            return RedirectToPage("/Play/Index", new {code = _sessionService.GetLobbyCode()});
         }
+        
         if (Code == null)
         {
-            _logger.LogInformation("Code has a value of null");
+            _logger.LogInformation("Code is null");
             return RedirectToPage("/Lobby/Join");
         }
-
+        
         var lobby = _lobby.Get(Code);
         if (lobby == null)
         {
             _logger.LogInformation("Lobby not found");
             return RedirectToPage("/Lobby/Join");
         }
-        var player = new Player()
-        {
-            Name = Name
-        };
+        
+        var player = new Player() { Name = Name };
         try
         {
             lobby.Add(player);
@@ -76,8 +71,8 @@ public class JoinModel : PageModel
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
             return RedirectToPage("/Index");
         }
-        _sessionService.SetPlayerSession(player.Id);
-        _sessionService.SetLobbySession(lobby.Code);
+        
+        _sessionService.SetLobbySessions(player.Id, lobby.Code);
         _logger.LogInformation($"Player {player.Id} added to lobby {lobby.Code}");
         return RedirectToPage("/Play/Index", new {Code});
     }

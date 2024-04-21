@@ -10,8 +10,6 @@ public class CreateModel : PageModel
     private ILogger<CreateModel> _logger;
     private SessionService _sessionService;
     private LobbyService _lobby;
-    private string? _playerId;
-    private string? _lobbyId;
     
     [BindProperty]
     public string Name { get; set; }
@@ -21,23 +19,18 @@ public class CreateModel : PageModel
         _logger = logger;
         _sessionService = sessionService;
         _lobby = lobby;
-        _playerId = sessionService.GetPlayerId();
-        _lobbyId = sessionService.GetLobbyId();
     }
     public void OnGet() {}
 
     public IActionResult OnPost()
     {
-        if (_playerId != null || _lobbyId != null)
+        if (_sessionService.HasLobbySessions())
         {
-            _logger.LogWarning($"Player {_playerId} is already in lobby {_lobbyId}");
-            return RedirectToPage("/Play/Index", new {code = _lobbyId});
+            _logger.LogWarning($"Player is already in lobby, redirecting");
+            return RedirectToPage("/Play/Index", new {code = _sessionService.GetLobbyCode()});
         }
-        var player = new Player()
-        {
-            Name = Name
-        };
-
+        
+        var player = new Player() { Name = Name };
         string code;
         try
         {
@@ -45,11 +38,11 @@ public class CreateModel : PageModel
         }
         catch
         {
-            _logger.LogCritical("Something went wrong while creating a lobby");
+            _logger.LogCritical("Something went wrong while creating lobby");
             return RedirectToPage("/Index");
         }
-        _sessionService.SetPlayerSession(player.Id);
-        _sessionService.SetLobbySession(code);
+        
+        _sessionService.SetLobbySessions(player.Id, code);
         return RedirectToPage("/Play/Index", new {code});
     }
 }
