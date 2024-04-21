@@ -29,7 +29,11 @@ public class IndexModel : PageModel
         if (_sessionService.HasLobbySessions())
         {
             var lobby = _lobby.Get(_sessionService.GetLobbyCode()!);
-            lobby?.RemoveById(_sessionService.GetPlayerId()!);
+            lobby!.RemoveById(_sessionService.GetPlayerId()!);
+            if (lobby.Players.Count == 0)
+            {
+                _lobby.Dicard(lobby.Code);
+            }
             _sessionService.RemoveLobbySessions();
         }
         var gameSession = _sessionService.GetGameId();
