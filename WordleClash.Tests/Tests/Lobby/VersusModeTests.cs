@@ -15,7 +15,7 @@ public class VersusModeTests
         var lobby = new VersusLobby(dataAccess, p1);
         lobby.Add(p2);
         lobby.StartGame();
-        Assert.That(lobby.Status, Is.EqualTo(LobbyStatus.InGame));
+        Assert.That(lobby.Status, Is.EqualTo(LobbyState.InGame));
     }
 
     [Test]
