@@ -13,7 +13,7 @@ public class VersusLobby: BaseLobby
     
     public override void StartGame()
     {
-       if (Status != LobbyStatus.InLobby && Status != LobbyStatus.PostGame)
+       if (Status != LobbyState.InLobby && Status != LobbyState.PostGame)
        {
            throw new GameAlreadyStartedException();
        }
@@ -25,7 +25,7 @@ public class VersusLobby: BaseLobby
        _game = new Game(DataAccess);
        _game.Start(MaxTries);
        SetFirstTurn();
-       Status = LobbyStatus.InGame;
+       Status = LobbyState.InGame;
     }
 
     public void HandleGuess(Player player, string guess)
@@ -50,7 +50,7 @@ public class VersusLobby: BaseLobby
         if (guessResult.Status == GameStatus.Won)
         {
             Winner = player;
-            Status = LobbyStatus.PostGame;
+            Status = LobbyState.PostGame;
         }
         SetNextTurn(player);
     }

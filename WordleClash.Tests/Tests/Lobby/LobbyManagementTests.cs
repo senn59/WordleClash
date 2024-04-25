@@ -15,7 +15,7 @@ public class LobbyManagementTests
         {
             Assert.That(lobby.Players, Has.Count.EqualTo(1));
             Assert.That(lobby.Players[0].IsOwner, Is.EqualTo(true));
-            Assert.That(lobby.Status, Is.EqualTo(LobbyStatus.InLobby));
+            Assert.That(lobby.Status, Is.EqualTo(LobbyState.InLobby));
         });
     }
     
