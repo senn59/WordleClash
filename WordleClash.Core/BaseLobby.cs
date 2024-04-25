@@ -11,7 +11,7 @@ public abstract class BaseLobby
     protected List<Player> PlayerList = new List<Player>();
     protected IDataAccess DataAccess { get; private set; }
     
-    public LobbyStatus Status { get; protected set; }
+    public LobbyState Status { get; protected set; }
     public int MaxPlayers { get; init; }
     public int RequiredPlayers { get; init; }
     public IReadOnlyList<Player> Players => PlayerList.AsReadOnly();
@@ -23,18 +23,18 @@ public abstract class BaseLobby
         DataAccess = dataAccess;
         MaxPlayers = maxPlayers;
         RequiredPlayers = requiredPlayers;
-        Status = LobbyStatus.Initialising;
+        Status = LobbyState.Initialising;
         Code = GenerateCode();
         Add(creator);
         creator.IsOwner = true;
-        Status = LobbyStatus.InLobby;
+        Status = LobbyState.InLobby;
     }
 
     public abstract void StartGame();
 
     public void Add(Player player)
     {
-        if (PlayerList.Count <= 0 && Status != LobbyStatus.Initialising)
+        if (PlayerList.Count <= 0 && Status != LobbyState.Initialising)
         {
             throw new LobbyShouldNotExistException();
         } 
