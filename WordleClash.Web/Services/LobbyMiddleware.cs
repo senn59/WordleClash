@@ -19,12 +19,7 @@ public class LobbyMiddleware
             await _next(context);
             return;
         }
-        var lobbyPlayer = lobbyService.TryGetPlayerById(playerId);
-        if (lobbyPlayer != null)
-        {
-            var lobby = lobbyService.Get(lobbyPlayer.LobbyCode);
-            lobby?.RemovePlayerById(playerId);
-        }
+        lobbyService.HandleLeave(playerId);
         await _next(context);
     }
 }
