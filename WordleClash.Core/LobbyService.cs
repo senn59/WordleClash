@@ -76,4 +76,20 @@ public class LobbyService
             _lobbies.Remove(lobby.Code, out _);
         }
     }
+
+    public LobbyPlayer TryJoin(string playerName, string lobbyCode)
+    {
+        var lobbyToJoin = Get(lobbyCode);
+        if (lobbyToJoin == null)
+        {
+            throw new Exception("Lobby does not exist");
+        }
+
+        var player = lobbyToJoin.Add(playerName);
+        return new LobbyPlayer
+        {
+            LobbyCode = lobbyToJoin.Code,
+            PlayerId = player.Id
+        };
+    }
 }
