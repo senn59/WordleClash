@@ -63,4 +63,17 @@ public class LobbyService
         var lobby = TryGetPlayerById(playerId)?.LobbyCode;
         return lobby == null ? null : Get(lobby);
     }
+
+    public void HandleLeave(string playerId)
+    {
+        var lobbyPlayer = TryGetPlayerById(playerId);
+        if (lobbyPlayer == null) return;
+        var lobby = Get(lobbyPlayer.LobbyCode);
+        if (lobby == null) return;
+        lobby.RemovePlayerById(playerId);
+        if (lobby.Players.Count == 0)
+        {
+            _lobbies.Remove(lobby.Code, out _);
+        }
+    }
 }
