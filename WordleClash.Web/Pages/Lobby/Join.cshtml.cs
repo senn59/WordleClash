@@ -47,26 +47,19 @@ public class JoinModel : PageModel
             _logger.LogInformation("Code is null");
             return RedirectToPage("/Lobby/Join");
         }
-        
-        var lobby = _lobby.Get(Code);
-        if (lobby == null)
-        {
-            _logger.LogInformation("Lobby not found");
-            return RedirectToPage("/Lobby/Join");
-        }
 
+        if (!ModelState.IsValid) return RedirectToPage("/Lobby/Join");
         try
         {
-            var player = lobby.Add(Name);
-            _sessionService.SetPlayerId(player.Id);
-            _logger.LogInformation($"Player {player.Id} added to lobby {lobby.Code}");
+            var lobbyPlayer = _lobby.TryJoin(Name, Code);
+            _sessionService.SetPlayerId(lobbyPlayer.PlayerId);
+            _logger.LogInformation($"Player {lobbyPlayer.PlayerId} added to lobby {lobbyPlayer.LobbyCode}");
+            return RedirectToPage("/Play/Index", new {Code});
         }
         catch (Exception e)
         {
             _logger.LogWarning($"{e.GetType()} thrown while trying to add player to lobby.");
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Lobby/Join");
         }
-        
-        return RedirectToPage("/Play/Index", new {Code});
     }
 }
