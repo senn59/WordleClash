@@ -13,12 +13,20 @@ public class LobbyService
         _dataAccess = dataAccess;
     }
 
-    public string CreateVersus(Player creator)
+    public LobbyPlayer CreateVersus(string name)
     {
+        var creator = new Player
+        {
+            Name = name
+        };
         var lobby = new LobbyController(new Versus(_dataAccess), creator);
         if (_lobbies.TryAdd(lobby.Code, lobby))
         {
-            return lobby.Code;
+            return new LobbyPlayer
+            {
+                LobbyCode = lobby.Code,
+                PlayerId = creator.Id
+            };
         }
 
         throw new Exception("Could not create lobby");
@@ -34,19 +42,25 @@ public class LobbyService
         _lobbies.Remove(id, out _);
     }
 
-    public LobbyPlayer? GetPlayer(Player player)
+    public LobbyPlayer? TryGetPlayerById(string playerId)
     {
         foreach (var lobby in _lobbies)
         {
-            if (lobby.Value.Players.FirstOrDefault(p => p.Id == player.Id) != null)
+            if (lobby.Value.Players.FirstOrDefault(p => p.Id == playerId) != null)
             {
-                return new LobbyPlayer()
+                return new LobbyPlayer
                 {
                     LobbyCode = lobby.Key,
-                    PlayerId = player.Id
+                    PlayerId = playerId
                 };
             }
         }
         return null;
+    }
+
+    public LobbyController? GetPlayerLobby(string playerId)
+    {
+        var lobby = TryGetPlayerById(playerId)?.LobbyCode;
+        return lobby == null ? null : Get(lobby);
     }
 }

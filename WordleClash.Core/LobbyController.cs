@@ -24,13 +24,15 @@ public class LobbyController
         _gameMode.StartGame();
     }
 
-    public void Add(Player player)
+    public Player Add(string name)
     {
+        var player = new Player() { Name = name };
         _lobby.Add(player);
+        return player;
     }
     
-    public void Remove(Player player)
+    public void RemovePlayerById(string id)
     {
-        _lobby.RemoveById(player.Id);
+        _lobby.RemoveById(id);
     }
 }

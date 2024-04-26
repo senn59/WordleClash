@@ -24,25 +24,16 @@ public class CreateModel : PageModel
 
     public IActionResult OnPost()
     {
-        if (_sessionService.HasLobbySessions())
-        {
-            _logger.LogWarning($"Player is already in lobby, redirecting");
-            return RedirectToPage("/Play/Index", new {code = _sessionService.GetLobbyCode()});
-        }
-        
-        var player = new Player() { Name = Name };
-        string code;
         try
         {
-            code = _lobby.Create(player);
+            var lobbyPlayer = _lobby.CreateVersus(Name);
+            _sessionService.SetPlayerId(lobbyPlayer.PlayerId);
+            return RedirectToPage("/Play/Index", new {code = lobbyPlayer.LobbyCode});
         }
         catch
         {
             _logger.LogCritical("Something went wrong while creating lobby");
             return RedirectToPage("/Index");
         }
-        
-        _sessionService.SetLobbySessions(player.Id, code);
-        return RedirectToPage("/Play/Index", new {code});
     }
 }
