@@ -9,6 +9,7 @@ public class Player
     public required string Name { get; set; }
     public Color Color { get; set; }
     public bool? IsTurn { get; set; }
+    public bool? IsWinner { get; set; }
 
     public Player()
     {
