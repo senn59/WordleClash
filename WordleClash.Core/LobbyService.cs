@@ -33,4 +33,20 @@ public class LobbyService
     {
         _lobbies.Remove(id, out _);
     }
+
+    public LobbyPlayer? GetPlayer(Player player)
+    {
+        foreach (var lobby in _lobbies)
+        {
+            if (lobby.Value.Players.FirstOrDefault(p => p.Id == player.Id) != null)
+            {
+                return new LobbyPlayer()
+                {
+                    LobbyCode = lobby.Key,
+                    PlayerId = player.Id
+                };
+            }
+        }
+        return null;
+    }
 }

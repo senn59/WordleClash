@@ -5,23 +5,23 @@ namespace WordleClash.Core;
 public class LobbyController
 {
     private Lobby _lobby;
-    private IMultiplayerGame _multiplayerGame;
+    private IMultiplayerGame _gameMode;
     
     public IReadOnlyList<Player> Players => _lobby.Players;
-    public int MaxPlayers => _multiplayerGame.MaxPlayers;
-    public int RequiredPlayers => _multiplayerGame.RequiredPlayers;
+    public int MaxPlayers => _gameMode.MaxPlayers;
+    public int RequiredPlayers => _gameMode.RequiredPlayers;
     public string Code => _lobby.Code;
 
-    public LobbyController(IMultiplayerGame multiplayerGame, Player creator)
+    public LobbyController(IMultiplayerGame gameMode, Player creator)
     {
-        _lobby = new Lobby(creator, multiplayerGame.MaxPlayers);
-        _multiplayerGame = multiplayerGame;
+        _lobby = new Lobby(creator, gameMode.MaxPlayers);
+        _gameMode = gameMode;
     }
 
     public void StartGame()
     {
-        _multiplayerGame.Players = Players;
-        _multiplayerGame.StartGame();
+        _gameMode.Players = Players;
+        _gameMode.StartGame();
     }
 
     public void Add(Player player)
