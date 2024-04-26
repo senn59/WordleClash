@@ -5,7 +5,7 @@ namespace WordleClash.Core;
 
 public class LobbyService
 {
-    private readonly ConcurrentDictionary<string, VersusLobby> _lobbies = new();
+    private readonly ConcurrentDictionary<string, LobbyController> _lobbies = new();
     private readonly IDataAccess _dataAccess;
 
     public LobbyService(IDataAccess dataAccess)
@@ -13,9 +13,9 @@ public class LobbyService
         _dataAccess = dataAccess;
     }
 
-    public string Create(Player creator)
+    public string CreateVersus(Player creator)
     {
-        var lobby = new VersusLobby(_dataAccess, creator);
+        var lobby = new LobbyController(new Versus(_dataAccess), creator);
         if (_lobbies.TryAdd(lobby.Code, lobby))
         {
             return lobby.Code;
@@ -24,7 +24,7 @@ public class LobbyService
         throw new Exception("Could not create lobby");
     }
 
-    public VersusLobby? Get(string id)
+    public LobbyController? Get(string id)
     {
         return _lobbies.GetValueOrDefault(id);
     }
