@@ -22,26 +22,15 @@ public class IndexModel : PageModel
     }
     public IActionResult OnGet(string code)
     {
-        var lobby = _lobby.Get(code);
-        if (!_sessionService.HasLobbySessions())
+        var playerId = _sessionService.GetPlayerId();
+        if (playerId == null)
         {
-            if (lobby == null)
-            {
-                return RedirectToPage("/Index");
-            }
-            return RedirectToPage("/Lobby/Join", new { code });
+            return RedirectToPage("/Index");
         }
 
-        var lobbyCode = _sessionService.GetLobbyCode();
-        if (lobbyCode != code)
+        var lobby = _lobby.GetPlayerLobby(playerId);
+        if (lobby == null || lobby.Code != code)
         {
-            _logger.LogWarning($"Player in lobby {lobbyCode} is trying to access {code}");
-            return RedirectToPage("/Player/Index", new {code = lobbyCode});
-        }
-        
-        if (lobby == null)
-        {
-            _logger.LogWarning($"Lobby \"{code}\" does not exist");
             return RedirectToPage("/Index");
         }
         

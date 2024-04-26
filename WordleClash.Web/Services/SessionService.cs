@@ -3,7 +3,6 @@ namespace WordleClash.Web.Services;
 public class SessionService
 {
     private const string GameSessionKey = "_Game";
-    private const string Lobby = "_Lobby";
     private const string Player = "_Player";
     
     private readonly ISession _session;
@@ -43,32 +42,15 @@ public class SessionService
     {
         return _session.GetString(Player);
     }
-    
-    public string? GetLobbyCode()
-    {
-        return _session.GetString(Lobby);
-    }
-    
-    public bool HasLobbySessions()
-    {
-        var playerId = _session.GetString(Player);
-        var lobbyCode = _session.GetString(Lobby);
-        _logger.LogInformation($"Player session available? {playerId != null}");
-        _logger.LogInformation($"Lobby session available? {lobbyCode != null}");
-        return lobbyCode != null || playerId != null;
-    }
 
-    public void SetLobbySessions(string playerId, string lobbyCode)
+    public void SetPlayerId(string playerId)
     {
-        _logger.LogInformation($"Setting sessions: player {playerId} to lobby {lobbyCode}");
         _session.SetString(Player, playerId);
-        _session.SetString(Lobby, lobbyCode);
     }
 
-    public void RemoveLobbySessions()
+    public void RemovePlayerSession()
     {
         _session.Remove(Player);
-        _session.Remove(Lobby);
     }
 
 }
