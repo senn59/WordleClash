@@ -42,12 +42,6 @@ public class JoinModel : PageModel
 
     public IActionResult OnPost()
     {
-        if (_sessionService.HasLobbySessions())
-        {
-            _logger.LogWarning($"Player is already in lobby, redirecting");
-            return RedirectToPage("/Play/Index", new {code = _sessionService.GetLobbyCode()});
-        }
-        
         if (Code == null)
         {
             _logger.LogInformation("Code is null");
@@ -60,11 +54,12 @@ public class JoinModel : PageModel
             _logger.LogInformation("Lobby not found");
             return RedirectToPage("/Lobby/Join");
         }
-        
-        var player = new Player() { Name = Name };
+
         try
         {
-            lobby.Add(player);
+            var player = lobby.Add(Name);
+            _sessionService.SetPlayerId(player.Id);
+            _logger.LogInformation($"Player {player.Id} added to lobby {lobby.Code}");
         }
         catch (Exception e)
         {
@@ -72,8 +67,6 @@ public class JoinModel : PageModel
             return RedirectToPage("/Index");
         }
         
-        _sessionService.SetLobbySessions(player.Id, lobby.Code);
-        _logger.LogInformation($"Player {player.Id} added to lobby {lobby.Code}");
         return RedirectToPage("/Play/Index", new {Code});
     }
 }

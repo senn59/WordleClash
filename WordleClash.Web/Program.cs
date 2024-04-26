@@ -21,7 +21,7 @@ if (connString == null) throw new ArgumentNullException($"Connection string cann
 builder.Services.AddSingleton<IDataAccess>(s => new DataAccess(connString));
 builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IDataAccess>()));
 builder.Services.AddSingleton<LobbyService>(s => new LobbyService(s.GetRequiredService<IDataAccess>()));
-builder.Services.AddScoped<SessionService>();
+builder.Services.AddTransient<SessionService>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -40,6 +40,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
+app.UseMiddleware<LobbyMiddleware>();
 
 app.MapRazorPages();
 
