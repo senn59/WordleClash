@@ -68,4 +68,10 @@
       <ProjectReference Include="..\WordleClash.Data\WordleClash.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Htmx" Version="1.8.0" />
+      <PackageReference Include="Htmx.TagHelpers" Version="1.8.0" />
+      <PackageReference Include="Lib.AspNetCore.ServerSentEvents" Version="9.0.0" />
+    </ItemGroup>
+
 </Project>

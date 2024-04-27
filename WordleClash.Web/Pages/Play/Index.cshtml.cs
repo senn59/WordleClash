@@ -10,17 +10,19 @@ public class IndexModel : PageModel
     private ILogger<IndexModel> _logger;
     private LobbyService _lobby;
     private SessionService _sessionService;
+    private ServerEvents _serverEvents;
     
     public string Code { get; set; }
     public IReadOnlyList<Player> Players { get; set; }
 
-    public IndexModel(ILogger<IndexModel> logger,SessionService sessionService, LobbyService lobbyService)
+    public IndexModel(ILogger<IndexModel> logger, SessionService sessionService, LobbyService lobbyService, ServerEvents serverEvents)
     {
         _logger = logger;
         _lobby = lobbyService;
         _sessionService = sessionService;
+        _serverEvents = serverEvents;
     }
-    public IActionResult OnGet(string code)
+    public async Task<IActionResult> OnGet(string code)
     {
         var playerId = _sessionService.GetPlayerId();
         if (playerId == null)
@@ -36,6 +38,13 @@ public class IndexModel : PageModel
         
         Code = code;
         Players = lobby.Players;
+        await _serverEvents.UpdatePlayers(code);
         return Page();
+    }
+
+    public ContentResult OnGetPlayers()
+    {
+        Console.WriteLine("CALL RECEIVED BECAUSE OF SERVER EVENT");
+        return Content("<span>hello</span>");
     }
 }
