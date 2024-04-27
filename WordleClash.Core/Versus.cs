@@ -9,7 +9,6 @@ public class Versus: IMultiplayerGame
     private const int MaxTries = 9;
     private readonly IDataAccess _dataAccess;
     private Game _game;
-    public Lobby Lobby { get; set; }
 
     public IReadOnlyList<Player> Players { get; set; }
     

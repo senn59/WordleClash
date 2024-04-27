@@ -30,7 +30,7 @@ public class JoinModel : PageModel
             return Page();
         }
         
-        if (_lobby.Get(code) == null)
+        if (!_lobby.LobbyExists(code))
         {
             Code = null;
             return Page();
@@ -51,9 +51,9 @@ public class JoinModel : PageModel
         if (!ModelState.IsValid) return RedirectToPage("/Lobby/Join");
         try
         {
-            var lobbyPlayer = _lobby.TryJoin(Name, Code);
-            _sessionService.SetPlayerId(lobbyPlayer.PlayerId);
-            _logger.LogInformation($"Player {lobbyPlayer.PlayerId} added to lobby {lobbyPlayer.LobbyCode}");
+            var playerInfo = _lobby.TryJoinLobby(Name, Code);
+            _sessionService.SetPlayerId(playerInfo.PlayerId);
+            _logger.LogInformation($"Player {playerInfo.PlayerId} added to lobby {playerInfo.LobbyCode}");
             return RedirectToPage("/Play/Index", new {Code});
         }
         catch (Exception e)

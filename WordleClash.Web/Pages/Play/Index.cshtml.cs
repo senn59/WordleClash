@@ -28,7 +28,7 @@ public class IndexModel : PageModel
             return RedirectToPage("/Index");
         }
 
-        var lobby = _lobby.GetPlayerLobby(playerId);
+        var lobby = _lobby.GetLobbyByPlayerId(playerId);
         if (lobby == null || lobby.Code != code)
         {
             return RedirectToPage("/Index");

@@ -19,7 +19,7 @@ public class LobbyMiddleware
             await _next(context);
             return;
         }
-        lobbyService.HandleLeave(playerId);
+        lobbyService.HandleLobbyLeave(playerId);
         await _next(context);
     }
 }
