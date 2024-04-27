@@ -8,6 +8,14 @@
     <h1>@Model.Code</h1>
     <div>
         <h2>@Model.Players.Count</h2>
+        <div hx-sse="connect:/updates">
+            <div
+                hx-trigger="sse:PlayerUpdate"
+                hx-get="@Url.Page("/Play/Index", "Players")"
+                >
+                
+            </div>
+        </div>
         @foreach (var p in Model.Players)
         {
             <h2>
