@@ -26,9 +26,9 @@ public class CreateModel : PageModel
     {
         try
         {
-            var lobbyPlayer = _lobby.CreateVersus(Name);
-            _sessionService.SetPlayerId(lobbyPlayer.PlayerId);
-            return RedirectToPage("/Play/Index", new {code = lobbyPlayer.LobbyCode});
+            var playerInfo = _lobby.CreateVersusLobby(Name);
+            _sessionService.SetPlayerId(playerInfo.PlayerId);
+            return RedirectToPage("/Play/Index", new {code = playerInfo.LobbyCode});
         }
         catch
         {

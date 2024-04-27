@@ -13,7 +13,7 @@ public class LobbyService
         _dataAccess = dataAccess;
     }
 
-    public LobbyPlayer CreateVersus(string name)
+    public PlayerLobbyInfo CreateVersusLobby(string name)
     {
         var creator = new Player
         {
@@ -22,7 +22,7 @@ public class LobbyService
         var lobby = new LobbyController(new Versus(_dataAccess), creator);
         if (_lobbies.TryAdd(lobby.Code, lobby))
         {
-            return new LobbyPlayer
+            return new PlayerLobbyInfo
             {
                 LobbyCode = lobby.Code,
                 PlayerId = creator.Id
@@ -32,23 +32,63 @@ public class LobbyService
         throw new Exception("Could not create lobby");
     }
 
-    public LobbyController? Get(string id)
+    public bool LobbyExists(string code)
+    {
+        return _lobbies.ContainsKey(code);
+    }
+
+    public LobbyController? GetLobbyByPlayerId(string playerId)
+    {
+        var lobby = GetPlayerInfo(playerId)?.LobbyCode;
+        return lobby == null ? null : GetLobby(lobby);
+    }
+
+    public void HandleLobbyLeave(string playerId)
+    {
+        var lobbyPlayer = GetPlayerInfo(playerId);
+        if (lobbyPlayer == null) return;
+        var lobby = GetLobby(lobbyPlayer.LobbyCode);
+        if (lobby == null) return;
+        lobby.RemovePlayerById(playerId);
+        if (lobby.Players.Count == 0)
+        {
+            DiscardLobby(lobby.Code);
+        }
+    }
+
+    public PlayerLobbyInfo TryJoinLobby(string playerName, string lobbyCode)
+    {
+        var lobbyToJoin = GetLobby(lobbyCode);
+        if (lobbyToJoin == null)
+        {
+            throw new Exception("Lobby does not exist");
+        }
+
+        var player = lobbyToJoin.Add(playerName);
+        return new PlayerLobbyInfo
+        {
+            LobbyCode = lobbyToJoin.Code,
+            PlayerId = player.Id
+        };
+    }
+    
+    private LobbyController? GetLobby(string id)
     {
         return _lobbies.GetValueOrDefault(id);
     }
 
-    public void Dicard(string id)
+    private void DiscardLobby(string id)
     {
         _lobbies.Remove(id, out _);
     }
 
-    public LobbyPlayer? TryGetPlayerById(string playerId)
+    private PlayerLobbyInfo? GetPlayerInfo(string playerId)
     {
         foreach (var lobby in _lobbies)
         {
             if (lobby.Value.Players.FirstOrDefault(p => p.Id == playerId) != null)
             {
-                return new LobbyPlayer
+                return new PlayerLobbyInfo
                 {
                     LobbyCode = lobby.Key,
                     PlayerId = playerId
@@ -58,38 +98,4 @@ public class LobbyService
         return null;
     }
 
-    public LobbyController? GetPlayerLobby(string playerId)
-    {
-        var lobby = TryGetPlayerById(playerId)?.LobbyCode;
-        return lobby == null ? null : Get(lobby);
-    }
-
-    public void HandleLeave(string playerId)
-    {
-        var lobbyPlayer = TryGetPlayerById(playerId);
-        if (lobbyPlayer == null) return;
-        var lobby = Get(lobbyPlayer.LobbyCode);
-        if (lobby == null) return;
-        lobby.RemovePlayerById(playerId);
-        if (lobby.Players.Count == 0)
-        {
-            _lobbies.Remove(lobby.Code, out _);
-        }
-    }
-
-    public LobbyPlayer TryJoin(string playerName, string lobbyCode)
-    {
-        var lobbyToJoin = Get(lobbyCode);
-        if (lobbyToJoin == null)
-        {
-            throw new Exception("Lobby does not exist");
-        }
-
-        var player = lobbyToJoin.Add(playerName);
-        return new LobbyPlayer
-        {
-            LobbyCode = lobbyToJoin.Code,
-            PlayerId = player.Id
-        };
-    }
 }
