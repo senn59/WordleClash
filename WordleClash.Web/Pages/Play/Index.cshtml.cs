@@ -42,9 +42,15 @@ public class IndexModel : PageModel
         return Page();
     }
 
-    public ContentResult OnGetPlayers()
+    public PartialViewResult OnGetPlayers()
     {
-        Console.WriteLine("CALL RECEIVED BECAUSE OF SERVER EVENT");
-        return Content("<span>hello</span>");
+        var playerId = _sessionService.GetPlayerId();
+        if (playerId == null)
+        {
+            throw new Exception("cant load partial");
+        }
+
+        var lobby = _lobby.GetLobbyByPlayerId(playerId);
+        return Partial("Players", lobby.Players);
     }
 }
