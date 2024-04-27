@@ -12,20 +12,10 @@
             <div
                 hx-trigger="sse:PlayerUpdate"
                 hx-get="@Url.Page("/Play/Index", "Players")"
-                >
-                
+            >
+                <partial name="Players" model="Model.Players"/>
             </div>
         </div>
-        @foreach (var p in Model.Players)
-        {
-            <h2>
-                @p.Id | @p.Name
-                @if (p.IsOwner)
-                {
-                    <span>(Owner)</span>
-                }
-            </h2>
-        }
     </div>
 </div>
 
