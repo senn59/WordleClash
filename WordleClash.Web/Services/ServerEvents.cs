@@ -20,12 +20,10 @@ public class ServerEvents
             await _client.SendEventAsync(
                 new ServerSentEvent
                 {
-                    Id = "PlayerUpdate",
-                    Type = "PlayerUpdate",
-                    Data = new List<string>() {"Test"}
+                    Type = $"PlayerUpdate/{lobbyCode}",
+                    Data = new List<string>() {lobbyCode}
                 });
         }
-
     }
     
 }
