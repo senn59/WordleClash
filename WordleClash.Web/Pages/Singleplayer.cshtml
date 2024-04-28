@@ -6,7 +6,11 @@
 @{
     ViewData["Title"] = "Singleplayer";
 }
-
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/postgameoverlay.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/wordlegame.css" asp-append-version="true"/>
+}
 <div class="page__container">
     @{
         if (Model.Game.Status is GameStatus.Won or GameStatus.Lost)
