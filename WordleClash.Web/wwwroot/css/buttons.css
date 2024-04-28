@@ -5,6 +5,7 @@
     border-radius: 15px;
     box-shadow: black 2px 4px 0 0;
     font-size: 1.8em;
+    text-align: center;
 }
 a.btn__base {
     text-decoration: none;
