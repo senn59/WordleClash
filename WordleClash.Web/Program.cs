@@ -1,3 +1,4 @@
+using Lib.AspNetCore.ServerSentEvents;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core;
 using WordleClash.Data;
@@ -15,12 +16,15 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddServerSentEvents();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
 builder.Services.AddSingleton<IDataAccess>(s => new DataAccess(connString));
 builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IDataAccess>()));
-builder.Services.AddScoped<SessionService>();
+builder.Services.AddSingleton<LobbyService>(s => new LobbyService(s.GetRequiredService<IDataAccess>()));
+builder.Services.AddTransient<SessionService>();
+builder.Services.AddTransient<ServerEvents>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -39,7 +43,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
+app.UseMiddleware<LobbyMiddleware>();
 
+app.MapServerSentEvents("/updates");
 app.MapRazorPages();
 
 app.Run();

@@ -1,0 +1,13 @@
+@page
+@model WordleClash.Web.Pages.Lobby.CreateModel
+
+@{
+    Layout = "Shared/_Layout";
+}
+<div class="wrapper">
+    <h1>Create a lobby</h1>
+    <form method="post">
+        <input asp-for="Name"/>
+        <button type="submit">Create</button>
+    </form>
+</div>

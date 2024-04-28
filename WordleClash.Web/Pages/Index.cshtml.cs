@@ -20,6 +20,7 @@ public class IndexModel : PageModel
 
     public IActionResult OnGet()
     {
+        //TODO change into middleware or caching
         var gameSession = _sessionService.GetGameId();
         if (gameSession == null) return Page();
         _logger.LogInformation($"Game instance found, discarding {gameSession}");

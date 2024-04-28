@@ -46,7 +46,7 @@ public class SingleplayerModel : PageModel
         if (NewGame)
         {
             _gameService.DicardInstance(id);
-            return new RedirectToPageResult("Singleplayer");
+            return RedirectToPage("Singleplayer");
         }
         var wordle = _gameService.GetOrCreate(id);
         _logger.LogInformation($"Got game {id} ");
@@ -59,6 +59,6 @@ public class SingleplayerModel : PageModel
         {
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
         }
-        return new RedirectToPageResult("Singleplayer");
+        return RedirectToPage("Singleplayer");
     }
 }
