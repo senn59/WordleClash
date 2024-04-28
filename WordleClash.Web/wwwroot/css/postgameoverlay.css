@@ -1,0 +1,32 @@
+.game-end-overlay__container {
+    background-color: rgba(var(--background-color), 0.9);
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 98;
+}
+.game-end-overlay__base form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.game-end-overlay__container h1 {
+    font-weight: 900;
+    font-size: 6.5em;
+    color: black;
+}
+.game-end-overlay__icon {
+    top: -100px;
+    font-size: 5.5em;
+    position: absolute;
+}
+.game-end-overlay__buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
