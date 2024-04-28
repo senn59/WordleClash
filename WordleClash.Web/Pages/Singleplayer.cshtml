@@ -7,25 +7,25 @@
     ViewData["Title"] = "Singleplayer";
 }
 
-<div class="wrapper">
+<div class="page__container">
     @{
         if (Model.Game.Status is GameStatus.Won or GameStatus.Lost)
         {
-            <div class="game-end-overlay">
-                <div class="game-end-overlay-wrapper">
+            <div class="game-end-overlay__container">
+                <div class="game-end-overlay__base">
                     <form method="post" id="restartForm">
                         @if (Model.Game.Status == GameStatus.Won)
                         {
-                            <div class="icon">&#127942;</div>
+                            <div class="game-end-overlay__icon">&#127942;</div>
                             <h1>YOU WIN!</h1>
                         }
                         else
                         {
                             <h1>YOU LOSE!</h1>
                         }
-                        <div class="buttons">
-                            <button class="custom-btn custom-btn-primary" type="submit">New Game</button>
-                            <button class="custom-btn custom-btn-secondary" onclick="CloseOverlay()">Close</button>
+                        <div class="game-end-overlay__buttons">
+                            <button class="btn__base btn__primary" type="submit">New Game</button>
+                            <button class="btn__base btn__danger" onclick="CloseOverlay()">Close</button>
                         </div>
                         <input type="hidden" name="NewGame" value="true"/>
                     </form>
@@ -33,29 +33,29 @@
             </div>
         }
     }
-    <div class="wordle-wrapper">
-        <div class="wordle">
+    <div class="wordle__container">
+        <div class="wordle__base">
             @for (var i = 0; i < Model.Game.MaxTries; i++)
             {
-                <div class="wordle-row">
+                <div class="wordle__row">
                     @if (i < Model.Game.MoveHistory.Count && Model.Game.MoveHistory.Count > 0)
                     {
                         @foreach (var lr in Model.Game.MoveHistory[i].WordAnalysis)
                         {
-                            <div class="wordle-tile @lr.Feedback">@lr.Letter</div>
+                            <div class="wordle__tile @lr.Feedback">@lr.Letter</div>
                         }
                     }
                     else
                     {
                         @for (var j = 0; j < 5; j++)
                         {
-                            <div class="wordle-tile"></div>
+                            <div class="wordle__tile"></div>
                         }
                     }
                 </div>
             }
         </div>
-        <div class="letters">
+        <div class="letters__container">
             @{
                 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
                 foreach (var letter in alphabet)
@@ -106,7 +106,7 @@
 }
 
 @section Scripts {
-<script src="~/js/WriteInTiles.js"></script>
+<script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
 <script>
     const CloseOverlay = () => {
         document.querySelector(".game-end-overlay").remove();

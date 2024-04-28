@@ -1,0 +1,17 @@
+.btn__base {
+    font-weight: 900;
+    padding: 4px 10px;
+    border: 4px solid black;
+    border-radius: 15px;
+    box-shadow: black 2px 4px 0 0;
+    font-size: 1.8em;
+}
+.btn__primary {
+    background-color: var(--btn-primary-bg);
+}
+.btn__secondary {
+    background-color: var(--btn-secondary-bg);
+}
+.btn__danger {
+    background-color: var(--btn-danger-bg);
+}
