@@ -1,10 +1,44 @@
 .home__buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
-    width: 200px;
+    width: 375px;
+}
+.home__buttons__multiplayer {
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+    justify-content: space-between;
+    width: 100%;
 }
 .home__buttons a {
     width: 100%;
+}
+.home__menu {
+    display: flex;
+    width: 107vw;
+    justify-content: space-between;
+}
+.wordle-gfx__container {
+}
+.wordle__tile {
+    width: 100px;
+    height: 100px;
+    margin: 11px;
+    outline: 8px solid black;
+}
+
+.home__logo {
+    height: 20%;
+}
+.home__logo h1 {
+    font-weight: 900;
+    font-size: 6em;
+}
+.btn__base {
+    font-size: 2.8em;
+    border: 6px solid black;
+    box-shadow: black 2px 4px 0 0;
+    padding: 0;
 }
