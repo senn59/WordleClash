@@ -1,0 +1,10 @@
+.home__buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 200px;
+}
+.home__buttons a {
+    width: 100%;
+}
