@@ -21,12 +21,13 @@ public class TestHelpers
         return feedback;
     }
 
-    public static MockLobby CreateVersusLobby(IDataAccess dataAccess, int additionalPlayers = 0)
+    public static LobbyController CreateVersusLobby(IDataAccess dataAccess, int additionalPlayers = 0)
     {
         var creator = new Player()
         {
             Name = "player1"
         };
-        return new MockLobby(dataAccess, creator);
+        IMultiplayerGame mode = new Versus(dataAccess);
+        return new LobbyController(mode, creator);
     }
 }

@@ -1,6 +1,6 @@
 namespace WordleClash.Core.Enums;
 
-public enum LobbyStatus
+public enum LobbyState
 {
     Initialising,
     InLobby,
