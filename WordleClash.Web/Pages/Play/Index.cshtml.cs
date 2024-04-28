@@ -47,10 +47,14 @@ public class IndexModel : PageModel
         var playerId = _sessionService.GetPlayerId();
         if (playerId == null)
         {
-            throw new Exception("cant load partial");
+            throw new Exception("player id = null");
         }
 
         var lobby = _lobby.GetLobbyByPlayerId(playerId);
+        if (lobby == null)
+        {
+            throw new Exception($"player {playerId} is not apart of any lobby");
+        }
         return Partial("Players", lobby.Players);
     }
 }
