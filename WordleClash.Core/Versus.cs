@@ -4,34 +4,43 @@ using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Core;
 
-public class VersusLobby: BaseLobby
+public class Versus: IMultiplayerGame
 {
     private const int MaxTries = 9;
+    private readonly IDataAccess _dataAccess;
     private Game _game;
+
+    public IReadOnlyList<Player> Players { get; set; }
     
-    public VersusLobby(IDataAccess dataAccess, Player creator): base(dataAccess, creator, 2, 2) {}
-    
-    public override void StartGame()
+    public int MaxPlayers { get; private init; } = 2;
+    public int RequiredPlayers { get; private init; } = 2;
+
+    public Versus(IDataAccess dataAccess)
     {
-       if (Status != LobbyStatus.InLobby && Status != LobbyStatus.PostGame)
-       {
-           throw new GameAlreadyStartedException();
-       }
-       if (Players.Count != RequiredPlayers)
-       {
-           throw new InvalidPlayerCountException();
-       }
-       //TODO: create overloading constructor that calls start
-       _game = new Game(DataAccess);
+        _dataAccess = dataAccess;
+    }
+    
+    public void StartGame()
+    {
+        // Players = players;
+       // if (Lobby.Status != LobbyState.InLobby && Lobby.Status != LobbyState.PostGame)
+       // {
+       //     throw new GameAlreadyStartedException();
+       // }
+       // if (Lobby.Players.Count != RequiredPlayers)
+       // {
+       //     throw new InvalidPlayerCountException();
+       // }
+       _game = new Game(_dataAccess);
        _game.Start(MaxTries);
        SetFirstTurn();
-       Status = LobbyStatus.InGame;
+       // Lobby.Status = LobbyState.InGame;
     }
 
     public void HandleGuess(Player player, string guess)
     {
         //TODO: could also just return instead of throwing exceptions
-        if (!PlayerList.Contains(player))
+        if (!Players.Contains(player))
         {
             throw new InvalidPlayerException();
         }
@@ -49,17 +58,22 @@ public class VersusLobby: BaseLobby
         var guessResult = _game.TakeGuess(guess);
         if (guessResult.Status == GameStatus.Won)
         {
-            Winner = player;
-            Status = LobbyStatus.PostGame;
+            player.IsWinner = true;
+            // Status = LobbyState.PostGame;
         }
         SetNextTurn(player);
     }
 
+    public void UpdatePlayers(IReadOnlyList<Player> players)
+    {
+        throw new NotImplementedException();
+    }
+
     private void SetNextTurn(Player player)
     {
-        var playerIndex = PlayerList.IndexOf(player);
+        var playerIndex = Players.ToList().IndexOf(player);
         int nextPlayerIndex;
-        if (playerIndex == PlayerList.Count - 1)
+        if (playerIndex == Players.Count - 1)
         {
             nextPlayerIndex = 0;
         }
@@ -68,7 +82,7 @@ public class VersusLobby: BaseLobby
             nextPlayerIndex = playerIndex + 1;
         }
         ResetTurnState();
-        PlayerList[nextPlayerIndex].IsTurn = true;
+        Players[nextPlayerIndex].IsTurn = true;
     }
 
     private void SetFirstTurn()
@@ -76,11 +90,14 @@ public class VersusLobby: BaseLobby
         var r = new Random();
         var playerIndex = r.Next(0, Players.Count);
         ResetTurnState();
-        PlayerList[playerIndex].IsTurn = true;
+        Players[playerIndex].IsTurn = true;
     }
 
     private void ResetTurnState()
     {
-        PlayerList.ForEach(p => p.IsTurn = false);
+        foreach (var p in Players)
+        {
+            p.IsTurn = false;
+        }
     }
 }

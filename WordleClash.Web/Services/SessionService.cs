@@ -3,10 +3,14 @@ namespace WordleClash.Web.Services;
 public class SessionService
 {
     private const string GameSessionKey = "_Game";
+    private const string Player = "_Player";
     
     private readonly ISession _session;
-    public SessionService(IHttpContextAccessor httpContextAccessor)
+    private ILogger<SessionService> _logger;
+    
+    public SessionService(IHttpContextAccessor httpContextAccessor, ILogger<SessionService> logger)
     {
+        _logger = logger;
         if (httpContextAccessor.HttpContext == null)
         {
             throw new InvalidOperationException("HTTPContext cant be null");
@@ -33,4 +37,20 @@ public class SessionService
     {
         return _session.GetString(GameSessionKey);
     }
+    
+    public string? GetPlayerId()
+    {
+        return _session.GetString(Player);
+    }
+
+    public void SetPlayerId(string playerId)
+    {
+        _session.SetString(Player, playerId);
+    }
+
+    public void RemovePlayerSession()
+    {
+        _session.Remove(Player);
+    }
+
 }
