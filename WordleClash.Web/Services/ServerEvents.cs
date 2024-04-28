@@ -21,7 +21,7 @@ public class ServerEvents
                 new ServerSentEvent
                 {
                     Type = $"PlayerUpdate/{lobbyCode}",
-                    Data = new List<string>() {lobbyCode}
+                    Data = new List<string>() {""}
                 });
         }
     }
