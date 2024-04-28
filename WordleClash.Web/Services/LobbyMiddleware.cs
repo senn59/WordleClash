@@ -20,8 +20,8 @@ public class LobbyMiddleware
             await _next(context);
             return;
         }
-        lobbyService.HandleLobbyLeave(playerId);
-        await events.UpdatePlayers("");
+        var code = lobbyService.HandleLobbyLeave(playerId);
+        await events.UpdatePlayers(code);
         await _next(context);
     }
 }

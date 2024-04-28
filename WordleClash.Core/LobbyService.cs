@@ -43,17 +43,19 @@ public class LobbyService
         return lobby == null ? null : GetLobby(lobby);
     }
 
-    public void HandleLobbyLeave(string playerId)
+    public string HandleLobbyLeave(string playerId)
     {
         var lobbyPlayer = GetPlayerInfo(playerId);
-        if (lobbyPlayer == null) return;
+        if (lobbyPlayer == null) return "";
         var lobby = GetLobby(lobbyPlayer.LobbyCode);
-        if (lobby == null) return;
+        if (lobby == null) return "";
         lobby.RemovePlayerById(playerId);
         if (lobby.Players.Count == 0)
         {
             DiscardLobby(lobby.Code);
         }
+
+        return lobby.Code;
     }
 
     public PlayerLobbyInfo TryJoinLobby(string playerName, string lobbyCode)

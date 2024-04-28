@@ -10,7 +10,7 @@
         <h2>@Model.Players.Count</h2>
         <div hx-sse="connect:/updates">
             <div
-                hx-trigger="sse:PlayerUpdate"
+                hx-trigger="sse:PlayerUpdate/@Model.Code"
                 hx-get="@Url.Page("/Play/Index", "Players")"
             >
                 <partial name="Players" model="Model.Players"/>
