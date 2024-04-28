@@ -3,11 +3,16 @@
 @{
     ViewData["Title"] = "Index";
 }
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/pages/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/wordlegame.css" asp-append-version="true" />
+}
 
 <div class="page__container">
-    <ul>
-        <li><a asp-page="Singleplayer">Singleplayer</a></li>
-        <li><a asp-page="Lobby/Create">Versus mode</a></li>
-        <li><a asp-page="Lobby/Join">Join</a></li>
-    </ul>
+    <div class="home__buttons">
+        <a asp-page="Singleplayer" class="btn__base btn__secondary">Singleplayer</a>
+        <a asp-page="Lobby/Create" class="btn__base btn__danger">Versus mode</a>
+        <a asp-page="Lobby/Join" class="btn__base btn__primary">Join</a>
+    </div>
 </div>

@@ -6,6 +6,10 @@
     box-shadow: black 2px 4px 0 0;
     font-size: 1.8em;
 }
+a.btn__base {
+    text-decoration: none;
+    color: black;
+}
 .btn__primary {
     background-color: var(--btn-primary-bg);
 }
