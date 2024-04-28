@@ -1,18 +1,52 @@
 ﻿@page
+@using WordleClash.Core.Enums
 @model IndexModel
 @{
     ViewData["Title"] = "Index";
 }
 @section Styles
 {
-    <link rel="stylesheet" href="~/css/pages/home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/wordlegame.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages/home.css" asp-append-version="true" />
 }
 
+
 <div class="page__container">
-    <div class="home__buttons">
-        <a asp-page="Singleplayer" class="btn__base btn__secondary">Singleplayer</a>
-        <a asp-page="Lobby/Create" class="btn__base btn__danger">Versus mode</a>
-        <a asp-page="Lobby/Join" class="btn__base btn__primary">Join</a>
+    <div class="home__logo">
+        <h1>WORDLECLASH!</h1>
+    </div>
+    <div class="home__menu">
+        <div class="wordle-gfx__container">
+            @{ GenerateWordleGfx(); }
+        </div>
+        <div class="home__buttons">
+            <a asp-page="Singleplayer" class="btn__base btn__secondary">Singleplayer</a>
+            <div class="home__buttons__multiplayer">
+                <a asp-page="Lobby/Create" class="btn__base btn__danger">1 v 1</a>
+                <a asp-page="Lobby/Create" class="btn__base btn__danger">Party</a>
+            </div>
+            <a asp-page="Lobby/Join" class="btn__base btn__primary">Join</a>
+        </div>
+        <div class="wordle-gfx__container">
+            @{ GenerateWordleGfx(); }
+        </div>
     </div>
 </div>
+
+@functions
+{
+    void GenerateWordleGfx()
+    {
+        var r = new Random();
+        for (int i = 0; i < 5; i++)
+        {
+            <div class="wordle__row">
+                @for (int j = 0; j < 5; j++)
+                {
+                    List<string> options = ["IncorrectLetter", "IncorrectPosition", "CorrectPosition"];
+                    <div class="wordle__tile @options[r.Next(0, 3)]"></div>
+                }
+            </div>
+        }
+    }
+}
