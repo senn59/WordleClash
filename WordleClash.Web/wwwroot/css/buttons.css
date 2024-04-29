@@ -21,3 +21,7 @@ a.btn__base {
 .btn__danger {
     background-color: var(--btn-danger-bg);
 }
+.btn__disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
