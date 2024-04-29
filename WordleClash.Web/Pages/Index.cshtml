@@ -13,14 +13,16 @@
 
 <div class="page__container">
     <div class="home__logo">
-        <h1>WORDLECLASH!</h1>
+        <a asp-page="/Index">
+            <h1>WORDLECLASH!</h1>
+        </a>
     </div>
     <div class="home__menu">
         <div class="wordle-gfx__container">
             @{ GenerateWordleGfx(); }
         </div>
         <div class="home__buttons">
-            <a asp-page="Singleplayer" class="btn__base btn__secondary">Singleplayer</a>
+            <a asp-page="Singleplayer" class="btn__base btn__secondary">Classic</a>
             <div class="home__buttons__multiplayer">
                 <a asp-page="Lobby/Create" class="btn__base btn__danger">1 v 1</a>
                 <a asp-page="Lobby/Create" class="btn__base btn__danger">Party</a>
