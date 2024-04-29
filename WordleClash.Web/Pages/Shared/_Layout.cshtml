@@ -4,15 +4,20 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - WordleClash</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/> *@
+    <link rel="stylesheet" href="~/css/buttons.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/WordleClash.Web.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/pages/layout.css" asp-append-version="true"/>
+    @await RenderSectionAsync("Styles", false)
 </head>
 <body>
 <header class="logo">
-    <a asp-page="/Index">
-        <h1>WORDLECLASH!</h1>
-    </a>
+    @if (Url.RouteUrl(ViewContext.RouteData.Values) != "/")
+    {
+        <a asp-page="/Index">
+            <h1>WORDLECLASH!</h1>
+        </a>
+    }
 </header>
 
 <div>
