@@ -27,6 +27,10 @@ body {
     background: rgb(var(--background-color));
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
 .page__container {
     display: flex;
     flex-direction: column;
