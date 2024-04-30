@@ -25,31 +25,3 @@
     box-shadow: black 2px 4px 0 6px, black 0 0 0 6px;
     margin-right: 40px;
 }
-
-.back-button__container {
-    position: absolute;
-    left: 50px;
-    bottom: 50px;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-}
-.back-button__container p {
-    font-weight: 900;
-    font-size: 2.4em;
-}
-.back-button__container a {
-    padding: 0;
-    width: 45px;
-    height: 40px;
-    border-radius: 50px;
-    margin-right: 20px;
-    box-shadow: black 1px 2px 0 4px, black 0 0 0 4px;
-    background-color: var(--btn-danger-bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.back-button__container img {
-    width: 1.3em;
-}
