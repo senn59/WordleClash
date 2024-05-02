@@ -4,11 +4,18 @@
 @{
     Layout = "Shared/_Layout";
 }
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/pages/create_join.css" asp-append-version="true" />
+}
 <div class="page__container">
-    <h1>Join a lobby</h1>
-    <form method="post">
-        <input asp-for="Name" placeholder="username" />
-        <input asp-for="Code" value="@Model.Code" placeholder="lobby code" />
-        <button type="submit">Join</button>
-    </form>
+    <div class="form__container join">
+        <h1>Join a lobby</h1>
+        <form method="post">
+            <input asp-for="Name" placeholder="Username" class="input__text" />
+            <input asp-for="Code" value="@Model.Code" placeholder="Code" class="input__text" />
+            <button type="submit" class="btn__base btn__primary">Join game</button>
+        </form>
+        
+    </div>
 </div>
