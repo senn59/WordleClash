@@ -24,6 +24,16 @@
     <main role="main">
         @RenderBody()
     </main>
+    
+    @if (Url.RouteUrl(ViewContext.RouteData.Values) != "/" && !Url.RouteUrl(ViewContext.RouteData.Values).Contains("/Play/"))
+    {
+        <div class="back-button__container">
+            <p>Go back</p>
+            <a asp-page="/Index">
+                <img src="~/icons/return.svg" alt="return icon"/>
+            </a>
+        </div>
+    }
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

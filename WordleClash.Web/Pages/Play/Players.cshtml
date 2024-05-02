@@ -1,14 +1,7 @@
 @model IEnumerable<WordleClash.Core.Player>
 <div>
 @foreach (var player in Model)
-{
-    if (player.IsOwner)
-    {
-        <h2>@player.Id | @player.Name (owner)</h2>
-    }
-    else
-    {
-        <h2>@player.Id | @player.Name</h2>
-    }
+{ 
+    <h2>@player.Id | @player.Name @{ if (player.IsOwner) <span>(owner)</span>} </h2>
 }
 </div>
