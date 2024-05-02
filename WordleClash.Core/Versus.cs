@@ -98,9 +98,14 @@ public class Versus: IMultiplayerGame
 
     private void ValidatePlayers()
     {
-        if (Players.Count != RequiredPlayers)
+        if (Players.Count < RequiredPlayers)
         {
-            throw new InvalidPlayerCountException();
+            throw new TooFewPlayersException();
+        }
+
+        if (Players.Count > MaxPlayers)
+        {
+            throw new TooManyPlayersException();
         }
     }
 }

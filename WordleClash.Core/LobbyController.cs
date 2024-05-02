@@ -30,7 +30,7 @@ public class LobbyController
         }
         if (Players.Count != RequiredPlayers)
         {
-            throw new InvalidPlayerCountException();
+            throw new TooFewPlayersException();
         }
         
         _gameMode.SetPlayers(Players);
@@ -64,7 +64,7 @@ public class LobbyController
             {
                 _gameMode.SetPlayers(Players);
             }
-            catch (InvalidPlayerCountException)
+            catch (Exception e) when (e is TooFewPlayersException or TooManyPlayersException)
             {
                 State = LobbyState.PostGame;
                 throw;
