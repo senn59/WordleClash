@@ -1,11 +1,11 @@
 .btn__base {
     font-weight: 900;
     padding: 4px 10px;
-    border-radius: 15px;
+    border-radius: 10px;
     border: 0;
     cursor: pointer;
     box-shadow: black 1px 2px 0 4px, black 0 0 0 4px;
-    font-size: 1.8em;
+    font-size: 1.4em;
     text-align: center;
 }
 .btn__base:focus {
