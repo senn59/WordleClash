@@ -23,8 +23,8 @@
 .wordle-gfx__container {
 }
 .wordle__tile {
-    width: 100px;
-    height: 100px;
+    width: 85px;
+    height: 85px;
     margin: 11px;
     outline: 8px solid black;
 }
@@ -35,10 +35,10 @@
 }
 .home__logo h1 {
     font-weight: 900;
-    font-size: 6em;
+    font-size: 5.25em;
 }
 .btn__base {
-    font-size: 3.2em;
+    font-size: 3em;
     box-shadow: black 2px 4px 0 6px, black 0 0 0 6px;
     padding: 0.02em 2em;
 }
