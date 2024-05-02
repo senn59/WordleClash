@@ -26,4 +26,9 @@ public class TestHelpers
         IMultiplayerGame mode = new Versus(dataAccess);
         return new LobbyController(mode, "player1");
     }
+
+    public static Player GetTurnHolder(Versus game)
+    {
+        return game.Players.First(p => p.IsTurn == true);
+    }
 }

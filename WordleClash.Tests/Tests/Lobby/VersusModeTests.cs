@@ -17,7 +17,6 @@ public class VersusModeTests
     [Test]
     public void StartMultipleGames()
     {
-
         var players = new List<Player>()
         {
             new Player { Name = "player1" },
@@ -33,7 +32,6 @@ public class VersusModeTests
     [Test]
     public void StartWithTooManyPlayers()
     {
-
         var players = new List<Player>()
         {
             new Player { Name = "player1" },
@@ -49,7 +47,6 @@ public class VersusModeTests
     [Test]
     public void StartGame()
     {
-
         var players = new List<Player>()
         {
             new Player { Name = "player1" },
@@ -72,14 +69,22 @@ public class VersusModeTests
             new Player { Name = "player1" },
             new Player { Name = "player2" }
         };
+        
         game.SetPlayers(players);
         game.StartGame();
-        var turnHolderT1 = game.Players.Where(p => p.IsTurn == true).ToList()[0];
-        Console.WriteLine($"{turnHolderT1.Name}'s turn");
-        game.HandleGuess(turnHolderT1, dataAccess.Guess);
-        var turnHolderT2 = game.Players.Where(p => p.IsTurn == true).ToList()[0];
-        Console.WriteLine($"{turnHolderT2.Name}'s turn");
-        Assert.That(turnHolderT2, Is.Not.EqualTo(turnHolderT1));
-        game.HandleGuess(turnHolderT2, dataAccess.TargetWord);
+
+        var turnHolderTurnOne = TestHelpers.GetTurnHolder(game);
+        game.HandleGuess(turnHolderTurnOne, dataAccess.Guess);
+        
+        var turnHolderTurnTwo = TestHelpers.GetTurnHolder(game);
+        game.HandleGuess(turnHolderTurnTwo, dataAccess.Guess);
+        
+        var turnHolderTurnThree = TestHelpers.GetTurnHolder(game);
+        game.HandleGuess(turnHolderTurnThree, dataAccess.TargetWord);
+        Assert.Multiple(() =>
+        {
+            Assert.That(turnHolderTurnTwo.Id, Is.Not.EqualTo(turnHolderTurnOne.Id));
+            Assert.That(turnHolderTurnThree.Id, Is.EqualTo(turnHolderTurnOne.Id));
+        });
     }
 }
