@@ -1,27 +1,41 @@
 .form__container {
     position: relative;
 }
+.form__container.join form {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 250px;
+}
+.join .input__text {
+    width: 100%;
+}
+.create .input__text {
+    margin-right: 40px;
+}
 .form__container h1 {
     font-size: 3.8em;
     font-weight: 900;
     text-align: center;
     position: absolute;
-    bottom: 100px;
+    top: -110px;
     left: 0;
     right: 0;
 }
 .btn__base {
-    font-size: 1.4em;
-    box-shadow: black 2px 4px 0 6px, black 0 0 0 6px;
+    font-size: 1.6em;
     padding: 12px;
 }
 .input__text {
-    font-size: 1.4em;
+    font-size: 1.6em;
     font-weight: 600;
     padding: 12px;
     border: 0;
     outline: 0;
-    border-radius: 15px;
-    box-shadow: black 2px 4px 0 6px, black 0 0 0 6px;
-    margin-right: 40px;
+    border-radius: 10px;
+    box-shadow: black 1px 2px 0 4px, black 0 0 0 4px;
+}
+.input__text:focus {
+    outline: 4px solid red;
 }
