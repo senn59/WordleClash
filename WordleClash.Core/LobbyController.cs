@@ -60,7 +60,15 @@ public class LobbyController
         _lobby.RemoveById(id);
         if (State == LobbyState.InGame)
         {
-            _gameMode.SetPlayers(Players);
+            try
+            {
+                _gameMode.SetPlayers(Players);
+            }
+            catch (InvalidPlayerCountException)
+            {
+                State = LobbyState.PostGame;
+                throw;
+            }
         }
     }
 }
