@@ -15,7 +15,7 @@ public class LobbyController
     public string Code => _lobby.Code;
     public LobbyState State { get; private set; }
 
-    public LobbyController(IMultiplayerGame gameMode, Player creator)
+    public LobbyController(IMultiplayerGame gameMode, string creator)
     {
         _lobby = new Lobby(creator, gameMode.MaxPlayers);
         _gameMode = gameMode;
@@ -51,7 +51,7 @@ public class LobbyController
     public Player Add(string name)
     {
         var player = new Player() { Name = name };
-        _lobby.Add(player);
+        _lobby.Add(name);
         return player;
     }
     
