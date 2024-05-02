@@ -15,7 +15,7 @@ public class GameViewModel
         {
             Tries = game.Tries,
             MaxTries = game.MaxTries,
-            Status = game.GameStatus,
+            Status = game.Status,
             MoveHistory = game.MoveHistory
         };
     }
