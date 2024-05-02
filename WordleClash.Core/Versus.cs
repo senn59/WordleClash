@@ -10,7 +10,7 @@ public class Versus: IMultiplayerGame
     private readonly IDataAccess _dataAccess;
     private Game _game;
 
-    public IReadOnlyList<Player> Players { get; set; }
+    public IReadOnlyList<Player> Players { get; private set; }
     
     public int MaxPlayers { get; private init; } = 2;
     public int RequiredPlayers { get; private init; } = 2;
@@ -22,22 +22,12 @@ public class Versus: IMultiplayerGame
     
     public void StartGame()
     {
-        // Players = players;
-       // if (Lobby.Status != LobbyState.InLobby && Lobby.Status != LobbyState.PostGame)
-       // {
-       //     throw new GameAlreadyStartedException();
-       // }
-       // if (Lobby.Players.Count != RequiredPlayers)
-       // {
-       //     throw new InvalidPlayerCountException();
-       // }
        _game = new Game(_dataAccess);
        _game.Start(MaxTries);
        SetFirstTurn();
-       // Lobby.Status = LobbyState.InGame;
     }
 
-    public void HandleGuess(Player player, string guess)
+    public GuessResult HandleGuess(Player player, string guess)
     {
         //TODO: could also just return instead of throwing exceptions
         if (!Players.Contains(player))
@@ -59,14 +49,18 @@ public class Versus: IMultiplayerGame
         if (guessResult.Status == GameStatus.Won)
         {
             player.IsWinner = true;
-            // Status = LobbyState.PostGame;
         }
         SetNextTurn(player);
+        return guessResult;
     }
 
-    public void UpdatePlayers(IReadOnlyList<Player> players)
+    public void SetPlayers(IReadOnlyList<Player> players)
     {
-        throw new NotImplementedException();
+        if (_game.GameStatus == GameStatus.InProgress && Players.Count != RequiredPlayers)
+        {
+            throw new InvalidPlayerCountException();
+        }
+        Players = players;
     }
 
     private void SetNextTurn(Player player)

@@ -4,9 +4,9 @@ public interface IMultiplayerGame
 {
     int MaxPlayers { get; }
     int RequiredPlayers { get; }
-    IReadOnlyList<Player> Players { get; set; }
+    IReadOnlyList<Player> Players { get; }
 
     void StartGame();
-    void HandleGuess(Player player, string guess);
-    void UpdatePlayers(IReadOnlyList<Player> players);
+    GuessResult HandleGuess(Player player, string guess);
+    void SetPlayers(IReadOnlyList<Player> players);
 }
