@@ -15,17 +15,13 @@ public class LobbyService
 
     public PlayerLobbyInfo CreateVersusLobby(string name)
     {
-        var creator = new Player
-        {
-            Name = name
-        };
-        var lobby = new LobbyController(new Versus(_dataAccess), creator);
+        var lobby = new LobbyController(new Versus(_dataAccess), name);
         if (_lobbies.TryAdd(lobby.Code, lobby))
         {
             return new PlayerLobbyInfo
             {
                 LobbyCode = lobby.Code,
-                PlayerId = creator.Id
+                PlayerId = lobby.Players[0].Id
             };
         }
 
@@ -47,8 +43,10 @@ public class LobbyService
     {
         var lobbyPlayer = GetPlayerInfo(playerId);
         if (lobbyPlayer == null) return "";
+        
         var lobby = GetLobby(lobbyPlayer.LobbyCode);
         if (lobby == null) return "";
+        
         lobby.RemovePlayerById(playerId);
         if (lobby.Players.Count == 0)
         {
