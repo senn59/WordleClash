@@ -11,7 +11,6 @@ public class Lobby
     
     public int MaxPlayers { get; private init; }
 
-    public LobbyState Status { get; private set; }
     public string Code {get; private set; }
     public IReadOnlyList<Player> Players => _players.AsReadOnly();
 
@@ -21,7 +20,6 @@ public class Lobby
         Code = GenerateCode();
         Add(creator);
         creator.IsOwner = true;
-        Status = LobbyState.InLobby;
     }
 
     public void Add(Player player)
