@@ -10,20 +10,20 @@ header h1 {
 
 .back-button__container {
     position: absolute;
-    left: 50px;
-    bottom: 50px;
+    left: 30px;
+    bottom: 30px;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
 }
 .back-button__container p {
     font-weight: 900;
-    font-size: 2.4em;
+    font-size: 1.8em;
 }
 .back-button__container a {
     padding: 0;
-    width: 45px;
-    height: 40px;
+    width: 35px;
+    height: 30px;
     border-radius: 50px;
     margin-right: 20px;
     box-shadow: black 1px 2px 0 4px, black 0 0 0 4px;
@@ -33,5 +33,5 @@ header h1 {
     align-items: center;
 }
 .back-button__container img {
-    width: 1.3em;
+    width: 1em;
 }

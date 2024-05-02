@@ -2,21 +2,21 @@
     position: relative;
 }
 .form__container h1 {
-    font-size: 4.4em;
+    font-size: 3.8em;
     font-weight: 900;
     text-align: center;
     position: absolute;
-    bottom: 140px;
+    bottom: 100px;
     left: 0;
     right: 0;
 }
 .btn__base {
-    font-size: 2em;
+    font-size: 1.4em;
     box-shadow: black 2px 4px 0 6px, black 0 0 0 6px;
     padding: 12px;
 }
 .input__text {
-    font-size: 2em;
+    font-size: 1.4em;
     font-weight: 600;
     padding: 12px;
     border: 0;

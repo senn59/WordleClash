@@ -8,6 +8,9 @@
     font-size: 1.8em;
     text-align: center;
 }
+.btn__base:focus {
+    outline: 4px solid blue;
+}
 a.btn__base {
     text-decoration: none;
     color: black;
