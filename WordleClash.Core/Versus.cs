@@ -22,6 +22,7 @@ public class Versus: IMultiplayerGame
     
     public void StartGame()
     {
+        ValidatePlayers();
        _game = new Game(_dataAccess);
        _game.Start(MaxTries);
        SetFirstTurn();
@@ -56,9 +57,9 @@ public class Versus: IMultiplayerGame
 
     public void SetPlayers(IReadOnlyList<Player> players)
     {
-        if (_game.GameStatus == GameStatus.InProgress && Players.Count != RequiredPlayers)
+        if (_game.GameStatus == GameStatus.InProgress)
         {
-            throw new InvalidPlayerCountException();
+            ValidatePlayers();
         }
         Players = players;
     }
@@ -92,6 +93,14 @@ public class Versus: IMultiplayerGame
         foreach (var p in Players)
         {
             p.IsTurn = false;
+        }
+    }
+
+    private void ValidatePlayers()
+    {
+        if (Players.Count != RequiredPlayers)
+        {
+            throw new InvalidPlayerCountException();
         }
     }
 }
