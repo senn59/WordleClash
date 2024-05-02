@@ -4,19 +4,18 @@ using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Tests.Tests.Lobby;
 
-//should not have to be tested for addition lobbies as only functions found in BaseLobby are tested.
 public class LobbyManagementTests
 {
     [Test]
     public void CreateLobby()
     {
-        var lobby = TestHelpers.CreateVersusLobby(new MockDataAccess("", ""));
+        var creator = new Player{ Name = "player1"};
+        var lobby = new Lobby(creator, 5);
         Assert.Multiple(() =>
         {
             Assert.That(lobby.Players, Has.Count.EqualTo(1));
             Assert.That(lobby.Players[0].IsOwner, Is.EqualTo(true));
-            //NOT IMPLEMENTED
-            // Assert.That(lobby.Status, Is.EqualTo(LobbyState.InLobby));
+            Assert.That(lobby.State, Is.EqualTo(LobbyState.InLobby));
         });
     }
     
