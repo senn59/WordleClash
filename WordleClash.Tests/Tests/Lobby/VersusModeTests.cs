@@ -87,4 +87,41 @@ public class VersusModeTests
             Assert.That(turnHolderTurnThree.Id, Is.EqualTo(turnHolderTurnOne.Id));
         });
     }
+    
+    [Test]
+    public void TakeMultipleTurnsAtOnce()
+    {
+        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var game = new Versus(dataAccess);
+        var players = new List<Player>()
+        {
+            new Player { Name = "player1" },
+            new Player { Name = "player2" }
+        };
+        
+        game.SetPlayers(players);
+        game.StartGame();
+
+        var turnHolder = TestHelpers.GetTurnHolder(game);
+        game.HandleGuess(turnHolder, dataAccess.Guess);
+        Assert.Throws<NotPlayersTurnException>( () => game.HandleGuess(turnHolder, dataAccess.Guess));
+    }
+    
+    [Test]
+    public void TakeTurnWhileNotInGame()
+    {
+        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var game = new Versus(dataAccess);
+        var players = new List<Player>()
+        {
+            new Player { Name = "player1" },
+            new Player { Name = "player2" }
+        };
+        var invalidPlayer = new Player { Name = "Player3" };
+        
+        game.SetPlayers(players);
+        game.StartGame();
+
+        Assert.Throws<InvalidPlayerException>( () => game.HandleGuess(invalidPlayer, dataAccess.Guess));
+    }
 }
