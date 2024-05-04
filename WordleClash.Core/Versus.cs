@@ -24,8 +24,8 @@ public class Versus: IMultiplayerGame
     public void StartGame()
     {
         ValidatePlayers();
-       _game.Start(MaxTries);
-       SetFirstTurn();
+        _game.Start(MaxTries);
+        SetFirstTurn();
     }
 
     public GuessResult HandleGuess(Player player, string guess)
