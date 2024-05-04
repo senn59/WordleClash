@@ -24,15 +24,6 @@ public class LobbyController
 
     public void StartGame()
     {
-        if (State != LobbyState.InGame)
-        {
-            throw new GameAlreadyStartedException();
-        }
-        if (Players.Count != RequiredPlayers)
-        {
-            throw new TooFewPlayersException();
-        }
-        
         _gameMode.SetPlayers(Players);
         _gameMode.StartGame();
         State = LobbyState.InGame;
@@ -50,25 +41,21 @@ public class LobbyController
 
     public Player Add(string name)
     {
-        var player = new Player() { Name = name };
-        _lobby.Add(name);
-        return player;
+        return _lobby.Add(name);
     }
     
     public void RemovePlayerById(string id)
     {
         _lobby.RemoveById(id);
-        if (State == LobbyState.InGame)
+        if (State != LobbyState.InGame) return;
+        try
         {
-            try
-            {
-                _gameMode.SetPlayers(Players);
-            }
-            catch (Exception e) when (e is TooFewPlayersException or TooManyPlayersException)
-            {
-                State = LobbyState.PostGame;
-                throw;
-            }
+            _gameMode.SetPlayers(Players);
+        }
+        catch (Exception e) when (e is TooFewPlayersException or TooManyPlayersException)
+        {
+            State = LobbyState.PostGame;
+            throw;
         }
     }
 }
