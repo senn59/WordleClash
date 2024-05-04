@@ -9,4 +9,5 @@ public interface IMultiplayerGame
     void StartGame();
     GuessResult HandleGuess(Player player, string guess);
     void SetPlayers(IReadOnlyList<Player> players);
+    void RestartGame();
 }

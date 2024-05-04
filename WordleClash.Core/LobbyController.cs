@@ -58,4 +58,10 @@ public class LobbyController
             throw;
         }
     }
+
+    public void RestartGame()
+    {
+        _gameMode.RestartGame();
+        State = LobbyState.InGame;
+    }
 }
