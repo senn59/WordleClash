@@ -2,6 +2,6 @@
 <div>
 @foreach (var player in Model)
 { 
-    <h2>@player.Id | @player.Name @{ if (player.IsOwner) <span>(owner)</span>} </h2>
+    <h2>@player.Id | @player.Name @{ if (player.IsOwner) { <span>(Owner)</span> }}</h2>
 }
 </div>
