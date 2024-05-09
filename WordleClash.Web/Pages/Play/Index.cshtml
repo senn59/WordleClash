@@ -1,19 +1,56 @@
 @page "{code}"
+@using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.Play.IndexModel
 
 @{
     Layout = "Shared/_Layout";
 }
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/wordlegame.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/pages/versus.css" asp-append-version="true"/>
+}
+
+
+
+
 <div class="page__container">
-    <h1>@Model.Code</h1>
-    <div>
-        <h2>@Model.Players.Count</h2>
-        <div hx-sse="connect:/updates">
+    <div class="grid__container">
+        <div class="grid__left">
+        </div>
+        <div class="grid__middle">
+            <div class="field__wrapper">
+                @if (Model.Lobby.State == LobbyState.InLobby)
+                {
+                    <div class="field-await__container">
+                        @if (Model.Lobby.Players.Count == Model.Lobby.RequiredPlayers)
+                        {
+                            <h1>Wait for start</h1>
+                            <button class="btn__base btn__primary">Start game</button>
+                        }
+                        else
+                        {
+                            <h1>Wait for opponent</h1>
+                        }
+                    </div>
+                    <partial name="Shared/PlayingField" model="@Model.Lobby.Games[0]"/>
+                }
+                else
+                {
+                    <partial name="Shared/PlayingField" model="@Model.Lobby.Games[0]"/>
+                    @section Scripts {
+                        <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
+                    }
+                }
+            </div>
+            <h1>@Model.Lobby.Code</h1>
+        </div>
+        <div class="grid__right" hx-sse="connect:/updates">
             <div
-                hx-trigger="sse:PlayerUpdate/@Model.Code"
-                hx-get="@Url.Page("/Play/Index", "Players")"
-            >
-                <partial name="Players" model="Model.Players"/>
+                hx-trigger="sse:PlayerUpdate/@Model.Lobby.Code"
+                hx-get="@Url.Page("/Play/Index", "Players")">
+                <partial name="Versus/Opponent" model="@Model.Lobby.Players[0]"/>
             </div>
         </div>
     </div>
