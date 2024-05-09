@@ -34,11 +34,11 @@
                             <h1>Wait for opponent</h1>
                         }
                     </div>
-                    <partial name="Shared/PlayingField" model="@Model.Lobby.Games[0]"/>
+                    <partial name="Shared/Field" model="@Model.Lobby.Games[0]"/>
                 }
                 else
                 {
-                    <partial name="Shared/PlayingField" model="@Model.Lobby.Games[0]"/>
+                    <partial name="Shared/Field" model="@Model.Lobby.Games[0]"/>
                     @section Scripts {
                         <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
                     }
