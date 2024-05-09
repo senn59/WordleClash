@@ -36,23 +36,9 @@ public class Game
             return new GuessResult
             {
                 Status = Status,
-                WordAnalysis = new LetterResult[5]
+                WordAnalysis = []
             };
         }
-        /*
-        if (GameStatus == GameStatus.AwaitStart)
-        {
-            throw new Exception("Game has not been started");
-        }
-        if (GameStatus is GameStatus.Lost or GameStatus.Won)
-        {
-            return new GuessResult
-            {
-                Status = GameStatus,
-                WordAnalysis = new LetterResult[5]
-            };
-        }
-        */
         
         input = input.ToUpper();
         ValidateMove(input);

@@ -30,7 +30,6 @@ public class Versus: IMultiplayerGame
 
     public GuessResult HandleGuess(Player player, string guess)
     {
-        //TODO: could also just return instead of throwing exceptions
         if (!Players.Contains(player))
         {
             throw new InvalidPlayerException();
@@ -39,11 +38,6 @@ public class Versus: IMultiplayerGame
         if (player.IsTurn == false)
         {
             throw new NotPlayersTurnException(player);
-        }
-
-        if (Players.Count(p => p.IsTurn == true) != 1)
-        {
-            throw new Exception("More than one player is a turn holder");
         }
         
         var guessResult = _game.TakeGuess(guess);

@@ -21,8 +21,7 @@ public class ControllerTests
         var dataAccess = new MockDataAccess("abcde", "fghij");
         var gameMode = new Versus(dataAccess);
         var lobby = new LobbyController(gameMode, "player1");
-        var player1 = lobby.Players[0];
-        var player2 = lobby.Add("player2");
+        lobby.Add("player2");
         lobby.StartGame();
         Assert.That(lobby.State, Is.EqualTo(LobbyState.InGame));
         var turnHolderTurnOne = lobby.Players.First(p => p.IsTurn == true);
