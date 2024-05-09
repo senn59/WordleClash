@@ -1,37 +1,33 @@
-using WordleClash.Core;
-using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Tests.Tests.Lobby;
 
-//should not have to be tested for addition lobbies as only functions found in BaseLobby are tested.
-public class LobbyManagementTests
+public class LobbyTests
 {
     [Test]
     public void CreateLobby()
     {
-        var lobby = TestHelpers.CreateVersusLobby(new MockDataAccess("", ""));
+        var lobby = new Core.Lobby("player1", 5);
         Assert.Multiple(() =>
         {
             Assert.That(lobby.Players, Has.Count.EqualTo(1));
             Assert.That(lobby.Players[0].IsOwner, Is.EqualTo(true));
-            //NOT IMPLEMENTED
-            // Assert.That(lobby.Status, Is.EqualTo(LobbyState.InLobby));
         });
     }
     
     [Test]
     public void AddAdditionalPlayerToLobby()
     {
-        var lobby = TestHelpers.CreateVersusLobby(new MockDataAccess("", ""));
+        var lobby = new Core.Lobby("player1", 5);
         lobby.Add("");
         Assert.That(lobby.Players, Has.Count.EqualTo(2));
+        Assert.That(lobby.Players[1].IsOwner, Is.EqualTo(false));
     }
     
     [Test]
     public void AddTooManyPlayers()
     {
-        var lobby = TestHelpers.CreateVersusLobby(new MockDataAccess("", ""));
+        var lobby = new Core.Lobby("player1", 2);
         lobby.Add("");
         Assert.Throws<LobbyFullException>(() => lobby.Add(""));
     }
@@ -39,9 +35,9 @@ public class LobbyManagementTests
     [Test]
     public void RemoveOriginalCreatorFromLobby()
     {
-        var lobby = TestHelpers.CreateVersusLobby(new MockDataAccess("", ""));
+        var lobby = new Core.Lobby("player1", 2);
         lobby.Add("player2");
-        lobby.RemovePlayerById(lobby.Players[0].Id);
+        lobby.RemoveById(lobby.Players[0].Id);
         Assert.Multiple(() =>
         {
             Assert.That(lobby.Players, Has.Count.EqualTo(1));
@@ -53,7 +49,7 @@ public class LobbyManagementTests
     [Test]
     public void LobbyHasCode()
     {
-        var lobby = TestHelpers.CreateVersusLobby(new MockDataAccess("", ""));
+        var lobby = new Core.Lobby("player1", 2);
         Assert.That(lobby.Code, Is.Not.EqualTo(string.Empty));
     }
 }

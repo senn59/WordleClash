@@ -1,5 +1,3 @@
-using WordleClash.Core.Interfaces;
-using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Core;
@@ -11,26 +9,28 @@ public class Lobby
     
     public int MaxPlayers { get; private init; }
 
-    public LobbyState Status { get; private set; }
     public string Code {get; private set; }
     public IReadOnlyList<Player> Players => _players.AsReadOnly();
 
-    public Lobby(Player creator, int maxPlayers)
+    public Lobby(string creator, int maxPlayers)
     {
         MaxPlayers = maxPlayers;
         Code = GenerateCode();
+        
         Add(creator);
-        creator.IsOwner = true;
-        Status = LobbyState.InLobby;
+        _players[0].IsOwner = true;
     }
 
-    public void Add(Player player)
+    public Player Add(string name)
     {
         if (_players.Count >= MaxPlayers)
         {
             throw new LobbyFullException(MaxPlayers);
         }
+
+        var player = new Player { Name = name };
         _players.Add(player);
+        return player;
     }
 
     public void RemoveById(string id)

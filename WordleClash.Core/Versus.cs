@@ -7,10 +7,10 @@ namespace WordleClash.Core;
 public class Versus: IMultiplayerGame
 {
     private const int MaxTries = 9;
-    private readonly IDataAccess _dataAccess;
+    private IDataAccess _dataAccess;
     private Game _game;
 
-    public IReadOnlyList<Player> Players { get; set; }
+    public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
     
     public int MaxPlayers { get; private init; } = 2;
     public int RequiredPlayers { get; private init; } = 2;
@@ -18,28 +18,18 @@ public class Versus: IMultiplayerGame
     public Versus(IDataAccess dataAccess)
     {
         _dataAccess = dataAccess;
+       _game = new Game(dataAccess);
     }
     
     public void StartGame()
     {
-        // Players = players;
-       // if (Lobby.Status != LobbyState.InLobby && Lobby.Status != LobbyState.PostGame)
-       // {
-       //     throw new GameAlreadyStartedException();
-       // }
-       // if (Lobby.Players.Count != RequiredPlayers)
-       // {
-       //     throw new InvalidPlayerCountException();
-       // }
-       _game = new Game(_dataAccess);
-       _game.Start(MaxTries);
-       SetFirstTurn();
-       // Lobby.Status = LobbyState.InGame;
+        ValidatePlayers();
+        _game.Start(MaxTries);
+        SetFirstTurn();
     }
 
-    public void HandleGuess(Player player, string guess)
+    public GuessResult HandleGuess(Player player, string guess)
     {
-        //TODO: could also just return instead of throwing exceptions
         if (!Players.Contains(player))
         {
             throw new InvalidPlayerException();
@@ -49,24 +39,23 @@ public class Versus: IMultiplayerGame
         {
             throw new NotPlayersTurnException(player);
         }
-
-        if (Players.Count(p => p.IsTurn == true) != 1)
-        {
-            throw new Exception("More than one player is a turn holder");
-        }
         
         var guessResult = _game.TakeGuess(guess);
         if (guessResult.Status == GameStatus.Won)
         {
             player.IsWinner = true;
-            // Status = LobbyState.PostGame;
         }
         SetNextTurn(player);
+        return guessResult;
     }
 
-    public void UpdatePlayers(IReadOnlyList<Player> players)
+    public void SetPlayers(IReadOnlyList<Player> players)
     {
-        throw new NotImplementedException();
+        if (_game.Status == GameStatus.InProgress)
+        {
+            ValidatePlayers();
+        }
+        Players = players;
     }
 
     private void SetNextTurn(Player player)
@@ -99,5 +88,25 @@ public class Versus: IMultiplayerGame
         {
             p.IsTurn = false;
         }
+    }
+
+    private void ValidatePlayers()
+    {
+        if (Players.Count < RequiredPlayers)
+        {
+            throw new TooFewPlayersException();
+        }
+
+        if (Players.Count > MaxPlayers)
+        {
+            throw new TooManyPlayersException();
+        }
+    }
+
+    public void RestartGame()
+    {
+        if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
+        _game = new Game(_dataAccess);
+        StartGame();
     }
 }

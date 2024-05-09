@@ -32,7 +32,7 @@ public class SingleplayerModel : PageModel
     {
         var id = _sessionService.GetOrCreateGameId();
         var wordle = _gameService.GetOrCreate(id);
-        if (wordle.GameStatus == GameStatus.AwaitStart)
+        if (wordle.Status == GameStatus.AwaitStart)
         {
             wordle.Start(DefaultMaxTries);
         }
