@@ -1,7 +1,15 @@
+@using WordleClash.Web.Services
 @model IEnumerable<WordleClash.Core.Player>
+@inject SessionService SessionService
 <div>
 @foreach (var player in Model)
-{ 
-    <h2>@player.Id | @player.Name @{ if (player.IsOwner) { <span>(Owner)</span> }}</h2>
+{
+    <h2>@player.Id | @player.Name 
+        @{
+            if (player.Id == SessionService.GetPlayerId())
+            {
+                <span>(You)</span>
+            }}
+    </h2>
 }
 </div>
