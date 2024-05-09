@@ -1,6 +1,7 @@
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
+using WordleClash.Web.Models;
 
 namespace WordleClash.Core;
 
@@ -14,6 +15,7 @@ public class LobbyController
     public int RequiredPlayers => _gameMode.RequiredPlayers;
     public string Code => _lobby.Code;
     public LobbyState State { get; private set; }
+    public List<GameView> Games => _gameMode.GetGames();
 
     public LobbyController(IMultiplayerGame gameMode, string creator)
     {
