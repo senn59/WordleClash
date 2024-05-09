@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
+using WordleClash.Web.Models;
 using WordleClash.Web.Services;
 
 namespace WordleClash.Web.Pages.Play;
@@ -12,8 +13,8 @@ public class IndexModel : PageModel
     private SessionService _sessionService;
     private ServerEvents _serverEvents;
     
-    public string Code { get; set; }
-    public IReadOnlyList<Player> Players { get; set; }
+    public LobbyController Lobby { get; set; }
+    public IEnumerable<Player> Others => Lobby.Players.Where(p => p.Id != _sessionService.GetPlayerId());
 
     public IndexModel(ILogger<IndexModel> logger, SessionService sessionService, LobbyService lobbyService, ServerEvents serverEvents)
     {
@@ -36,8 +37,7 @@ public class IndexModel : PageModel
             return RedirectToPage("/Index");
         }
         
-        Code = code;
-        Players = lobby.Players;
+        Lobby = lobby;
         await _serverEvents.UpdatePlayers(code);
         return Page();
     }
@@ -56,5 +56,21 @@ public class IndexModel : PageModel
             throw new Exception($"player {playerId} is not apart of any lobby");
         }
         return Partial("Players", lobby.Players);
+    }
+    
+    public PartialViewResult OnGetOpponent()
+    {
+        var playerId = _sessionService.GetPlayerId();
+        if (playerId == null)
+        {
+            throw new Exception("player id = null");
+        }
+
+        var lobby = _lobby.GetLobbyByPlayerId(playerId);
+        if (lobby == null)
+        {
+            throw new Exception($"player {playerId} is not apart of any lobby");
+        }
+        return Partial("Versus/Opponent", lobby.Players.FirstOrDefault(p => p.Id == playerId));
     }
 }

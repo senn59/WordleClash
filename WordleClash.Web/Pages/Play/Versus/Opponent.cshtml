@@ -1,0 +1,13 @@
+@model WordleClash.Core.Player?
+
+
+@if (Model == null)
+{
+    <h3>Waiting for opponent</h3>
+}
+else
+{
+    <h2>Opponent: </h2>
+    <h3>@Model.Name</h3>
+}
+
