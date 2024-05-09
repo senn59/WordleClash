@@ -13,9 +13,9 @@ public class GameService
         _dataAccess = dataAccess;
     }
 
-    public Game GetOrCreate(string id)
+    public Game GetOrCreate(string id, int maxTries)
     {
-        return _games.GetOrAdd(id, new Game(_dataAccess));
+        return _games.GetOrAdd(id, new Game(_dataAccess, maxTries));
     }
 
     public void DicardInstance(string id)

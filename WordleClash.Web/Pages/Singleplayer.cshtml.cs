@@ -31,10 +31,10 @@ public class SingleplayerModel : PageModel
     public void OnGet()
     {
         var id = _sessionService.GetOrCreateGameId();
-        var wordle = _gameService.GetOrCreate(id);
+        var wordle = _gameService.GetOrCreate(id, DefaultMaxTries);
         if (wordle.Status == GameStatus.AwaitStart)
         {
-            wordle.Start(DefaultMaxTries);
+            wordle.Start();
         }
         Game = GameView.FromGame(wordle);
         _logger.LogInformation($"Got game {id}");
@@ -48,7 +48,7 @@ public class SingleplayerModel : PageModel
             _gameService.DicardInstance(id);
             return RedirectToPage("Singleplayer");
         }
-        var wordle = _gameService.GetOrCreate(id);
+        var wordle = _gameService.GetOrCreate(id, DefaultMaxTries);
         _logger.LogInformation($"Got game {id} ");
         try
         {
