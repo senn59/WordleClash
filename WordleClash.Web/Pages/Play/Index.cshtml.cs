@@ -15,6 +15,7 @@ public class IndexModel : PageModel
     
     public LobbyController? Lobby { get; set; }
     private string? _playerId;
+    public Player? ThisPlayer { get; set; }
 
     public IndexModel(ILogger<IndexModel> logger, SessionService sessionService, LobbyService lobbyService, ServerEvents serverEvents)
     {
@@ -27,6 +28,7 @@ public class IndexModel : PageModel
         if (_playerId != null)
         {
             Lobby = _lobbyService.GetLobbyByPlayerId(_playerId);
+            ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerId);
         }
     }
     
