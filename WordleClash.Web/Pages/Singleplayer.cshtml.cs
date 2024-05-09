@@ -18,7 +18,7 @@ public class SingleplayerModel : PageModel
     [BindProperty] public string Guess { get; set; }
     [BindProperty] public bool NewGame { get; set; }
     
-    public GameViewModel Game { get; set; }
+    public GameView Game { get; set; }
     
     
     public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionService sessionService)
@@ -36,7 +36,7 @@ public class SingleplayerModel : PageModel
         {
             wordle.Start(DefaultMaxTries);
         }
-        Game = GameViewModel.FromGame(wordle);
+        Game = GameView.FromGame(wordle);
         _logger.LogInformation($"Got game {id}");
     }
 
