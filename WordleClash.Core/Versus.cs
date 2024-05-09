@@ -1,6 +1,7 @@
 using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
+using WordleClash.Web.Models;
 
 namespace WordleClash.Core;
 
@@ -108,5 +109,10 @@ public class Versus: IMultiplayerGame
         if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
         _game = new Game(_dataAccess);
         StartGame();
+    }
+
+    public List<GameView> GetGames()
+    {
+        return [GameView.FromGame(_game)];
     }
 }
