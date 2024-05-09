@@ -1,0 +1,31 @@
+@model WordleClash.Web.Models.GameViewModel
+
+<div class="wordle__base">
+    @for (var i = 0; i < Model.MaxTries; i++)
+    {
+        <div class="wordle__row">
+            @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
+            {
+                @foreach (var lr in Model.MoveHistory[i].WordAnalysis)
+                {
+                    <div class="wordle__tile @lr.Feedback">@lr.Letter</div>
+                }
+            }
+            else
+            {
+                @for (var j = 0; j < 5; j++)
+                {
+                    <div class="wordle__tile"></div>
+                }
+            }
+        </div>
+    }
+</div>
+
+<form method="post" id="guessForm">
+    <input type="hidden" name="Guess" id="guessInput">
+</form>
+
+@section Scripts {
+    <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
+}

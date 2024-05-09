@@ -38,82 +38,16 @@
         }
     }
     <div class="wordle__container">
-        <div class="wordle__base">
-            @for (var i = 0; i < Model.Game.MaxTries; i++)
-            {
-                <div class="wordle__row">
-                    @if (i < Model.Game.MoveHistory.Count && Model.Game.MoveHistory.Count > 0)
-                    {
-                        @foreach (var lr in Model.Game.MoveHistory[i].WordAnalysis)
-                        {
-                            <div class="wordle__tile @lr.Feedback">@lr.Letter</div>
-                        }
-                    }
-                    else
-                    {
-                        @for (var j = 0; j < 5; j++)
-                        {
-                            <div class="wordle__tile"></div>
-                        }
-                    }
-                </div>
-            }
-        </div>
-        <div class="letters__container">
-            @{
-                var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-                foreach (var letter in alphabet)
-                {
-                    <span class="@GetClassName(letter)">@letter</span>
-                }
-            }
-        </div>
+        <partial name="Shared/PlayingField" model="Model.Game"/>
+        <partial name="Shared/LetterOverview" model="Model.Game.MoveHistory"/>
     </div>
-
 </div>
-<form method="post" id="guessForm">
-    <input type="hidden" name="Guess" id="guessInput">
-</form>
-
-@functions
-{
-    List<LetterResult> GetUsedLetters()
-    {
-        List<LetterResult> usedLetters = [];
-        foreach (var guessResult in Model.Game.MoveHistory)
-        {
-            usedLetters.AddRange(guessResult.WordAnalysis);
-        }
-        return usedLetters;
-    }
-
-    string GetClassName(char letter)
-    {
-        var className = "Unused";
-        var occurences = GetUsedLetters()
-            .Where(l => l.Letter == letter)
-            .Select(l => l.Feedback)
-            .ToList();
-        if (occurences.Count == 1)
-        {
-            className = occurences[0].ToString();
-        }
-        else if (occurences.Count > 1)
-        {
-            className = 
-                occurences.Contains(LetterFeedback.CorrectPosition)
-                ? LetterFeedback.CorrectPosition.ToString()
-                : occurences[0].ToString();
-        }
-        return className;
-    }
-}
 
 @section Scripts {
-<script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
-<script>
-    const CloseOverlay = () => {
-        document.querySelector(".game-end-overlay").remove();
-    }
-</script>
+    <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
+    <script>
+        const CloseOverlay = () => {
+            document.querySelector(".game-end-overlay__container").remove();
+        }
+    </script>
 }

@@ -1,0 +1,46 @@
+@using WordleClash.Core
+@using WordleClash.Core.Enums
+@model IEnumerable<GuessResult>
+
+<div class="letters__container">
+    @{
+    var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+    foreach (var letter in alphabet)
+    {
+    <span class="@GetClassName(letter)">@letter</span>
+    }
+    }
+</div>
+@functions
+{
+    List<LetterResult> GetUsedLetters()
+    {
+        List<LetterResult> usedLetters = [];
+        foreach (var guessResult in Model)
+        {
+            usedLetters.AddRange(guessResult.WordAnalysis);
+        }
+        return usedLetters;
+    }
+
+    string GetClassName(char letter)
+    {
+        var className = "Unused";
+        var occurences = GetUsedLetters()
+            .Where(l => l.Letter == letter)
+            .Select(l => l.Feedback)
+            .ToList();
+        if (occurences.Count == 1)
+        {
+            className = occurences[0].ToString();
+        }
+        else if (occurences.Count > 1)
+        {
+            className =
+                occurences.Contains(LetterFeedback.CorrectPosition)
+                    ? LetterFeedback.CorrectPosition.ToString()
+                    : occurences[0].ToString();
+        }
+        return className;
+    }
+}
