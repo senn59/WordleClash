@@ -23,11 +23,12 @@ public class TestHelpers
 
     public static LobbyController CreateVersusLobby(IDataAccess dataAccess, int additionalPlayers = 0)
     {
-        var creator = new Player()
-        {
-            Name = "player1"
-        };
         IMultiplayerGame mode = new Versus(dataAccess);
-        return new LobbyController(mode, creator);
+        return new LobbyController(mode, "player1");
+    }
+
+    public static Player GetTurnHolder(Versus game)
+    {
+        return game.Players.First(p => p.IsTurn == true);
     }
 }
