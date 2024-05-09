@@ -1,76 +1,78 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
-using WordleClash.Web.Models;
 using WordleClash.Web.Services;
+using Exception = System.Exception;
 
 namespace WordleClash.Web.Pages.Play;
 
 public class IndexModel : PageModel
 {
     private ILogger<IndexModel> _logger;
-    private LobbyService _lobby;
+    private LobbyService _lobbyService;
     private SessionService _sessionService;
     private ServerEvents _serverEvents;
     
-    public LobbyController Lobby { get; set; }
-    public IEnumerable<Player> Others => Lobby.Players.Where(p => p.Id != _sessionService.GetPlayerId());
+    public LobbyController? Lobby { get; set; }
+    private string? _playerId;
 
     public IndexModel(ILogger<IndexModel> logger, SessionService sessionService, LobbyService lobbyService, ServerEvents serverEvents)
     {
         _logger = logger;
-        _lobby = lobbyService;
+        _lobbyService = lobbyService;
         _sessionService = sessionService;
         _serverEvents = serverEvents;
+        
+        _playerId = _sessionService.GetPlayerId();
+        if (_playerId != null)
+        {
+            Lobby = _lobbyService.GetLobbyByPlayerId(_playerId);
+        }
     }
+    
     public async Task<IActionResult> OnGet(string code)
     {
-        var playerId = _sessionService.GetPlayerId();
-        if (playerId == null)
+        if (_playerId == null)
         {
             return RedirectToPage("/Index");
         }
-
-        var lobby = _lobby.GetLobbyByPlayerId(playerId);
-        if (lobby == null || lobby.Code != code)
+        if (Lobby == null || Lobby.Code != code)
         {
             return RedirectToPage("/Index");
         }
         
-        Lobby = lobby;
         await _serverEvents.UpdatePlayers(code);
         return Page();
     }
 
     public PartialViewResult OnGetPlayers()
     {
-        var playerId = _sessionService.GetPlayerId();
-        if (playerId == null)
+        if (_playerId == null)
         {
             throw new Exception("player id = null");
         }
-
-        var lobby = _lobby.GetLobbyByPlayerId(playerId);
-        if (lobby == null)
+        if (Lobby == null)
         {
-            throw new Exception($"player {playerId} is not apart of any lobby");
+            throw new Exception($"player {_playerId} is not apart of any lobby");
         }
-        return Partial("Players", lobby.Players);
+        return Partial("Players", Lobby.Players);
     }
     
     public PartialViewResult OnGetOpponent()
     {
-        var playerId = _sessionService.GetPlayerId();
-        if (playerId == null)
+        if (_playerId == null)
         {
             throw new Exception("player id = null");
         }
-
-        var lobby = _lobby.GetLobbyByPlayerId(playerId);
-        if (lobby == null)
+        if (Lobby == null)
         {
-            throw new Exception($"player {playerId} is not apart of any lobby");
+            throw new Exception($"player {_playerId} is not apart of any lobby");
         }
-        return Partial("Versus/Opponent", lobby.Players.FirstOrDefault(p => p.Id == playerId));
+        return Partial("Versus/Opponent", GetOpponent());
+    }
+
+    public Player? GetOpponent()
+    {
+        return Lobby?.Players.FirstOrDefault(p => p.Id != _playerId);
     }
 }
