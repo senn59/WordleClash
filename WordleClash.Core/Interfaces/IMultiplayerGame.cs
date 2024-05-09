@@ -1,3 +1,5 @@
+using WordleClash.Web.Models;
+
 namespace WordleClash.Core.Interfaces;
 
 public interface IMultiplayerGame
@@ -9,5 +11,6 @@ public interface IMultiplayerGame
     void StartGame();
     GuessResult HandleGuess(Player player, string guess);
     void SetPlayers(IReadOnlyList<Player> players);
+    public List<GameView> GetGames();
     void RestartGame();
 }
