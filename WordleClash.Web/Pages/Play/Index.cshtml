@@ -24,7 +24,10 @@
                         @if (Model.Lobby.Players.Count == Model.Lobby.RequiredPlayers)
                         {
                             <h1>Wait for start</h1>
-                            <button class="btn__base btn__primary">Start game</button>
+                            @if (Model.ThisPlayer?.IsOwner == true)
+                            {
+                                <button class="btn__base btn__primary">Start game</button>
+                            }
                         }
                         else
                         {
