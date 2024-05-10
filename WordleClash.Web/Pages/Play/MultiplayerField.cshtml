@@ -1,0 +1,22 @@
+@using WordleClash.Core.Enums
+@model WordleClash.Web.Pages.Play.IndexModel
+<div class="field__wrapper">
+    @if (Model.Lobby!.State == LobbyState.InLobby)
+    {
+        <div class="field-await__container">
+            @if (Model.Lobby.Players.Count == Model.Lobby.RequiredPlayers)
+            {
+                <h1>Wait for start</h1>
+                @if (Model.ThisPlayer?.IsOwner == true)
+                {
+                    <button class="btn__base btn__primary">Start game</button>
+                }
+            }
+            else
+            {
+                <h1>Wait for opponent</h1>
+            }
+        </div>
+    }
+    <partial name="Shared/Field" model="@Model.Lobby.Games[0]"/>
+</div>
