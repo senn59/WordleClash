@@ -73,6 +73,19 @@ public class IndexModel : PageModel
         return Partial("Versus/Opponent", GetOpponent());
     }
 
+    public PartialViewResult OnGetField()
+    {
+        if (_playerId == null)
+        {
+            throw new Exception("player id = null");
+        }
+        if (Lobby == null)
+        {
+            throw new Exception($"player {_playerId} is not apart of any lobby");
+        }
+        return Partial("MultiplayerField", this);
+    }
+
     public Player? GetOpponent()
     {
         return Lobby?.Players.FirstOrDefault(p => p.Id != _playerId);
