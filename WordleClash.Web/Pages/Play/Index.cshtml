@@ -19,6 +19,7 @@
         <div class="grid__middle">
             <div 
                 hx-trigger="sse:PlayerUpdate/@Model.Lobby!.Code"
+                hx-trigger="sse:FieldUpdate/@Model.Lobby!.Code"
                 hx-get="@Url.Page("/Play/Index", "Field")">
                 <partial name="Partials/MultiplayerField" model="Model"/>
             </div>

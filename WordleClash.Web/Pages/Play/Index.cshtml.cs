@@ -31,6 +31,20 @@ public class IndexModel : PageModel
             ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerId);
         }
     }
+
+    public async void OnPostStartGame()
+    {
+        if (_playerId == null || Lobby == null || ThisPlayer?.IsOwner != true) return;
+        try
+        {
+            Lobby.StartGame();
+        }
+        catch (Exception e)
+        {
+            _logger.LogCritical($"{e.Message} thrown while trying to start game");
+        }
+        await _serverEvents.UpdateField(Lobby.Code);
+    }
     
     public async Task<IActionResult> OnGet(string code)
     {

@@ -1,5 +1,7 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.Play.IndexModel
+
 <div class="field__wrapper">
     @if (Model.Lobby!.State == LobbyState.InLobby)
     {
@@ -9,7 +11,15 @@
                 <h1>Wait for start</h1>
                 @if (Model.ThisPlayer?.IsOwner == true)
                 {
-                    <button class="btn__base btn__primary">Start game</button>
+                    <form
+                        method="post"
+                        hx-post="@Url.Page("/Play/Index", "StartGame")"
+                        hx-swap="none">
+                        >
+                        <button class="btn__base btn__primary" type="submit">
+                            Start game
+                        </button>
+                    </form>
                 }
             }
             else
