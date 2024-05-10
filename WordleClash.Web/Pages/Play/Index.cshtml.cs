@@ -57,9 +57,9 @@ public class IndexModel : PageModel
         {
             throw new Exception($"player {_playerId} is not apart of any lobby");
         }
-        return Partial("Players", Lobby.Players);
+        return Partial("Partials/Players", Lobby.Players);
     }
-    
+   
     public PartialViewResult OnGetOpponent()
     {
         if (_playerId == null)
@@ -70,7 +70,7 @@ public class IndexModel : PageModel
         {
             throw new Exception($"player {_playerId} is not apart of any lobby");
         }
-        return Partial("Versus/Opponent", GetOpponent());
+        return Partial("Partials/Opponent", GetOpponent());
     }
 
     public PartialViewResult OnGetField()
@@ -83,7 +83,7 @@ public class IndexModel : PageModel
         {
             throw new Exception($"player {_playerId} is not apart of any lobby");
         }
-        return Partial("MultiplayerField", this);
+        return Partial("Partials/MultiplayerField", this);
     }
 
     public Player? GetOpponent()
