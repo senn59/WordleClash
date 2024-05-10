@@ -1,7 +1,9 @@
+let AllowedToType = true;
 let activeRow = null;
 const tileClass = ".wordle__tile"
 const rowClass = ".wordle__row"
 document.addEventListener("keydown", (event) => {
+    if (!AllowedToType) return;
     if (event.key.length === 1 && /[a-zA-Z]/.test(event.key)) {
         TryPlaceChar(event.key)
     } else if (["Backspace", "Delete"].includes(event.key)) {
