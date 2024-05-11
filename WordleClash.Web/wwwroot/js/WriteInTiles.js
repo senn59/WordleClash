@@ -1,4 +1,7 @@
 let AllowedToType = true;
+const UpdateAllowedType = (val) => {
+    AllowedToType = JSON.parse(val);
+}
 let activeRow = null;
 const tileClass = ".wordle__tile"
 const rowClass = ".wordle__row"
