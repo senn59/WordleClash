@@ -12,9 +12,10 @@ public class IndexModel : PageModel
     private LobbyService _lobbyService;
     private SessionService _sessionService;
     private ServerEvents _serverEvents;
-    
-    public LobbyController? Lobby { get; set; }
     private string? _playerId;
+
+    public string Guess { get; set; }
+    public LobbyController? Lobby { get; set; }
     public Player? ThisPlayer { get; set; }
 
     public IndexModel(ILogger<IndexModel> logger, SessionService sessionService, LobbyService lobbyService, ServerEvents serverEvents)
@@ -44,6 +45,11 @@ public class IndexModel : PageModel
             _logger.LogCritical($"{e.Message} thrown while trying to start game");
         }
         await _serverEvents.UpdateField(Lobby.Code);
+    }
+
+    public async void OnPost()
+    {
+        Console.WriteLine(Guess);
     }
     
     public async Task<IActionResult> OnGet(string code)

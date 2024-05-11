@@ -27,5 +27,17 @@
             }
         </div>
     }
+    <input type="hidden" value="@CanType().ToString().ToLower()" id="canType"/>
     <partial name="Shared/Field" model="@Model.Lobby.Games[0]"/>
 </div>
+@functions
+{
+    bool CanType()
+    {
+        if (Model.Lobby?.State != LobbyState.InGame)
+        {
+            return false;
+        }
+        return Model.ThisPlayer?.IsTurn != false;
+    }
+}
