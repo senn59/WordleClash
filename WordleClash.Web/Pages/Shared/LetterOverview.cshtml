@@ -4,11 +4,11 @@
 
 <div class="letters__container">
     @{
-    var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-    foreach (var letter in alphabet)
-    {
-    <span class="@GetClassName(letter)">@letter</span>
-    }
+        var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        foreach (var letter in alphabet)
+        {
+            <span class="@GetClassName(letter)">@letter</span>
+        }
     }
 </div>
 @functions
