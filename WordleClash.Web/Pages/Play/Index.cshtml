@@ -45,7 +45,15 @@
 {
     <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
     <script>
-        AllowedToType = @(Model!.Lobby.State == LobbyState.InLobby ? "false" : "true")
+        const GetCanTypeVal = () => {
+            return document.getElementById("canType").value;
+        }
+        UpdateAllowedType(GetCanTypeVal())
+        document.addEventListener("htmx:afterSwap", function(event) {
+            if (event.detail.target.id === "field") {
+                UpdateAllowedType(GetCanTypeVal())
+            }
+        });
         window.onbeforeunload = () => {
             return true;
         }
