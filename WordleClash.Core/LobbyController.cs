@@ -57,7 +57,6 @@ public class LobbyController
         catch (Exception e) when (e is TooFewPlayersException or TooManyPlayersException)
         {
             State = LobbyState.PostGame;
-            throw;
         }
     }
 
