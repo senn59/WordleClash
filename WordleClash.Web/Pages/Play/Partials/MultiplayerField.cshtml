@@ -2,6 +2,11 @@
 @using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.Play.IndexModel
 
+
+@if (Model.Lobby?.State == LobbyState.InGame)
+{
+    <div>(@(Model.ThisPlayer?.IsTurn == true ? "Your" : "Opponents") turn)</div>
+}
 <div class="field__wrapper">
     @if (Model.Lobby!.State == LobbyState.InLobby)
     {
