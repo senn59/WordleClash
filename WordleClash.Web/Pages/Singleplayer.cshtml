@@ -1,16 +1,16 @@
 @page
-@using WordleClash.Core
 @using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.SingleplayerModel
-
 @{
     ViewData["Title"] = "Singleplayer";
 }
+
 @section Styles
 {
     <link rel="stylesheet" href="~/css/postgameoverlay.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/wordlegame.css" asp-append-version="true"/>
 }
+
 <div class="page__container">
     @{
         if (Model.Game.Status is GameStatus.Won or GameStatus.Lost)
@@ -44,8 +44,10 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
-    <script>
+    <script src="~/js/WriteInTiles.js"></script>
+    <script type="text/javascript">
+        writing = writing()
+        writing.addListener()
         const CloseOverlay = () => {
             document.querySelector(".game-end-overlay__container").remove();
         }
