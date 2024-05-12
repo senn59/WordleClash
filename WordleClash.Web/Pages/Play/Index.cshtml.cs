@@ -14,6 +14,7 @@ public class IndexModel : PageModel
     private ServerEvents _serverEvents;
     private string? _playerId;
 
+    [BindProperty]
     public string Guess { get; set; }
     public LobbyController? Lobby { get; set; }
     public Player? ThisPlayer { get; set; }
