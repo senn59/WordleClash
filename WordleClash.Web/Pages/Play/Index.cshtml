@@ -1,7 +1,5 @@
 @page "{code}"
-@using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.Play.IndexModel
-
 @{
     Layout = "Shared/_Layout";
 }
@@ -45,13 +43,16 @@
 {
     <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
     <script>
+        writing = writing()
+        writing.addListener()
         const GetCanTypeVal = () => {
+            console.log( document.getElementById("canType").value);
             return document.getElementById("canType").value;
         }
-        UpdateAllowedType(GetCanTypeVal())
+        writing.setAllowedToType(GetCanTypeVal());
         document.addEventListener("htmx:afterSwap", function(event) {
             if (event.detail.target.id === "field") {
-                UpdateAllowedType(GetCanTypeVal())
+                writing.setAllowedToType(GetCanTypeVal())
             }
         });
         window.onbeforeunload = () => {
