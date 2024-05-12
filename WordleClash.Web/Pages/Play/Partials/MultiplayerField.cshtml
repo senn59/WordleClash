@@ -2,11 +2,11 @@
 @using WordleClash.Core.Enums
 @model WordleClash.Web.Pages.Play.IndexModel
 
-
 @if (Model.Lobby?.State == LobbyState.InGame)
 {
     <div>(@(Model.ThisPlayer?.IsTurn == true ? "Your" : "Opponents") turn)</div>
 }
+
 <div class="field__wrapper">
     @if (Model.Lobby!.State == LobbyState.InLobby)
     {
@@ -16,10 +16,7 @@
                 <h1>Wait for start</h1>
                 @if (Model.ThisPlayer?.IsOwner == true)
                 {
-                    <form
-                        method="post"
-                        hx-post="@Url.Page("/Play/Index", "StartGame")"
-                        hx-swap="none">
+                    <form method="post" hx-post="@Url.Page("/Play/Index", "StartGame")" hx-swap="none">
                         <button class="btn__base btn__primary" type="submit">
                             Start game
                         </button>
@@ -35,6 +32,7 @@
     <input type="hidden" value="@CanType().ToString().ToLower()" id="canType"/>
     <partial name="Shared/Field" model="@Model.Lobby.Games[0]"/>
 </div>
+
 @functions
 {
     bool CanType()
