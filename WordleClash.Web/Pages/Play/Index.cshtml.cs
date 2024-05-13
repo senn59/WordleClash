@@ -27,11 +27,9 @@ public class IndexModel : PageModel
         _serverEvents = serverEvents;
         
         _playerId = _sessionService.GetPlayerId();
-        if (_playerId != null)
-        {
-            Lobby = _lobbyService.GetLobbyByPlayerId(_playerId);
-            ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerId);
-        }
+        if (_playerId == null) return;
+        Lobby = _lobbyService.GetLobbyByPlayerId(_playerId);
+        ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerId);
     }
 
     public async void OnPostStartGame()
@@ -50,7 +48,16 @@ public class IndexModel : PageModel
 
     public async void OnPost()
     {
-        Console.WriteLine(Guess);
+        if (Lobby == null || ThisPlayer == null || !ModelState.IsValid) return;
+        try
+        {
+            Lobby.HandleGuess(ThisPlayer, Guess);
+        }
+        catch (Exception e)
+        {
+            _logger.LogWarning($"{e.Message} while trying to take a guess");
+        }
+        await _serverEvents.UpdateField(Lobby.Code);
     }
     
     public async Task<IActionResult> OnGet(string code)
