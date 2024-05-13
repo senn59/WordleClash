@@ -1,0 +1,31 @@
+@page
+@using WordleClash.Core.Enums
+@model WordleClash.Web.Pages.SingleplayerModel
+@{
+    ViewData["Title"] = "Singleplayer";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/postgameoverlay.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/wordlegame.css" asp-append-version="true"/>
+}
+
+<form method="post" id="guessForm" hx-post="" hx-target="#field">
+    <input type="hidden" name="Guess" id="guessInput">
+</form>
+
+<div class="page__container" id="field">
+    <partial name="Partials/SingleplayerField" model="Model.Game"/>
+</div>
+
+@section Scripts {
+    <script src="~/js/WriteInTiles.js"></script>
+    <script type="text/javascript">
+        writing = writing()
+        writing.addListener()
+        const CloseOverlay = () => {
+            document.querySelector(".game-end-overlay__container").remove();
+        }
+    </script>
+}

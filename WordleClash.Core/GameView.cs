@@ -1,7 +1,6 @@
-using WordleClash.Core;
 using WordleClash.Core.Enums;
 
-namespace WordleClash.Web.Models;
+namespace WordleClash.Core;
 
 public class GameView
 {

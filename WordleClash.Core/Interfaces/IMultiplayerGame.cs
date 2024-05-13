@@ -1,5 +1,3 @@
-using WordleClash.Web.Models;
-
 namespace WordleClash.Core.Interfaces;
 
 public interface IMultiplayerGame

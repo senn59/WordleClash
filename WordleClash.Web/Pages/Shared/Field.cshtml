@@ -1,4 +1,4 @@
-@model WordleClash.Web.Models.GameView
+@model WordleClash.Core.GameView
 
 <div class="wordle__base">
     @for (var i = 0; i < Model.MaxTries; i++)
@@ -21,7 +21,3 @@
         </div>
     }
 </div>
-
-<form method="post" id="guessForm">
-    <input type="hidden" name="Guess" id="guessInput">
-</form>
