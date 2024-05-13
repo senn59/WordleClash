@@ -124,4 +124,10 @@ public class VersusModeTests
 
         Assert.Throws<InvalidPlayerException>( () => game.HandleGuess(invalidPlayer, dataAccess.Guess));
     }
+
+    [Test]
+    public void WinnerAssigned()
+    {
+        throw new NotImplementedException();
+    }
 }

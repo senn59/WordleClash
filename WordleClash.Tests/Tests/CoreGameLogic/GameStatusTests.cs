@@ -9,8 +9,8 @@ public class GameStatusTests
     public void NoCommonLetters()
     {
         var dataAccess = new MockDataAccess("zzzzz", "xxxxx");
-        var wordle = new Game(dataAccess);
-        wordle.Start(6);
+        var wordle = new Game(dataAccess, 6);
+        wordle.Start();
         var res = wordle.TakeGuess(dataAccess.Guess);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
@@ -20,8 +20,8 @@ public class GameStatusTests
     public void OneLetterOff()
     {
         var dataAccess = new MockDataAccess("abcde", "abcdf");
-        var wordle = new Game(dataAccess);
-        wordle.Start(6);
+        var wordle = new Game(dataAccess, 6);
+        wordle.Start();
         var res = wordle.TakeGuess(dataAccess.Guess);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.InProgress));
@@ -31,8 +31,8 @@ public class GameStatusTests
     public void CorrectInput()
     {
         var dataAccess = new MockDataAccess("abcde", "abcde");
-        var wordle = new Game(dataAccess);
-        wordle.Start(6);
+        var wordle = new Game(dataAccess, 6);
+        wordle.Start();
         var res = wordle.TakeGuess(dataAccess.TargetWord);
 
         Assert.That(res.Status, Is.EqualTo(GameStatus.Won));
@@ -42,8 +42,8 @@ public class GameStatusTests
     public void TooManyTries()
     {
         var dataAccess = new MockDataAccess("abcde", "vwxyz");
-        var wordle = new Game(dataAccess);
-        wordle.Start(3);
+        var wordle = new Game(dataAccess, 3);
+        wordle.Start();
         wordle.TakeGuess(dataAccess.Guess);
         wordle.TakeGuess(dataAccess.Guess);
         var res = wordle.TakeGuess(dataAccess.Guess);
@@ -56,8 +56,8 @@ public class GameStatusTests
     public void GuessCorrectOnLastTry()
     {
         var dataAccess = new MockDataAccess("abcde", "vwxyz");
-        var wordle = new Game(dataAccess);
-        wordle.Start(6);
+        var wordle = new Game(dataAccess, 6);
+        wordle.Start();
         wordle.TakeGuess(dataAccess.Guess);
         wordle.TakeGuess(dataAccess.Guess);
         var res = wordle.TakeGuess(dataAccess.TargetWord);
