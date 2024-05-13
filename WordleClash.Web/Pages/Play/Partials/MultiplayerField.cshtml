@@ -7,8 +7,21 @@
     <div>(@(Model.ThisPlayer?.IsTurn == true ? "Your" : "Opponents") turn)</div>
 }
 
+@if (Model.Lobby!.State == LobbyState.PostGame)
+{
+    if (Model.Lobby.Winner == null)
+    {
+        <partial name="Shared/PostGameOverlay" model="null"/>
+    }
+    else
+    {
+        <partial name="Shared/PostGameOverlay" model="Model.ThisPlayer == Model.Lobby.Winner"/>
+    }
+    
+}
+
 <div class="field__wrapper">
-    @if (Model.Lobby!.State == LobbyState.InLobby)
+    @if (Model.Lobby.State == LobbyState.InLobby)
     {
         <div class="field-await__container">
             @if (Model.Lobby.Players.Count == Model.Lobby.RequiredPlayers)
