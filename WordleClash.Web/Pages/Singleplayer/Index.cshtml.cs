@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
 using WordleClash.Core.Enums;
-using WordleClash.Web.Models;
 using WordleClash.Web.Services;
 using Exception = System.Exception;
 
@@ -40,14 +39,16 @@ public class SingleplayerModel : PageModel
         _logger.LogInformation($"Got game {id}");
     }
 
-    public IActionResult OnPost()
+    public IActionResult OnPostNewGame()
     {
         var id = _sessionService.GetOrCreateGameId();
-        if (NewGame)
-        {
-            _gameService.DicardInstance(id);
-            return RedirectToPage("Singleplayer");
-        }
+        _gameService.DicardInstance(id);
+        return RedirectToPage("/Singleplayer/Index");
+    }
+
+    public PartialViewResult OnPost()
+    {
+        var id = _sessionService.GetOrCreateGameId();
         var wordle = _gameService.GetOrCreate(id, DefaultMaxTries);
         _logger.LogInformation($"Got game {id} ");
         try
@@ -59,6 +60,6 @@ public class SingleplayerModel : PageModel
         {
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
         }
-        return RedirectToPage("Singleplayer");
+        return Partial("Partials/SingleplayerField", GameView.FromGame(wordle));
     }
 }

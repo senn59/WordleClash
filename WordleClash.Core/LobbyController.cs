@@ -1,7 +1,6 @@
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
-using WordleClash.Web.Models;
 
 namespace WordleClash.Core;
 

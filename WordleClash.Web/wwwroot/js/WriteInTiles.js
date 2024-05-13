@@ -44,10 +44,9 @@ let writing = (() => {
         return true;
     }
     const tryTakeGuess = () => {
-        let guessInput = document.querySelector("#guessInput")
-        guessInput.value = ExtractWordFromTiles();
+        document.querySelector("#guessInput").value = ExtractWordFromTiles();
         document.forms["guessForm"].requestSubmit();
-        guessInput.value = ""
+        resetValues();
     }
     const ExtractWordFromTiles = () => {
         if (activeRow === null) return;
@@ -69,6 +68,10 @@ let writing = (() => {
                 tryTakeGuess()
             }
         });
+    }
+    const resetValues = () => {
+        document.querySelector("#guessInput").value = "";
+        activeRow = null;
     }
     return {
         setAllowedToType,
