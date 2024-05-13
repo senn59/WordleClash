@@ -1,15 +1,19 @@
-@model bool
+@model bool?
 <div class="game-end-overlay__container">
     <div class="game-end-overlay__base">
         <form method="post" id="restartForm" asp-page-handler="NewGame">
-            @if (Model)
+            @switch (Model)
             {
-                <div class="game-end-overlay__icon">&#127942;</div>
-                <h1>YOU WIN!</h1>
-            }
-            else
-            {
-                <h1>YOU LOSE!</h1>
+                case null:
+                    <h1>GAME OVER</h1>
+                    break;
+                case true:
+                    <div class="game-end-overlay__icon">&#127942;</div>
+                    <h1>YOU WIN!</h1>
+                    break;
+                default:
+                    <h1>YOU LOSE!</h1>
+                    break;
             }
             <div class="game-end-overlay__buttons">
                 <button class="btn__base btn__primary" type="submit">New Game</button>
