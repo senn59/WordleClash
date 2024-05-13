@@ -1,1 +1,20 @@
-@model WordleClash.Core.Player
+@model bool
+<div class="game-end-overlay__container">
+    <div class="game-end-overlay__base">
+        <form method="post" id="restartForm" asp-page-handler="NewGame">
+            @if (Model)
+            {
+                <div class="game-end-overlay__icon">&#127942;</div>
+                <h1>YOU WIN!</h1>
+            }
+            else
+            {
+                <h1>YOU LOSE!</h1>
+            }
+            <div class="game-end-overlay__buttons">
+                <button class="btn__base btn__primary" type="submit">New Game</button>
+                <button class="btn__base btn__danger" onclick="CloseOverlay()">Close</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -15,6 +15,7 @@ public class LobbyController
     public string Code => _lobby.Code;
     public LobbyState State { get; private set; }
     public List<GameView> Games => _gameMode.GetGames();
+    public Player? Winner => _gameMode.Players.FirstOrDefault(p => p.IsWinner == true);
 
     public LobbyController(IMultiplayerGame gameMode, string creator)
     {
