@@ -9,15 +9,29 @@
 
 @if (Model.Lobby!.State == LobbyState.PostGame)
 {
-    if (Model.Lobby.Winner == null)
-    {
-        <partial name="Shared/PostGameOverlay" model="null"/>
-    }
-    else
-    {
-        <partial name="Shared/PostGameOverlay" model="Model.ThisPlayer == Model.Lobby.Winner"/>
-    }
-    
+<div class="game-end-overlay__container">
+    <div class="game-end-overlay__base">
+        <form method="post" id="restartForm" asp-page-handler="NewGame">
+            @if (Model.Lobby.Winner == Model.ThisPlayer)
+            {
+                <div class="game-end-overlay__icon">&#127942;</div>
+            }
+            <h1>@GetPostGameText()</h1>
+
+            @if (Model.ThisPlayer?.IsOwner == true)
+            {
+                <div class="game-end-overlay__buttons">
+                    <button class="btn__base btn__primary" type="submit">New Game</button>
+                    <button class="btn__base btn__danger" onclick="CloseOverlay()">Close</button>
+                </div>
+            }
+            else
+            {
+                <p>Wait for host to start new game...</p>
+            }
+        </form>
+    </div>
+</div>
 }
 
 <div class="field__wrapper">
@@ -55,5 +69,11 @@
             return false;
         }
         return Model.ThisPlayer?.IsTurn == true;
+    }
+
+    string GetPostGameText()
+    {
+        if (Model.Lobby?.Winner == null) return "GAME OVER!";
+        return Model.Lobby.Winner == Model.ThisPlayer ? "YOU WIN!" : "YOU LOSE!";
     }
 }
