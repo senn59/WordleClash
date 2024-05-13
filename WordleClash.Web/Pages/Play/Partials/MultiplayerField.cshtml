@@ -29,18 +29,18 @@
             }
         </div>
     }
-    <input type="hidden" value="@CanType().ToString().ToLower()" id="canType"/>
+    <input type="hidden" value="@IsTurn().ToString().ToLower()" id="isTurn"/>
     <partial name="Shared/Field" model="@Model.Lobby.Games[0]"/>
 </div>
 
 @functions
 {
-    bool CanType()
+    bool IsTurn()
     {
         if (Model.Lobby?.State != LobbyState.InGame)
         {
             return false;
         }
-        return Model.ThisPlayer?.IsTurn != false;
+        return Model.ThisPlayer?.IsTurn == true;
     }
 }
