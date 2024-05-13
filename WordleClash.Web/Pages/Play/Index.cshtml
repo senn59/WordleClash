@@ -50,8 +50,7 @@
         writing = writing()
         writing.addListener()
         const getIsTurnVal = () => {
-            console.log( document.getElementById("isTurn").value);
-            return document.getElementById("canType").value;
+            return document.getElementById("isTurn").value;
         }
         writing.setAllowedToType(getIsTurnVal());
         document.addEventListener("htmx:afterSwap", function(event) {
