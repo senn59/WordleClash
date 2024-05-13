@@ -9,8 +9,8 @@ public class TestHelpers
     public static LetterFeedback[] ExtractFeedbackFromGuess(string targetWord, string guess)
     {
         var dataAccess = new MockDataAccess(targetWord, guess);
-        var wordle = new Game(dataAccess);
-        wordle.Start(6);
+        var wordle = new Game(dataAccess, 6);
+        wordle.Start();
         var res = wordle.TakeGuess(dataAccess.Guess);
         var feedback = new LetterFeedback[res.WordAnalysis.Length];
         for (var i = 0; i < res.WordAnalysis.Length; i++)
