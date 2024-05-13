@@ -48,14 +48,14 @@
     <script>
         writing = writing()
         writing.addListener()
-        const GetCanTypeVal = () => {
-            console.log( document.getElementById("canType").value);
+        const getIsTurnVal = () => {
+            console.log( document.getElementById("isTurn").value);
             return document.getElementById("canType").value;
         }
-        writing.setAllowedToType(GetCanTypeVal());
+        writing.setAllowedToType(getIsTurnVal());
         document.addEventListener("htmx:afterSwap", function(event) {
             if (event.detail.target.id === "field") {
-                writing.setAllowedToType(GetCanTypeVal())
+                writing.setAllowedToType(getIsTurnVal())
             }
         });
         window.onbeforeunload = () => {
