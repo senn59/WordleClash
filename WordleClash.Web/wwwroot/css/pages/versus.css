@@ -32,3 +32,21 @@
     font-size: 3em;
     font-weight: 900;
 }
+.versus-opponent__container {
+    margin-left: 20px;
+}
+.versus-opponent__container h2, .versus-opponent__container h3 {
+    font-weight: 900;
+}
+.opponent {
+    color: #FE4D4D;
+}
+.versus-code__container {
+    margin-top: 20px;
+}
+.versus-code__container h1 {
+   font-weight: normal; 
+}
+.versus-code__code {
+    font-weight: 900;
+}

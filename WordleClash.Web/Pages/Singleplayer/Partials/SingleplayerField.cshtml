@@ -1,5 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WordleClash.Core.Enums
+@using WordleClash.Web.Pages.Shared
 @model WordleClash.Core.GameView
 @if (Model.Status is GameStatus.Won or GameStatus.Lost)
 {
@@ -7,6 +8,6 @@
 }
 
 <div class="wordle__container">
-    <partial name="Shared/Field" model="Model"/>
+    <partial name="Shared/Field" model="@new FieldModel{ Game = Model }"/>
     <partial name="Shared/LetterOverview" model="Model.MoveHistory"/>
 </div>
