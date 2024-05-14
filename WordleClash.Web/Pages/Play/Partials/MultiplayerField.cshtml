@@ -1,5 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WordleClash.Core
 @using WordleClash.Core.Enums
+@using WordleClash.Web.Pages.Shared
 @model WordleClash.Web.Pages.Play.IndexModel
 
 @if (Model.Lobby?.State == LobbyState.InGame)
@@ -57,7 +59,7 @@
         </div>
     }
     <input type="hidden" value="@IsTurn().ToString().ToLower()" id="isTurn"/>
-    <partial name="Shared/Field" model="@Model.Lobby.Games[0]"/>
+    <partial name="Shared/Field" model="@new FieldModel{ Game = Model.Lobby.Games[0], HighlightTiles = IsTurn()}"/>
 </div>
 
 @functions

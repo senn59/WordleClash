@@ -27,11 +27,13 @@
                 hx-get="@Url.Page("/Play/Index", "Field")">
                 <partial name="Partials/MultiplayerField" model="Model"/>
             </div>
-            <h1>@Model.Lobby.Code</h1>
+            <div class="versus-code__container">
+                <h1>CODE: <span class="versus-code__code">@Model.Lobby.Code</span></h1>
+            </div>
         </div>
         <div class="grid__right">
-            <h2>Opponent</h2>
             <div
+                class="versus-opponent__container"
                 hx-trigger="sse:PlayerUpdate/@Model.Lobby.Code"
                 hx-get="@Url.Page("/Play/Index", "Opponent")">
                 <partial name="Partials/Opponent" model="@Model.GetOpponent()"/>
