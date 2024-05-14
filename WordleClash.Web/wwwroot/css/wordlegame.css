@@ -16,6 +16,9 @@
     font-weight: bolder;
     outline: var(--tile-outline-size) solid black;
 }
+.wordle__tile-highlight {
+    outline-color: #104FF1;
+}
 
 .wordle__tile.IncorrectLetter { background: var(--incorrect-letter) }
 .wordle__tile.CorrectPosition { background: var(--correct-position) }

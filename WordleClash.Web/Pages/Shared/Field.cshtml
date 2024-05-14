@@ -1,12 +1,12 @@
-@model WordleClash.Core.GameView
+@model WordleClash.Web.Pages.Shared.FieldModel
 
 <div class="wordle__base">
-    @for (var i = 0; i < Model.MaxTries; i++)
+    @for (var i = 0; i < Model.Game.MaxTries; i++)
     {
         <div class="wordle__row">
-            @if (i < Model.MoveHistory.Count && Model.MoveHistory.Count > 0)
+            @if (i < Model.Game.MoveHistory.Count && Model.Game.MoveHistory.Count > 0)
             {
-                @foreach (var lr in Model.MoveHistory[i].WordAnalysis)
+                @foreach (var lr in Model.Game.MoveHistory[i].WordAnalysis)
                 {
                     <div class="wordle__tile @lr.Feedback">@lr.Letter</div>
                 }
@@ -15,7 +15,14 @@
             {
                 @for (var j = 0; j < 5; j++)
                 {
-                    <div class="wordle__tile"></div>
+                    if (i == Model.Game.MoveHistory.Count && Model.HighlightTiles)
+                    {
+                        <div class="wordle__tile wordle__tile-highlight"></div>
+                    }
+                    else
+                    {
+                        <div class="wordle__tile"></div>
+                    }
                 }
             }
         </div>
