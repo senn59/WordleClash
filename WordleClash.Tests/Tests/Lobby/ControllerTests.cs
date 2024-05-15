@@ -55,7 +55,7 @@ public class ControllerTests
         var turnHolderTurnOne = lobby.Players.First(p => p.IsTurn == true);
         lobby.HandleGuess(turnHolderTurnOne, dataAccess.TargetWord);
         Assert.That(lobby.State, Is.EqualTo(LobbyState.PostGame));
-        lobby.RestartGame();
-        Assert.That(lobby.State, Is.EqualTo(LobbyState.InGame));
+        lobby.Restart();
+        Assert.That(lobby.State, Is.EqualTo(LobbyState.InLobby));
     }
 }
