@@ -41,6 +41,9 @@
 .opponent {
     color: #FE4D4D;
 }
+.you {
+    color: #104FF1;
+}
 .versus-code__container {
     margin-top: 20px;
 }
@@ -50,3 +53,12 @@
 .versus-code__code {
     font-weight: 900;
 }
+.game-turn-info__container {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.game-turn-info__container .you, .game-turn-info__container .opponent {
+    font-weight: 900;
+}
+
