@@ -61,4 +61,8 @@
 .game-turn-info__container .you, .game-turn-info__container .opponent {
     font-weight: 900;
 }
+.wordle__tile {
+    margin: calc(var(--tile-spacing) + 5px);
+    outline: 5px solid black;
+}
 
