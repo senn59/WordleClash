@@ -103,11 +103,10 @@ public class Versus: IMultiplayerGame
         }
     }
 
-    public void RestartGame()
+    public void Restart()
     {
         if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
         _game = new Game(_dataAccess, MaxTries);
-        StartGame();
     }
 
     public List<GameView> GetGames()

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
+using WordleClash.Core.Enums;
 using WordleClash.Web.Services;
 using Exception = System.Exception;
 
@@ -34,7 +35,10 @@ public class IndexModel : PageModel
 
     public async void OnPostStartGame()
     {
-        if (_playerId == null || Lobby == null || ThisPlayer?.IsOwner != true) return;
+        if (_playerId == null || Lobby == null || ThisPlayer?.IsOwner != true)
+        {
+            return;
+        }
         try
         {
             Lobby.StartGame();
@@ -43,6 +47,16 @@ public class IndexModel : PageModel
         {
             _logger.LogCritical($"{e.Message} thrown while trying to start game");
         }
+        await _serverEvents.UpdateField(Lobby.Code);
+    }
+
+    public async void OnPostNewGame()
+    {
+        if (_playerId == null || Lobby == null || ThisPlayer?.IsOwner != true || Lobby.State != LobbyState.PostGame)
+        {
+            return;
+        }
+        Lobby.Restart();
         await _serverEvents.UpdateField(Lobby.Code);
     }
 

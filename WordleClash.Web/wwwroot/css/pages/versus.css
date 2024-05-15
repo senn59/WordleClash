@@ -63,6 +63,6 @@
 }
 .wordle__tile {
     margin: calc(var(--tile-spacing) + 5px);
-    outline: 5px solid black;
+    outline-width: 5px;
 }
 

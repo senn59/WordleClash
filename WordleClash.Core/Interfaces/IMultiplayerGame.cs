@@ -10,5 +10,5 @@ public interface IMultiplayerGame
     GuessResult HandleGuess(Player player, string guess);
     void SetPlayers(IReadOnlyList<Player> players);
     public List<GameView> GetGames();
-    void RestartGame();
+    void Restart();
 }

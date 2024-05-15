@@ -56,13 +56,14 @@ public class LobbyController
         }
         catch (Exception e) when (e is TooFewPlayersException or TooManyPlayersException)
         {
+            _gameMode.Restart();
             State = LobbyState.PostGame;
         }
     }
 
-    public void RestartGame()
+    public void Restart()
     {
-        _gameMode.RestartGame();
-        State = LobbyState.InGame;
+        _gameMode.Restart();
+        State = LobbyState.InLobby;
     }
 }
