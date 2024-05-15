@@ -6,7 +6,17 @@
 
 @if (Model.Lobby?.State == LobbyState.InGame)
 {
-    <div>(@(Model.ThisPlayer?.IsTurn == true ? "Your" : "Opponents") turn)</div>
+    <div class="game-turn-info__container">
+        @if (@Model.ThisPlayer?.IsTurn == true)
+        {
+            <span class="you">Your</span>
+        }
+        else
+        {
+            <span class="opponent">Opponent's</span>
+        }
+        turn
+    </div>
 }
 
 @if (Model.Lobby!.State == LobbyState.PostGame)
