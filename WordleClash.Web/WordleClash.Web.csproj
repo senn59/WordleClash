@@ -57,9 +57,15 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
+      <_ContentIncludedByDefault Remove="Pages\Partials\Field.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Partials\LetterOverview.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Partials\MultiplayerField.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Partials\Opponent.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Partials\Players.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Models\" />
       <Folder Include="wwwroot\lib\" />
     </ItemGroup>
 

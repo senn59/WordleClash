@@ -14,6 +14,8 @@ public class LobbyController
     public int RequiredPlayers => _gameMode.RequiredPlayers;
     public string Code => _lobby.Code;
     public LobbyState State { get; private set; }
+    public List<GameView> Games => _gameMode.GetGames();
+    public Player? Winner => _gameMode.Players.FirstOrDefault(p => p.IsWinner == true);
 
     public LobbyController(IMultiplayerGame gameMode, string creator)
     {
@@ -54,14 +56,14 @@ public class LobbyController
         }
         catch (Exception e) when (e is TooFewPlayersException or TooManyPlayersException)
         {
+            _gameMode.Restart();
             State = LobbyState.PostGame;
-            throw;
         }
     }
 
-    public void RestartGame()
+    public void Restart()
     {
-        _gameMode.RestartGame();
-        State = LobbyState.InGame;
+        _gameMode.Restart();
+        State = LobbyState.InLobby;
     }
 }

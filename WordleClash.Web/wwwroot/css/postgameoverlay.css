@@ -8,6 +8,8 @@
     align-items: center;
     flex-direction: column;
     z-index: 98;
+    top: 0;
+    left: 0;
 }
 .game-end-overlay__base form {
     position: relative;
@@ -18,6 +20,11 @@
 .game-end-overlay__container h1 {
     font-weight: 900;
     font-size: 6.5em;
+    color: black;
+}
+.game-end-overlay__container p {
+    font-weight: 600;
+    font-size: 2em;
     color: black;
 }
 .game-end-overlay__icon {

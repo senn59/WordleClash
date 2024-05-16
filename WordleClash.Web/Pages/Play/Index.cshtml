@@ -1,27 +1,65 @@
 @page "{code}"
 @model WordleClash.Web.Pages.Play.IndexModel
-
 @{
     Layout = "Shared/_Layout";
 }
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/wordlegame.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/postgameoverlay.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/pages/versus.css" asp-append-version="true"/>
+}
+
 <div class="page__container">
-    <h1>@Model.Code</h1>
-    <div>
-        <h2>@Model.Players.Count</h2>
-        <div hx-sse="connect:/updates">
+    <div class="grid__container" hx-sse="connect:/updates">
+        <div class="grid__left">
+        </div>
+        <div class="grid__middle">
             <div
-                hx-trigger="sse:PlayerUpdate/@Model.Code"
-                hx-get="@Url.Page("/Play/Index", "Players")"
-            >
-                <partial name="Players" model="Model.Players"/>
+                hx-trigger="sse:PlayerUpdate/@Model.Lobby!.Code"
+                hx-get="@Url.Page("/Play/Index", "Field")"
+                hx-target="#field">
             </div>
+            <div
+                id="field"
+                hx-trigger="sse:FieldUpdate/@Model.Lobby.Code"
+                hx-get="@Url.Page("/Play/Index", "Field")">
+                <partial name="Partials/MultiplayerField" model="Model"/>
+            </div>
+            <div class="versus-code__container">
+                <h1>CODE: <span class="versus-code__code">@Model.Lobby.Code</span></h1>
+            </div>
+        </div>
+        <div class="grid__right">
+            <div
+                class="versus-opponent__container"
+                hx-trigger="sse:PlayerUpdate/@Model.Lobby.Code"
+                hx-get="@Url.Page("/Play/Index", "Opponent")">
+                <partial name="Partials/Opponent" model="@Model.GetOpponent()"/>
+            </div>
+            <form method="post" id="guessForm" hx-post="" hx-swap="none">
+                <input type="hidden" id="guessInput" name="Guess"/>
+            </form>
         </div>
     </div>
 </div>
 
 @section Scripts
 {
+    <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>
     <script>
+        writing = writing()
+        writing.addListener()
+        const getIsTurnVal = () => {
+            return document.getElementById("isTurn").value;
+        }
+        writing.setAllowedToType(getIsTurnVal());
+        document.addEventListener("htmx:afterSwap", function(event) {
+            if (event.detail.target.id === "field") {
+                writing.setAllowedToType(getIsTurnVal())
+            }
+        });
         window.onbeforeunload = () => {
             return true;
         }
