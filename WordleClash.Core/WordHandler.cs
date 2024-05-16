@@ -14,11 +14,9 @@ public class WordHandler
         Word = _dataAccess.GetRandomWord().ToUpper();
     }
     
-    
     public LetterResult[] GetFeedback(string guessedWord)
     {
         var feedbackList = new LetterResult[Word.Length];
-
         for (int i = 0; i < guessedWord.Length; i++)
         {
             LetterFeedback feedback;
@@ -43,7 +41,6 @@ public class WordHandler
                 Feedback = feedback
             };
         }
-
         return feedbackList;
     }
     
@@ -56,7 +53,6 @@ public class WordHandler
             occurences.Add(index);
             index = Word.IndexOf(letter, index + 1);
         }
-
         return occurences;
     }
     
