@@ -1,0 +1,91 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WordleClash.Core
+@using WordleClash.Core.Enums
+@using WordleClash.Web.Pages.Shared
+@model WordleClash.Web.Pages.Play.IndexModel
+
+@if (Model.Lobby?.State == LobbyState.InGame)
+{
+    <div class="game-turn-info__container">
+        @if (@Model.ThisPlayer?.IsTurn == true)
+        {
+            <span class="you">Your</span>
+        }
+        else
+        {
+            <span class="opponent">Opponent's</span>
+        }
+        turn
+    </div>
+}
+
+@if (Model.Lobby!.State == LobbyState.PostGame)
+{
+<div class="game-end-overlay__container">
+    <div class="game-end-overlay__base">
+        <form method="post" id="restartForm" hx-post="@Url.Page("", "NewGame")" hx-swap="none">
+            @if (Model.Lobby.Winner == Model.ThisPlayer)
+            {
+                <div class="game-end-overlay__icon">&#127942;</div>
+            }
+            <h1>@GetPostGameText()</h1>
+
+            @if (Model.ThisPlayer?.IsOwner == true)
+            {
+                <div class="game-end-overlay__buttons">
+                    <button class="btn__base btn__primary" type="submit">New Game</button>
+                    <button class="btn__base btn__danger" onclick="CloseOverlay()">Close</button>
+                </div>
+            }
+            else
+            {
+                <p>Wait for host to start new game...</p>
+            }
+        </form>
+    </div>
+</div>
+}
+
+<div class="field__wrapper">
+    @if (Model.Lobby.State == LobbyState.InLobby)
+    {
+        <div class="field-await__container">
+            @if (Model.Lobby.Players.Count == Model.Lobby.RequiredPlayers)
+            {
+                <h1>Wait for start</h1>
+                @if (Model.ThisPlayer?.IsOwner == true)
+                {
+                    <form method="post" hx-post="@Url.Page("", "StartGame")" hx-swap="none">
+                        <button class="btn__base btn__primary" type="submit">
+                            Start game
+                        </button>
+                    </form>
+                }
+            }
+            else
+            {
+                <h1>Wait for opponent</h1>
+            }
+        </div>
+    }
+    <input type="hidden" value="@IsTurn().ToString().ToLower()" id="isTurn"/>
+    <partial name="Shared/Field" model="@new FieldModel{ Game = Model.Lobby.Games[0], HighlightTiles = IsTurn()}"/>
+</div>
+
+@functions
+{
+    bool IsTurn()
+    {
+        if (Model.Lobby?.State != LobbyState.InGame)
+        {
+            return false;
+        }
+        return Model.ThisPlayer?.IsTurn == true;
+    }
+
+    string GetPostGameText()
+    {
+        if (Model.Lobby?.Winner == null) return "GAME OVER!";
+        return Model.Lobby.Winner == Model.ThisPlayer ? "YOU WIN!" : "YOU LOSE!";
+    }
+}

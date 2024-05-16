@@ -8,24 +8,24 @@ public class Game
 {
     private readonly WordHandler _wordHandler;
     
-    public int MaxTries { get; private set; }
+    public int MaxTries { get; private init; }
     public int Tries { get; private set; }
     private readonly List<GuessResult> _moveHistory = [];
     public IReadOnlyList<GuessResult> MoveHistory => _moveHistory;
     public GameStatus Status { get; private set; } = GameStatus.AwaitStart;
 
-    public Game(IDataAccess dataAccess)
+    public Game(IDataAccess dataAccess, int maxTries)
     {
+        MaxTries = maxTries;
         _wordHandler = new WordHandler(dataAccess);
     }
     
-    public void Start(int maxTries)
+    public void Start()
     {
         if (Status != GameStatus.AwaitStart)
         {
             throw new GameAlreadyStartedException();
         }
-        MaxTries = maxTries;
         Status = GameStatus.InProgress;
     }
 

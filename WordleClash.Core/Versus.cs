@@ -18,13 +18,13 @@ public class Versus: IMultiplayerGame
     public Versus(IDataAccess dataAccess)
     {
         _dataAccess = dataAccess;
-       _game = new Game(dataAccess);
+       _game = new Game(dataAccess, MaxTries);
     }
     
     public void StartGame()
     {
         ValidatePlayers();
-        _game.Start(MaxTries);
+        _game.Start();
         SetFirstTurn();
     }
 
@@ -103,10 +103,14 @@ public class Versus: IMultiplayerGame
         }
     }
 
-    public void RestartGame()
+    public void Restart()
     {
         if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
-        _game = new Game(_dataAccess);
-        StartGame();
+        _game = new Game(_dataAccess, MaxTries);
+    }
+
+    public List<GameView> GetGames()
+    {
+        return [GameView.FromGame(_game)];
     }
 }
