@@ -60,7 +60,7 @@ public class VersusModeTests
     }
     
     [Test]
-    public void TakingTurns()
+    public void PlayCompleteGame()
     {
         var dataAccess = new MockDataAccess("abcde", "fghij");
         var game = new Versus(dataAccess);
@@ -85,6 +85,7 @@ public class VersusModeTests
         {
             Assert.That(turnHolderTurnTwo.Id, Is.Not.EqualTo(turnHolderTurnOne.Id));
             Assert.That(turnHolderTurnThree.Id, Is.EqualTo(turnHolderTurnOne.Id));
+            Assert.That(turnHolderTurnThree.IsWinner, Is.EqualTo(true));
         });
     }
     
@@ -128,6 +129,17 @@ public class VersusModeTests
     [Test]
     public void WinnerAssigned()
     {
-        throw new NotImplementedException();
+        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var game = new Versus(dataAccess);
+        var players = new List<Player>()
+        {
+            new Player { Name = "player1" },
+            new Player { Name = "player2" }
+        };
+        var invalidPlayer = new Player { Name = "Player3" };
+        
+        game.SetPlayers(players);
+        game.StartGame();
+        Assert.Throws<InvalidPlayerException>( () => game.HandleGuess(invalidPlayer, dataAccess.Guess));
     }
 }
