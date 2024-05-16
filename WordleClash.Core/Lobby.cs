@@ -9,7 +9,7 @@ public class Lobby
     
     public int MaxPlayers { get; private init; }
 
-    public string Code {get; private set; }
+    public string Code {get; private init; }
     public IReadOnlyList<Player> Players => _players.AsReadOnly();
 
     public Lobby(string creator, int maxPlayers)

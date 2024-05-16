@@ -27,7 +27,7 @@ public class LobbyController
     public void StartGame()
     {
         _gameMode.SetPlayers(Players);
-        _gameMode.StartGame();
+        _gameMode.Start();
         State = LobbyState.InGame;
     }
 

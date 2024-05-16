@@ -7,7 +7,7 @@ public class GameView
     public int Tries { get; set; }
     public int MaxTries { get; set; }
     public GameStatus Status { get; set; }
-    public IReadOnlyList<GuessResult> MoveHistory { get; set; }
+    public IReadOnlyList<GuessResult> GuessHistory { get; set; }
     public static GameView FromGame(Game game)
     {
         return new GameView()
@@ -15,7 +15,7 @@ public class GameView
             Tries = game.Tries,
             MaxTries = game.MaxTries,
             Status = game.Status,
-            MoveHistory = game.MoveHistory
+            GuessHistory = game.GuessHistory
         };
     }
 }
