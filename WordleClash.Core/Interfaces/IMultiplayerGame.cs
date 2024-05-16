@@ -6,7 +6,7 @@ public interface IMultiplayerGame
     int RequiredPlayers { get; }
     IReadOnlyList<Player> Players { get; }
 
-    void StartGame();
+    void Start();
     GuessResult HandleGuess(Player player, string guess);
     void SetPlayers(IReadOnlyList<Player> players);
     public List<GameView> GetGames();
