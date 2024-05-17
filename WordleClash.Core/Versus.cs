@@ -7,7 +7,7 @@ namespace WordleClash.Core;
 public class Versus: IMultiplayerGame
 {
     private const int MaxTries = 9;
-    private IDataAccess _dataAccess;
+    private readonly IDataAccess _dataAccess;
     private Game _game;
 
     public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
@@ -64,7 +64,6 @@ public class Versus: IMultiplayerGame
         foreach (var player in Players)
         {
             player.IsTurn = !player.IsTurn;
-
         }
     }
 

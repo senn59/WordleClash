@@ -4,10 +4,10 @@ namespace WordleClash.Core;
 
 public class GameView
 {
-    public int Tries { get; set; }
-    public int MaxTries { get; set; }
-    public GameStatus Status { get; set; }
-    public IReadOnlyList<GuessResult> GuessHistory { get; set; }
+    public int Tries { get; init; }
+    public int MaxTries { get; init; }
+    public GameStatus Status { get; init; }
+    public IReadOnlyList<GuessResult> GuessHistory { get; init; } = [];
     public static GameView FromGame(Game game)
     {
         return new GameView()

@@ -5,7 +5,7 @@ namespace WordleClash.Core;
 
 public class GameService
 {
-    private readonly ConcurrentDictionary<string, Game> _games = new ConcurrentDictionary<string, Game>();
+    private readonly ConcurrentDictionary<string, Game> _games = new();
     private readonly IDataAccess _dataAccess;
 
     public GameService(IDataAccess dataAccess)

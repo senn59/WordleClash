@@ -59,10 +59,10 @@ public class Game
             Status = GameStatus.InProgress;
         }
 
-        var result = new GuessResult()
+        var result = new GuessResult
         {
             Status = Status,
-            WordAnalysis = _wordHandler.GetFeedback(input),
+            WordAnalysis = _wordHandler.GetFeedback(input)
         };
         
         _guessHistory.Add(result);

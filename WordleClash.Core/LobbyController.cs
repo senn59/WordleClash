@@ -6,8 +6,8 @@ namespace WordleClash.Core;
 
 public class LobbyController
 {
-    private Lobby _lobby;
-    private IMultiplayerGame _gameMode;
+    private readonly Lobby _lobby;
+    private readonly IMultiplayerGame _gameMode;
     
     public IReadOnlyList<Player> Players => _lobby.Players;
     public int MaxPlayers => _gameMode.MaxPlayers;
