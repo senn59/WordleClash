@@ -9,6 +9,6 @@ public interface IMultiplayerGame
     void Start();
     GuessResult HandleGuess(Player player, string guess);
     void SetPlayers(IReadOnlyList<Player> players);
-    public List<GameView> GetGames();
+    public List<GameModel> GetGames();
     void Restart();
 }
