@@ -7,13 +7,13 @@ namespace WordleClash.Core;
 public class Versus: IMultiplayerGame
 {
     private const int MaxTries = 9;
-    private IDataAccess _dataAccess;
+    private readonly IDataAccess _dataAccess;
     private Game _game;
 
     public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
     
-    public int MaxPlayers { get; private init; } = 2;
-    public int RequiredPlayers { get; private init; } = 2;
+    public int MaxPlayers => 2;
+    public int RequiredPlayers => 2;
 
     public Versus(IDataAccess dataAccess)
     {
@@ -21,7 +21,7 @@ public class Versus: IMultiplayerGame
        _game = new Game(dataAccess, MaxTries);
     }
     
-    public void StartGame()
+    public void Start()
     {
         ValidatePlayers();
         _game.Start();
@@ -45,7 +45,7 @@ public class Versus: IMultiplayerGame
         {
             player.IsWinner = true;
         }
-        SetNextTurn(player);
+        SetNextTurn();
         return guessResult;
     }
 
@@ -58,20 +58,13 @@ public class Versus: IMultiplayerGame
         Players = players;
     }
 
-    private void SetNextTurn(Player player)
+    private void SetNextTurn()
     {
-        var playerIndex = Players.ToList().IndexOf(player);
-        int nextPlayerIndex;
-        if (playerIndex == Players.Count - 1)
+        //only works when we make the assumption that there are only 2 players
+        foreach (var player in Players)
         {
-            nextPlayerIndex = 0;
+            player.IsTurn = !player.IsTurn;
         }
-        else
-        {
-            nextPlayerIndex = playerIndex + 1;
-        }
-        ResetTurnState();
-        Players[nextPlayerIndex].IsTurn = true;
     }
 
     private void SetFirstTurn()
