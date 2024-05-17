@@ -5,7 +5,7 @@ namespace WordleClash.Core;
 public class Lobby
 {
     private const int CodeLength = 6;
-    private List<Player> _players = new List<Player>();
+    private readonly List<Player> _players = [];
     
     public int MaxPlayers { get; private init; }
 
@@ -49,10 +49,10 @@ public class Lobby
 
     private string GenerateCode()
     {
-        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        char[] codeArr = new char[CodeLength];
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var codeArr = new char[CodeLength];
         var r = new Random();
-        for (int i = 0; i < CodeLength; i++)
+        for (var i = 0; i < CodeLength; i++)
         {
             codeArr[i] = chars[r.Next(chars.Length)];
         }
