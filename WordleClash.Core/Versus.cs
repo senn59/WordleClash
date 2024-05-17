@@ -102,8 +102,8 @@ public class Versus: IMultiplayerGame
         _game = new Game(_dataAccess, MaxTries);
     }
 
-    public List<GameView> GetGames()
+    public List<GameModel> GetGames()
     {
-        return [GameView.FromGame(_game)];
+        return [GameModel.FromGame(_game)];
     }
 }
