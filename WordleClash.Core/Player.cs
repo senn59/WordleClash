@@ -4,9 +4,9 @@ namespace WordleClash.Core;
 
 public class Player
 {
-    public string Id { get; set; }
+    public string Id { get; }
     public bool IsOwner { get; set; }
-    public required string Name { get; set; }
+    public required string Name { get; init; }
     public Color Color { get; set; }
     public bool? IsTurn { get; set; }
     public bool? IsWinner { get; set; }
