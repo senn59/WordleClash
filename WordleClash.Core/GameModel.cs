@@ -2,15 +2,15 @@ using WordleClash.Core.Enums;
 
 namespace WordleClash.Core;
 
-public class GameView
+public class GameModel
 {
     public int Tries { get; init; }
     public int MaxTries { get; init; }
     public GameStatus Status { get; init; }
     public IReadOnlyList<GuessResult> GuessHistory { get; init; } = [];
-    public static GameView FromGame(Game game)
+    public static GameModel FromGame(Game game)
     {
-        return new GameView()
+        return new GameModel()
         {
             Tries = game.Tries,
             MaxTries = game.MaxTries,

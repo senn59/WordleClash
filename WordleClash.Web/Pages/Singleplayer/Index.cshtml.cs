@@ -17,7 +17,7 @@ public class SingleplayerModel : PageModel
     [BindProperty] public string Guess { get; set; }
     [BindProperty] public bool NewGame { get; set; }
     
-    public GameView Game { get; set; }
+    public GameModel Game { get; set; }
     
     
     public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionService sessionService)
@@ -35,7 +35,7 @@ public class SingleplayerModel : PageModel
         {
             wordle.Start();
         }
-        Game = GameView.FromGame(wordle);
+        Game = GameModel.FromGame(wordle);
         _logger.LogInformation($"Got game {id}");
     }
 
@@ -60,6 +60,6 @@ public class SingleplayerModel : PageModel
         {
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
         }
-        return Partial("Partials/SingleplayerField", GameView.FromGame(wordle));
+        return Partial("Partials/SingleplayerField", GameModel.FromGame(wordle));
     }
 }
