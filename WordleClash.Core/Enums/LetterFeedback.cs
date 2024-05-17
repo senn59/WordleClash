@@ -4,5 +4,5 @@ public enum LetterFeedback
 {
     CorrectPosition,
     IncorrectPosition,
-    IncorrectLetter,
+    IncorrectLetter
 }

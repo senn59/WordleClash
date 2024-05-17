@@ -11,7 +11,7 @@ public class VersusModeTests
     {
         var dataAccess = new MockDataAccess("abcde", "fghij");
         var game = new Versus(dataAccess);
-        Assert.Throws<TooFewPlayersException>(() => game.StartGame());
+        Assert.Throws<TooFewPlayersException>(() => game.Start());
     }
 
     [Test]
@@ -25,8 +25,8 @@ public class VersusModeTests
         var dataAccess = new MockDataAccess("abcde", "fghij");
         var game = new Versus(dataAccess);
         game.SetPlayers(players);
-        game.StartGame();
-        Assert.Throws<GameAlreadyStartedException>(() => game.StartGame());
+        game.Start();
+        Assert.Throws<GameAlreadyStartedException>(() => game.Start());
     }
     
     [Test]
@@ -41,7 +41,7 @@ public class VersusModeTests
         var dataAccess = new MockDataAccess("abcde", "fghij");
         var game = new Versus(dataAccess);
         game.SetPlayers(players);
-        Assert.Throws<TooManyPlayersException>(() => game.StartGame());
+        Assert.Throws<TooManyPlayersException>(() => game.Start());
     }
     
     [Test]
@@ -55,7 +55,7 @@ public class VersusModeTests
         var dataAccess = new MockDataAccess("abcde", "fghij");
         var game = new Versus(dataAccess);
         game.SetPlayers(players);
-        game.StartGame();
+        game.Start();
         Assert.Pass();
     }
     
@@ -71,7 +71,7 @@ public class VersusModeTests
         };
         
         game.SetPlayers(players);
-        game.StartGame();
+        game.Start();
 
         var turnHolderTurnOne = TestHelpers.GetTurnHolder(game);
         game.HandleGuess(turnHolderTurnOne, dataAccess.Guess);
@@ -101,7 +101,7 @@ public class VersusModeTests
         };
         
         game.SetPlayers(players);
-        game.StartGame();
+        game.Start();
 
         var turnHolder = TestHelpers.GetTurnHolder(game);
         game.HandleGuess(turnHolder, dataAccess.Guess);
@@ -121,7 +121,7 @@ public class VersusModeTests
         var invalidPlayer = new Player { Name = "Player3" };
         
         game.SetPlayers(players);
-        game.StartGame();
+        game.Start();
 
         Assert.Throws<InvalidPlayerException>( () => game.HandleGuess(invalidPlayer, dataAccess.Guess));
     }
@@ -139,7 +139,7 @@ public class VersusModeTests
         var invalidPlayer = new Player { Name = "Player3" };
         
         game.SetPlayers(players);
-        game.StartGame();
+        game.Start();
         Assert.Throws<InvalidPlayerException>( () => game.HandleGuess(invalidPlayer, dataAccess.Guess));
     }
 }

@@ -10,8 +10,8 @@ public class Game
     
     public int MaxTries { get; private init; }
     public int Tries { get; private set; }
-    private readonly List<GuessResult> _moveHistory = [];
-    public IReadOnlyList<GuessResult> MoveHistory => _moveHistory;
+    private readonly List<GuessResult> _guessHistory = [];
+    public IReadOnlyList<GuessResult> GuessHistory => _guessHistory.AsReadOnly();
     public GameStatus Status { get; private set; } = GameStatus.AwaitStart;
 
     public Game(IDataAccess dataAccess, int maxTries)
@@ -59,13 +59,13 @@ public class Game
             Status = GameStatus.InProgress;
         }
 
-        var result = new GuessResult()
+        var result = new GuessResult
         {
             Status = Status,
-            WordAnalysis = _wordHandler.GetFeedback(input),
+            WordAnalysis = _wordHandler.GetFeedback(input)
         };
         
-        _moveHistory.Add(result);
+        _guessHistory.Add(result);
         return result;
     }
 
