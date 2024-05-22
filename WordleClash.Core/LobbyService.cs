@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Caching.Memory;
 using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Core;
@@ -7,15 +8,23 @@ public class LobbyService
 {
     private readonly ConcurrentDictionary<string, LobbyController> _lobbies = new();
     private readonly IDataAccess _dataAccess;
+    private readonly IMemoryCache _cache;
 
-    public LobbyService(IDataAccess dataAccess)
+    public LobbyService(IDataAccess dataAccess, IMemoryCache cache)
     {
         _dataAccess = dataAccess;
+        _cache = cache;
     }
 
     public PlayerLobbyInfo CreateVersusLobby(string name)
     {
         var lobby = new LobbyController(new Versus(_dataAccess), name);
+        _cache.Set(lobby.Code, lobby);
+        return new PlayerLobbyInfo
+        {
+            LobbyCode = lobby.Code,
+            PlayerId = lobby.Players[0].Id
+        };
         if (_lobbies.TryAdd(lobby.Code, lobby))
         {
             return new PlayerLobbyInfo
@@ -30,7 +39,7 @@ public class LobbyService
 
     public bool LobbyExists(string code)
     {
-        return _lobbies.ContainsKey(code);
+        return _cache.TryGetValue<LobbyController>(code, out _);
     }
 
     public LobbyController? GetLobbyByPlayerId(string playerId)
@@ -74,6 +83,8 @@ public class LobbyService
     
     private LobbyController? GetLobby(string id)
     {
+         _cache.TryGetValue<LobbyController>(id, out var lobby);
+         return lobby;
         return _lobbies.GetValueOrDefault(id);
     }
 
@@ -84,6 +95,7 @@ public class LobbyService
 
     private PlayerLobbyInfo? GetPlayerInfo(string playerId)
     {
+        
         foreach (var lobby in _lobbies)
         {
             if (lobby.Value.Players.FirstOrDefault(p => p.Id == playerId) != null)
