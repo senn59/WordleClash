@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using Microsoft.Extensions.Caching.Memory;
 using WordleClash.Core.Interfaces;
 
@@ -6,7 +5,6 @@ namespace WordleClash.Core;
 
 public class LobbyService
 {
-    private readonly ConcurrentDictionary<string, LobbyController> _lobbies = new();
     private readonly IDataAccess _dataAccess;
     private readonly IMemoryCache _cache;
 
@@ -25,16 +23,6 @@ public class LobbyService
             LobbyCode = lobby.Code,
             PlayerId = lobby.Players[0].Id
         };
-        if (_lobbies.TryAdd(lobby.Code, lobby))
-        {
-            return new PlayerLobbyInfo
-            {
-                LobbyCode = lobby.Code,
-                PlayerId = lobby.Players[0].Id
-            };
-        }
-
-        throw new Exception("Could not create lobby");
     }
 
     public bool LobbyExists(string code)
@@ -42,26 +30,15 @@ public class LobbyService
         return _cache.TryGetValue<LobbyController>(code, out _);
     }
 
-    public LobbyController? GetLobbyByPlayerId(string playerId)
+    public string HandleLobbyLeave(PlayerLobbyInfo playerInfo)
     {
-        var lobby = GetPlayerInfo(playerId)?.LobbyCode;
-        return lobby == null ? null : GetLobby(lobby);
-    }
-
-    public string HandleLobbyLeave(string playerId)
-    {
-        var lobbyPlayer = GetPlayerInfo(playerId);
-        if (lobbyPlayer == null) return "";
-        
-        var lobby = GetLobby(lobbyPlayer.LobbyCode);
+        var lobby = GetLobby(playerInfo.LobbyCode);
         if (lobby == null) return "";
-        
-        lobby.RemovePlayerById(playerId);
+        lobby.RemovePlayerById(playerInfo.PlayerId);
         if (lobby.Players.Count == 0)
         {
             DiscardLobby(lobby.Code);
         }
-
         return lobby.Code;
     }
 
@@ -80,34 +57,20 @@ public class LobbyService
             PlayerId = player.Id
         };
     }
+
+    public LobbyController? GetPlayerLobby(PlayerLobbyInfo playerInfo)
+    {
+        return GetLobby(playerInfo.LobbyCode);
+    }
     
     private LobbyController? GetLobby(string id)
     {
          _cache.TryGetValue<LobbyController>(id, out var lobby);
          return lobby;
-        return _lobbies.GetValueOrDefault(id);
     }
 
     private void DiscardLobby(string id)
     {
-        _lobbies.Remove(id, out _);
+        _cache.Remove(id);
     }
-
-    private PlayerLobbyInfo? GetPlayerInfo(string playerId)
-    {
-        
-        foreach (var lobby in _lobbies)
-        {
-            if (lobby.Value.Players.FirstOrDefault(p => p.Id == playerId) != null)
-            {
-                return new PlayerLobbyInfo
-                {
-                    LobbyCode = lobby.Key,
-                    PlayerId = playerId
-                };
-            }
-        }
-        return null;
-    }
-
 }

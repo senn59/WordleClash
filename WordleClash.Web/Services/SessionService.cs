@@ -1,9 +1,12 @@
+using WordleClash.Core;
+
 namespace WordleClash.Web.Services;
 
 public class SessionService
 {
     private const string GameSessionKey = "_Game";
     private const string Player = "_Player";
+    private const string Lobby = "_Lobby";
     
     private readonly ISession _session;
     private ILogger<SessionService> _logger;
@@ -37,15 +40,26 @@ public class SessionService
     {
         return _session.GetString(GameSessionKey);
     }
-    
-    public string? GetPlayerId()
+
+    public void SetPlayerInfo(PlayerLobbyInfo info)
     {
-        return _session.GetString(Player);
+        _session.SetString(Player, info.PlayerId);
+        _session.SetString(Lobby, info.LobbyCode);
     }
 
-    public void SetPlayerId(string playerId)
+    public PlayerLobbyInfo? GetPlayerInfo()
     {
-        _session.SetString(Player, playerId);
+        var player = _session.GetString(Player);
+        var lobby = _session.GetString(Lobby);
+        if (player == null || lobby == null)
+        {
+            return null;
+        }
+        return new PlayerLobbyInfo()
+        {
+            PlayerId = player,
+            LobbyCode = lobby
+        };
     }
 
     public void RemovePlayerSession()
