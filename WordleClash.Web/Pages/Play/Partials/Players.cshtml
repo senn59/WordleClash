@@ -4,6 +4,6 @@
 <div>
 @foreach (var player in Model)
 {
-    <h2>@player.Id | @player.Name @(player.Id != SessionService.GetPlayerId() ? "" : "You")</h2>
+    <h2>@player.Id | @player.Name @(player.Id != SessionService.GetPlayerInfo()?.PlayerId ? "" : "You")</h2>
 }
 </div>
