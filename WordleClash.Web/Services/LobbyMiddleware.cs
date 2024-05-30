@@ -13,14 +13,14 @@ public class LobbyMiddleware
 
     public async Task InvokeAsync(HttpContext context, SessionService sessionService, LobbyService lobbyService, ServerEvents events)
     {
-        var playerId = sessionService.GetPlayerId();
+        var playerInfo = sessionService.GetPlayerInfo();
         List<string> whiteListedPaths = new() { "/Play/", "/updates" };
-        if (whiteListedPaths.Any(context.Request.Path.Value!.Contains) || playerId == null)
+        if (whiteListedPaths.Any(context.Request.Path.Value!.Contains) || playerInfo == null)
         {
             await _next(context);
             return;
         }
-        var code = lobbyService.HandleLobbyLeave(playerId);
+        var code = lobbyService.HandleLobbyLeave(playerInfo);
         await events.UpdatePlayers(code);
         await _next(context);
     }

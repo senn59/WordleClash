@@ -27,7 +27,7 @@ public class CreateModel : PageModel
         try
         {
             var playerInfo = _lobby.CreateVersusLobby(Name);
-            _sessionService.SetPlayerId(playerInfo.PlayerId);
+            _sessionService.SetPlayerInfo(playerInfo);
             return RedirectToPage("/Play/Index", new {code = playerInfo.LobbyCode});
         }
         catch
