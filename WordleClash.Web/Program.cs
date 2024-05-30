@@ -23,7 +23,7 @@ builder.Services.AddServerSentEvents();
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
 builder.Services.AddSingleton<IDataAccess>(_ => new DataAccess(connString));
-builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IDataAccess>()));
+builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IDataAccess>(), s.GetRequiredService<IMemoryCache>()));
 builder.Services.AddSingleton<LobbyService>(s => new LobbyService(s.GetRequiredService<IDataAccess>(), s.GetRequiredService<IMemoryCache>()));
 builder.Services.AddTransient<SessionService>();
 builder.Services.AddTransient<ServerEvents>();
