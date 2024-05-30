@@ -13,7 +13,7 @@ public class IndexModel : PageModel
     private LobbyService _lobbyService;
     private SessionService _sessionService;
     private ServerEvents _serverEvents;
-    private string? _playerId;
+    private PlayerLobbyInfo? _playerInfo;
 
     [BindProperty]
     public string Guess { get; set; }
@@ -27,15 +27,15 @@ public class IndexModel : PageModel
         _sessionService = sessionService;
         _serverEvents = serverEvents;
         
-        _playerId = _sessionService.GetPlayerId();
-        if (_playerId == null) return;
-        Lobby = _lobbyService.GetLobbyByPlayerId(_playerId);
-        ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerId);
+        _playerInfo = _sessionService.GetPlayerInfo();
+        if (_playerInfo == null) return;
+        Lobby = _lobbyService.GetPlayerLobby(_playerInfo);
+        ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerInfo.PlayerId);
     }
 
     public async void OnPostStartGame()
     {
-        if (_playerId == null || Lobby == null || ThisPlayer?.IsOwner != true)
+        if (_playerInfo == null || Lobby == null || ThisPlayer?.IsOwner != true)
         {
             return;
         }
@@ -52,7 +52,7 @@ public class IndexModel : PageModel
 
     public async void OnPostNewGame()
     {
-        if (_playerId == null || Lobby == null || ThisPlayer?.IsOwner != true || Lobby.State != LobbyState.PostGame)
+        if (_playerInfo == null || Lobby == null || ThisPlayer?.IsOwner != true || Lobby.State != LobbyState.PostGame)
         {
             return;
         }
@@ -76,7 +76,7 @@ public class IndexModel : PageModel
     
     public async Task<IActionResult> OnGet(string code)
     {
-        if (_playerId == null)
+        if (_playerInfo == null)
         {
             return RedirectToPage("/Index");
         }
@@ -91,45 +91,45 @@ public class IndexModel : PageModel
 
     public PartialViewResult OnGetPlayers()
     {
-        if (_playerId == null)
+        if (_playerInfo == null)
         {
             throw new Exception("player id = null");
         }
         if (Lobby == null)
         {
-            throw new Exception($"player {_playerId} is not apart of any lobby");
+            throw new Exception($"player {_playerInfo} is not apart of any lobby");
         }
         return Partial("Partials/Players", Lobby.Players);
     }
    
     public PartialViewResult OnGetOpponent()
     {
-        if (_playerId == null)
+        if (_playerInfo == null)
         {
             throw new Exception("player id = null");
         }
         if (Lobby == null)
         {
-            throw new Exception($"player {_playerId} is not apart of any lobby");
+            throw new Exception($"player {_playerInfo} is not apart of any lobby");
         }
         return Partial("Partials/Opponent", GetOpponent());
     }
 
     public PartialViewResult OnGetField()
     {
-        if (_playerId == null)
+        if (_playerInfo == null)
         {
             throw new Exception("player id = null");
         }
         if (Lobby == null)
         {
-            throw new Exception($"player {_playerId} is not apart of any lobby");
+            throw new Exception($"player {_playerInfo} is not apart of any lobby");
         }
         return Partial("Partials/MultiplayerField", this);
     }
 
     public Player? GetOpponent()
     {
-        return Lobby?.Players.FirstOrDefault(p => p.Id != _playerId);
+        return Lobby?.Players.FirstOrDefault(p => p.Id != _playerInfo?.PlayerId);
     }
 }

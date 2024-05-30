@@ -52,7 +52,7 @@ public class JoinModel : PageModel
         try
         {
             var playerInfo = _lobby.TryJoinLobby(Name, Code);
-            _sessionService.SetPlayerId(playerInfo.PlayerId);
+            _sessionService.SetPlayerInfo(playerInfo);
             _logger.LogInformation($"Player {playerInfo.PlayerId} added to lobby {playerInfo.LobbyCode}");
             return RedirectToPage("/Play/Index", new {Code});
         }
