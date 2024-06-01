@@ -5,14 +5,29 @@ namespace WordleClash.Core;
 public class Player
 {
     public string Id { get; }
-    public bool IsOwner { get; set; }
+    public bool IsOwner { get; private set; }
     public required string Name { get; init; }
-    public Color Color { get; set; }
-    public bool? IsTurn { get; set; }
-    public bool? IsWinner { get; set; }
+    public Color Color { get; init; }
+    public bool? IsTurn { get; private set; } = false;
+    public bool? IsWinner { get; private set; } = false;
 
     public Player()
     {
         Id = Guid.NewGuid().ToString();
+    }
+
+    public void SetTurn(bool? value)
+    {
+        IsTurn = value;
+    }
+
+    public void SetWinner()
+    {
+        IsWinner = true;
+    }
+
+    public void SetOwner()
+    {
+        IsOwner = true;
     }
 }

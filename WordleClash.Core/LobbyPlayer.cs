@@ -2,6 +2,6 @@ namespace WordleClash.Core;
 
 public class PlayerLobbyInfo
 {
-    public string LobbyCode { get; set; }
-    public string PlayerId { get; set; }
+    public string LobbyCode { get; init; }
+    public string PlayerId { get; init; }
 }
