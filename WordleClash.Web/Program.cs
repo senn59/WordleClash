@@ -46,6 +46,7 @@ app.UseAuthorization();
 
 app.UseSession();
 app.UseMiddleware<LobbyMiddleware>();
+app.UseMiddleware<GameMiddleware>();
 
 app.MapServerSentEvents("/updates");
 app.MapRazorPages();
