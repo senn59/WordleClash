@@ -43,7 +43,7 @@ public class Versus: IMultiplayerGame
         var guessResult = _game.TakeGuess(guess);
         if (guessResult.Status == GameStatus.Won)
         {
-            player.IsWinner = true;
+            player.SetWinner();
         }
         SetNextTurn();
         return guessResult;
@@ -63,7 +63,7 @@ public class Versus: IMultiplayerGame
         //only works when we make the assumption that there are only 2 players
         foreach (var player in Players)
         {
-            player.IsTurn = !player.IsTurn;
+            player.SetTurn(!player.IsTurn);
         }
     }
 
@@ -72,14 +72,14 @@ public class Versus: IMultiplayerGame
         var r = new Random();
         var playerIndex = r.Next(0, Players.Count);
         ResetTurnState();
-        Players[playerIndex].IsTurn = true;
+        Players[playerIndex].SetTurn(true);
     }
 
     private void ResetTurnState()
     {
-        foreach (var p in Players)
+        foreach (var player in Players)
         {
-            p.IsTurn = false;
+            player.SetTurn(false);
         }
     }
 
