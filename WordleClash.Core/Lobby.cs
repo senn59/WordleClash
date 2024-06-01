@@ -18,7 +18,7 @@ public class Lobby
         Code = GenerateCode();
         
         Add(creator);
-        _players[0].IsOwner = true;
+        _players[0].SetOwner();
     }
 
     public Player Add(string name)
@@ -43,7 +43,7 @@ public class Lobby
         _players.Remove(player);
         if (player.IsOwner && _players.Count >= 1)
         {
-            _players[0].IsOwner = true;
+            _players[0].SetOwner();
         }
     }
 
