@@ -8,7 +8,7 @@ public class TestHelpers
 {
     public static LetterFeedback[] ExtractFeedbackFromGuess(string targetWord, string guess)
     {
-        var dataAccess = new MockDataAccess(targetWord, guess);
+        var dataAccess = new MockWordDao(targetWord, guess);
         var wordle = new Game(dataAccess, 6);
         wordle.Start();
         var res = wordle.TakeGuess(dataAccess.Guess);
@@ -21,9 +21,9 @@ public class TestHelpers
         return feedback;
     }
 
-    public static LobbyController CreateVersusLobby(IDataAccess dataAccess, int additionalPlayers = 0)
+    public static LobbyController CreateVersusLobby(IWordDao wordDao, int additionalPlayers = 0)
     {
-        IMultiplayerGame mode = new Versus(dataAccess);
+        IMultiplayerGame mode = new Versus(wordDao);
         return new LobbyController(mode, "player1");
     }
 

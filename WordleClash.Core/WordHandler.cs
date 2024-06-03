@@ -5,13 +5,13 @@ namespace WordleClash.Core;
 
 public class WordHandler
 {
-    private readonly IDataAccess _dataAccess;
+    private readonly IWordDao _wordDao;
     public string Word { get; private init; }
 
-    public WordHandler(IDataAccess dataAccess)
+    public WordHandler(IWordDao wordDao)
     {
-        _dataAccess = dataAccess;
-        Word = _dataAccess.GetRandomWord().ToUpper();
+        _wordDao = wordDao;
+        Word = _wordDao.GetRandomWord().ToUpper();
     }
     
     public LetterResult[] GetFeedback(string guessedWord)
@@ -63,7 +63,7 @@ public class WordHandler
 
     public bool IsExistingWord(string input)
     {
-        return _dataAccess.GetWord(input) != null;
+        return _wordDao.Get(input) != null;
     }
 
     public bool IsCorrectLength(string input)

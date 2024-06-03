@@ -7,7 +7,7 @@ namespace WordleClash.Core;
 public class Versus: IMultiplayerGame
 {
     private const int MaxTries = 9;
-    private readonly IDataAccess _dataAccess;
+    private readonly IWordDao _wordDao;
     private Game _game;
 
     public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
@@ -15,10 +15,10 @@ public class Versus: IMultiplayerGame
     public int MaxPlayers => 2;
     public int RequiredPlayers => 2;
 
-    public Versus(IDataAccess dataAccess)
+    public Versus(IWordDao wordDao)
     {
-        _dataAccess = dataAccess;
-       _game = new Game(dataAccess, MaxTries);
+        _wordDao = wordDao;
+       _game = new Game(wordDao, MaxTries);
     }
     
     public void Start()
@@ -99,7 +99,7 @@ public class Versus: IMultiplayerGame
     public void Restart()
     {
         if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
-        _game = new Game(_dataAccess, MaxTries);
+        _game = new Game(_wordDao, MaxTries);
     }
 
     public List<GameModel> GetGames()
