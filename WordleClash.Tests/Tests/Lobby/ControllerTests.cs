@@ -8,7 +8,7 @@ public class ControllerTests
     [Test]
     public void InLobbyState()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var gameMode = new Versus(dataAccess);
         var lobby = new LobbyController(gameMode, "player1");
         lobby.Add("player2");
@@ -18,7 +18,7 @@ public class ControllerTests
     [Test]
     public void IngameState()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var gameMode = new Versus(dataAccess);
         var lobby = new LobbyController(gameMode, "player1");
         lobby.Add("player2");
@@ -34,7 +34,7 @@ public class ControllerTests
     [Test]
     public void PostGameState()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var gameMode = new Versus(dataAccess);
         var lobby = new LobbyController(gameMode, "player1");
         lobby.Add("player2");
@@ -47,7 +47,7 @@ public class ControllerTests
     [Test]
     public void NewGame()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var gameMode = new Versus(dataAccess);
         var lobby = new LobbyController(gameMode, "player1");
         lobby.Add("player2");
