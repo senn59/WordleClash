@@ -1,16 +1,16 @@
 using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Tests;
-public class MockDataAccess : IDataAccess
+public class MockWordDao : IWordDao
 {
     public string TargetWord { get; private set; }
     public string Guess { get; private set; }
-    public MockDataAccess(string targetWord, string guess)
+    public MockWordDao(string targetWord, string guess)
     {
         TargetWord = targetWord.ToUpper();
         Guess = guess.ToUpper();
     }
-    public List<string> GetWords()
+    public List<string> GetAll()
     {
         return [TargetWord, Guess];
     }
@@ -20,9 +20,14 @@ public class MockDataAccess : IDataAccess
         return TargetWord;
     }
 
-    public string? GetWord(string word)
+    public string? Get(string word)
     {
         word = word.ToUpper();
         return word == TargetWord || word == Guess ? word : null;
+    }
+
+    public int? GetId(string word)
+    {
+        throw new NotImplementedException();
     }
 }

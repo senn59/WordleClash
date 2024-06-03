@@ -4,26 +4,23 @@ using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Data;
 
-public class DataAccess: IDataAccess
+public class WordDao: IWordDao
 {
-    private MySqlConnection _conn;
+    private readonly string _connString;
 
-    public DataAccess(string connString)
+    public WordDao(string connString)
     {
-        _conn = new MySqlConnection(connString);
+        _connString = connString;
     }
 
-    public List<string> GetWords()
+    public List<string> GetAll()
     {
         var words = new List<string>();
         try
         {
-            _conn.Open();
-
-            var cmd = new MySqlCommand();
-            cmd.Connection = _conn;
+            using var conn = new MySqlConnection(_connString);
+            using var cmd = conn.CreateCommand();
             cmd.CommandText = @"SELECT word FROM words";
-
             var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -34,11 +31,6 @@ public class DataAccess: IDataAccess
         {
             Console.WriteLine(e.ToString());
         }
-        finally
-        {
-            _conn.Close();
-        }
-
         return words;
     }
 
@@ -46,39 +38,29 @@ public class DataAccess: IDataAccess
     {
         try
         {
-            _conn.Open();
-
-            var cmd = new MySqlCommand();
-            cmd.Connection = _conn;
+            
+            using var conn = new MySqlConnection(_connString);
+            using var cmd = conn.CreateCommand();
             cmd.CommandText = @"SELECT word FROM words ORDER BY RAND() LIMIT 1";
-
             var res = cmd.ExecuteScalar();
-            return res.ToString() ?? throw new InvalidOperationException();
+            return res?.ToString() ?? throw new InvalidOperationException();
         }
         catch (Exception e)
         {
             //TODO: throw custom exception with e as inner exception
             Console.WriteLine(e.ToString());
         }
-        finally
-        {
-            _conn.Close();
-        }
-
         throw new CouldNotFindWordException();
     }
 
-    public string? GetWord(string word)
+    public string? Get(string word)
     {
         try
         {
-            _conn.Open();
-
-            var cmd = new MySqlCommand();
-            cmd.Connection = _conn;
+            using var conn = new MySqlConnection(_connString);
+            using var cmd = conn.CreateCommand();
             cmd.CommandText = @"SELECT word FROM words WHERE UPPER(word) = UPPER(@word)";
             cmd.Parameters.AddWithValue("@word", word);
-
             var res = cmd.ExecuteScalar();
             return res?.ToString();
         }
@@ -86,11 +68,24 @@ public class DataAccess: IDataAccess
         {
             Console.WriteLine(e.ToString());
         }
-        finally
-        {
-            _conn.Close();
-        }
+        return null;
+    }
 
+    public int? GetId(string word)
+    {
+        try
+        {
+            using var conn = new MySqlConnection(_connString);
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT id FROM words WHERE UPPER(word) = UPPER(@word)";
+            cmd.Parameters.AddWithValue("@word", word);
+            var res = cmd.ExecuteScalar();
+            return int.Parse(res!.ToString()!);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
         return null;
     }
 }

@@ -9,7 +9,7 @@ public class VersusModeTests
     [Test]
     public void StartGameInvalidPlayers()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         Assert.Throws<TooFewPlayersException>(() => game.Start());
     }
@@ -22,7 +22,7 @@ public class VersusModeTests
             new Player { Name = "player1" },
             new Player { Name = "player2" }
         };
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         game.SetPlayers(players);
         game.Start();
@@ -38,7 +38,7 @@ public class VersusModeTests
             new Player { Name = "player2" },
             new Player { Name = "player3" }
         };
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         game.SetPlayers(players);
         Assert.Throws<TooManyPlayersException>(() => game.Start());
@@ -52,7 +52,7 @@ public class VersusModeTests
             new Player { Name = "player1" },
             new Player { Name = "player2" }
         };
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         game.SetPlayers(players);
         game.Start();
@@ -62,7 +62,7 @@ public class VersusModeTests
     [Test]
     public void PlayCompleteGame()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         var players = new List<Player>()
         {
@@ -92,7 +92,7 @@ public class VersusModeTests
     [Test]
     public void TakeMultipleTurnsAtOnce()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         var players = new List<Player>()
         {
@@ -111,7 +111,7 @@ public class VersusModeTests
     [Test]
     public void TakeTurnWhileNotInGame()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         var players = new List<Player>()
         {
@@ -129,7 +129,7 @@ public class VersusModeTests
     [Test]
     public void WinnerAssigned()
     {
-        var dataAccess = new MockDataAccess("abcde", "fghij");
+        var dataAccess = new MockWordDao("abcde", "fghij");
         var game = new Versus(dataAccess);
         var players = new List<Player>()
         {
