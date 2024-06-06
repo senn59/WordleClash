@@ -1,6 +1,6 @@
 namespace WordleClash.Core.Interfaces;
 
-public interface IUserDao
+public interface IUserRepository
 {
    void Create(User user);
 }
