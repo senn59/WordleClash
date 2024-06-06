@@ -14,10 +14,10 @@ public class Game
     public IReadOnlyList<GuessResult> GuessHistory => _guessHistory.AsReadOnly();
     public GameStatus Status { get; private set; } = GameStatus.AwaitStart;
 
-    public Game(IWordDao wordDao, int maxTries)
+    public Game(IWordRepository wordRepository, int maxTries)
     {
         MaxTries = maxTries;
-        _wordHandler = new WordHandler(wordDao);
+        _wordHandler = new WordHandler(wordRepository);
     }
     
     public void Start()

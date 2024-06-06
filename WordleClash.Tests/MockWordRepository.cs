@@ -1,11 +1,11 @@
 using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Tests;
-public class MockWordDao : IWordDao
+public class MockWordRepository : IWordRepository
 {
     public string TargetWord { get; private set; }
     public string Guess { get; private set; }
-    public MockWordDao(string targetWord, string guess)
+    public MockWordRepository(string targetWord, string guess)
     {
         TargetWord = targetWord.ToUpper();
         Guess = guess.ToUpper();

@@ -1,6 +1,6 @@
 namespace WordleClash.Core.Interfaces;
 
-public interface IGameLogDao
+public interface IGameLogRepository
 {
    List<GameLog> GetFromUserId(int userId);
 }

@@ -1,6 +1,6 @@
 namespace WordleClash.Core.Interfaces;
 
-public interface IWordDao
+public interface IWordRepository
 {
     List<string> GetAll();
     string GetRandomWord();
