@@ -2,5 +2,6 @@ namespace WordleClash.Core.Interfaces;
 
 public interface IUserRepository
 {
-   void Create(User user);
+   void Create(string sessionId);
+   User GetUserBySessionId(string sessionId);
 }
