@@ -60,4 +60,9 @@ public class UserRepository: IUserRepository
         }
         throw new Exception("User not found");
     }
+
+    public void DeleteBySessionId(string sessionId)
+    {
+        throw new NotImplementedException();
+    }
 }
