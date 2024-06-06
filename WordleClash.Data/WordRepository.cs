@@ -4,11 +4,11 @@ using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Data;
 
-public class WordDao: IWordDao
+public class WordRepository: IWordRepository
 {
     private readonly string _connString;
 
-    public WordDao(string connString)
+    public WordRepository(string connString)
     {
         _connString = connString;
     }

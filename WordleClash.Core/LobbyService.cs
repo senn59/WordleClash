@@ -5,18 +5,18 @@ namespace WordleClash.Core;
 
 public class LobbyService
 {
-    private readonly IWordDao _wordDao;
+    private readonly IWordRepository _wordRepository;
     private readonly IMemoryCache _cache;
 
-    public LobbyService(IWordDao wordDao, IMemoryCache cache)
+    public LobbyService(IWordRepository wordRepository, IMemoryCache cache)
     {
-        _wordDao = wordDao;
+        _wordRepository = wordRepository;
         _cache = cache;
     }
 
     public PlayerLobbyInfo CreateVersusLobby(string name)
     {
-        var lobby = new LobbyController(new Versus(_wordDao), name);
+        var lobby = new LobbyController(new Versus(_wordRepository), name);
         _cache.Set(lobby.Code, lobby);
         return new PlayerLobbyInfo
         {

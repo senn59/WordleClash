@@ -8,11 +8,11 @@ public class GameService
 {
     private readonly ConcurrentDictionary<string, Game> _games = new();
     private readonly IMemoryCache _cache;
-    private readonly IWordDao _wordDao;
+    private readonly IWordRepository _wordRepository;
 
-    public GameService(IWordDao wordDao, IMemoryCache cache)
+    public GameService(IWordRepository wordRepository, IMemoryCache cache)
     {
-        _wordDao = wordDao;
+        _wordRepository = wordRepository;
         _cache = cache;
     }
 
@@ -20,7 +20,7 @@ public class GameService
     {
         _cache.TryGetValue<Game>(id, out var game);
         if (game != null) return game;
-        game = new Game(_wordDao, maxTries);
+        game = new Game(_wordRepository, maxTries);
         _cache.Set(id, game);
         return game;
     }
