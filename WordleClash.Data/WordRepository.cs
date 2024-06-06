@@ -1,13 +1,15 @@
 using MySql.Data.MySqlClient;
 using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
+using Exception = System.Exception;
 
 namespace WordleClash.Data;
 
 public class WordRepository: IWordRepository
 {
     private readonly string _connString;
-
+    private const string WordTable = "word";
+        
     public WordRepository(string connString)
     {
         _connString = connString;
@@ -20,7 +22,7 @@ public class WordRepository: IWordRepository
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT word FROM words";
+            cmd.CommandText = $"SELECT word FROM {WordTable}";
             var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -41,7 +43,7 @@ public class WordRepository: IWordRepository
             
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT word FROM words ORDER BY RAND() LIMIT 1";
+            cmd.CommandText = $"SELECT word FROM {WordTable} ORDER BY RAND() LIMIT 1";
             var res = cmd.ExecuteScalar();
             return res?.ToString() ?? throw new InvalidOperationException();
         }
@@ -59,7 +61,7 @@ public class WordRepository: IWordRepository
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT word FROM words WHERE UPPER(word) = UPPER(@word)";
+            cmd.CommandText = $"SELECT word FROM {WordTable} WHERE UPPER(word) = UPPER(@word)";
             cmd.Parameters.AddWithValue("@word", word);
             var res = cmd.ExecuteScalar();
             return res?.ToString();
@@ -77,7 +79,7 @@ public class WordRepository: IWordRepository
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT id FROM words WHERE UPPER(word) = UPPER(@word)";
+            cmd.CommandText = $"SELECT id FROM {WordTable} WHERE UPPER(word) = UPPER(@word)";
             cmd.Parameters.AddWithValue("@word", word);
             var res = cmd.ExecuteScalar();
             return int.Parse(res!.ToString()!);

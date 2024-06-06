@@ -1,12 +1,14 @@
 using MySql.Data.MySqlClient;
 using WordleClash.Core;
 using WordleClash.Core.Interfaces;
+using Exception = System.Exception;
 
 namespace WordleClash.Data;
 
 public class UserRepository: IUserRepository
 {
     private readonly string _connString;
+    private const string UserTable = "user";
 
     public UserRepository(string connString)
     {
@@ -19,7 +21,7 @@ public class UserRepository: IUserRepository
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = @"INSERT INTO user (session_id) VALUES (@sessionId)";
+            cmd.CommandText = $"INSERT INTO {UserTable} (session_id) VALUES (@sessionId)";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             cmd.ExecuteScalar();
         }
@@ -35,7 +37,7 @@ public class UserRepository: IUserRepository
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT * from user WHERE session_id=@sessionId LIMIT 1";
+            cmd.CommandText = $"SELECT * from {UserTable} WHERE session_id=@sessionId LIMIT 1";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
