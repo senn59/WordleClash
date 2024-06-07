@@ -41,13 +41,13 @@ public class SessionService
         return _session.GetString(GameSessionKey);
     }
 
-    public void SetPlayerInfo(PlayerLobbyInfo info)
+    public void SetPlayerInfo(LobbyPlayer info)
     {
         _session.SetString(Player, info.PlayerId);
         _session.SetString(Lobby, info.LobbyCode);
     }
 
-    public PlayerLobbyInfo? GetPlayerInfo()
+    public LobbyPlayer? GetPlayerInfo()
     {
         var player = _session.GetString(Player);
         var lobby = _session.GetString(Lobby);
@@ -55,7 +55,7 @@ public class SessionService
         {
             return null;
         }
-        return new PlayerLobbyInfo()
+        return new LobbyPlayer()
         {
             PlayerId = player,
             LobbyCode = lobby
