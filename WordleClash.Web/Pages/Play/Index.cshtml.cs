@@ -13,7 +13,7 @@ public class IndexModel : PageModel
     private LobbyService _lobbyService;
     private SessionService _sessionService;
     private ServerEvents _serverEvents;
-    private PlayerLobbyInfo? _playerInfo;
+    private LobbyPlayer? _playerInfo;
 
     [BindProperty]
     public string Guess { get; set; }
