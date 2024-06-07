@@ -18,7 +18,7 @@ public class GameLogRepository: IGameLogRepository
         throw new NotImplementedException();
     }
 
-    public void AddNewGamelog(GameLog log, string sessionId)
+    public void AddToUser(GameLog log, string sessionId)
     {
         try
         {

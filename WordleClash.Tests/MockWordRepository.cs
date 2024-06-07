@@ -15,7 +15,7 @@ public class MockWordRepository : IWordRepository
         return [TargetWord, Guess];
     }
 
-    public string GetRandomWord()
+    public string GetRandom()
     {
         return TargetWord;
     }
