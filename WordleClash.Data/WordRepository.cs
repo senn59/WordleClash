@@ -36,7 +36,7 @@ public class WordRepository: IWordRepository
         return words;
     }
 
-    public string GetRandomWord()
+    public string GetRandom()
     {
         try
         {

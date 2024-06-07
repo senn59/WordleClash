@@ -11,7 +11,7 @@ public class WordHandler
     public WordHandler(IWordRepository wordRepository)
     {
         _wordRepository = wordRepository;
-        Word = _wordRepository.GetRandomWord().ToUpper();
+        Word = _wordRepository.GetRandom().ToUpper();
     }
     
     public LetterResult[] GetFeedback(string guessedWord)
