@@ -2,9 +2,9 @@ namespace WordleClash.Core;
 
 public class GameLog
 {
-    public int Id { get; private init; }
-    public int AttemptCount { get; private init; }
-    public TimeSpan Time { get; private init; }
-    public bool Status { get; private init; }
-    public string Word { get; private init; }
+    public int Id { get; init; }
+    public int AttemptCount { get; init; }
+    public TimeSpan Time { get; init; }
+    public bool Status { get; init; }
+    public string Word { get; init; }
 }

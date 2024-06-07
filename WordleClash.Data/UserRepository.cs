@@ -31,7 +31,7 @@ public class UserRepository: IUserRepository
         }
     }
 
-    public User GetUserBySessionId(string sessionId)
+    public User GetBySessionId(string sessionId)
     {
         try
         {
