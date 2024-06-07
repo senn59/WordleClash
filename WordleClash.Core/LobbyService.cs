@@ -14,11 +14,11 @@ public class LobbyService
         _cache = cache;
     }
 
-    public PlayerLobbyInfo CreateVersusLobby(string name)
+    public LobbyPlayer CreateVersusLobby(string name)
     {
         var lobby = new LobbyController(new Versus(_wordRepository), name);
         _cache.Set(lobby.Code, lobby);
-        return new PlayerLobbyInfo
+        return new LobbyPlayer
         {
             LobbyCode = lobby.Code,
             PlayerId = lobby.Players[0].Id
@@ -30,7 +30,7 @@ public class LobbyService
         return _cache.TryGetValue<LobbyController>(code, out _);
     }
 
-    public string HandleLobbyLeave(PlayerLobbyInfo playerInfo)
+    public string HandeLeave(LobbyPlayer playerInfo)
     {
         var lobby = GetLobby(playerInfo.LobbyCode);
         if (lobby == null) return "";
@@ -42,7 +42,7 @@ public class LobbyService
         return lobby.Code;
     }
 
-    public PlayerLobbyInfo TryJoinLobby(string playerName, string lobbyCode)
+    public LobbyPlayer TryJoinLobby(string playerName, string lobbyCode)
     {
         var lobbyToJoin = GetLobby(lobbyCode);
         if (lobbyToJoin == null)
@@ -51,14 +51,14 @@ public class LobbyService
         }
 
         var player = lobbyToJoin.Add(playerName);
-        return new PlayerLobbyInfo
+        return new LobbyPlayer
         {
             LobbyCode = lobbyToJoin.Code,
             PlayerId = player.Id
         };
     }
 
-    public LobbyController? GetPlayerLobby(PlayerLobbyInfo playerInfo)
+    public LobbyController? GetPlayerLobby(LobbyPlayer playerInfo)
     {
         return GetLobby(playerInfo.LobbyCode);
     }
