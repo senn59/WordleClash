@@ -22,9 +22,13 @@ builder.Services.AddServerSentEvents();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
-builder.Services.AddSingleton<IWordRepository>(_ => new WordRepository(connString));
-builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IWordRepository>(), s.GetRequiredService<IMemoryCache>()));
-builder.Services.AddSingleton<LobbyService>(s => new LobbyService(s.GetRequiredService<IWordRepository>(), s.GetRequiredService<IMemoryCache>()));
+builder.Services.AddScoped<IWordRepository>(_ => new WordRepository(connString));
+builder.Services.AddScoped<IUserRepository>(_ => new UserRepository(connString));
+
+builder.Services.AddScoped<GameService>(s => new GameService(s.GetRequiredService<IWordRepository>(), s.GetRequiredService<IMemoryCache>()));
+builder.Services.AddScoped<LobbyService>(s => new LobbyService(s.GetRequiredService<IWordRepository>(), s.GetRequiredService<IMemoryCache>()));
+builder.Services.AddScoped<UserService>(s => new UserService(s.GetRequiredService<IUserRepository>()));
+
 builder.Services.AddTransient<SessionService>();
 builder.Services.AddTransient<ServerEvents>();
 
