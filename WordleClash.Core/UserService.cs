@@ -13,7 +13,7 @@ public class UserService
 
     public CreateUserResult Create()
     {
-        var sessionId = new Guid().ToString();
+        var sessionId = Guid.NewGuid().ToString();
         return _userRepository.Create(sessionId);
     }
 
