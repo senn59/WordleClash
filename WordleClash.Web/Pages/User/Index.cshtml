@@ -1,6 +1,11 @@
 @page
-@model WordleClash.Web.Pages.Profile.IndexModel
+@model WordleClash.Web.Pages.User.IndexModel
 
 @{
     Layout = "Shared/_Layout";
 }
+<h1>@Model.User.Name</h1>
+<ul>
+    <li>@Model.User.Id</li>
+    <li>@Model.User.CreatedAt</li>
+</ul>
