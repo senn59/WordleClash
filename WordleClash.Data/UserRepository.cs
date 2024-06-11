@@ -41,20 +41,20 @@ public class UserRepository: IUserRepository
         throw new Exception("Failed to create user");
     }
 
-    public User GetBySessionId(string sessionId)
+    public User GetByName(string name)
     {
         try
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT * from {UserTable} WHERE session_id=@sessionId LIMIT 1";
-            cmd.Parameters.AddWithValue("@sessionId", sessionId);
+            cmd.CommandText = $"SELECT * from {UserTable} WHERE name=@name LIMIT 1";
+            cmd.Parameters.AddWithValue("@name", name);
             conn.Open();
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
                 var id = rdr.GetInt32("id");
-                var name = rdr.GetString("name");
+                var sessionId = rdr.GetString("session_id");
                 var creationDate = rdr.GetDateTime("created_at");
                 return new User
                 {
