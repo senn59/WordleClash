@@ -11,12 +11,24 @@
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
-<header class="logo">
+<header>
     @if (Url.RouteUrl(ViewContext.RouteData.Values) != "/")
     {
-        <a asp-page="/Index">
-            <h1>WORDLECLASH!</h1>
-        </a>
+        <div class="logo">
+            <a asp-page="/Index">
+                <h1>WORDLECLASH!</h1>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="create-account__container">
+            <form method="post">
+                <button>
+                    <h1>Create account</h1>
+                </button>
+            </form>
+        </div>
     }
 </header>
 
