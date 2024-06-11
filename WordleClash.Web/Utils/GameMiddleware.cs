@@ -10,9 +10,9 @@ public class GameMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, SessionService sessionService, GameService gameService)
+    public async Task InvokeAsync(HttpContext context, SessionManager sessionManager, GameService gameService)
     {
-        var gameSession = sessionService.GetGameId();
+        var gameSession = sessionManager.GetGameId();
         List<string> whiteListedPaths = new() { "/Singleplayer" };
         if (whiteListedPaths.Any(context.Request.Path.Value!.Contains) || gameSession == null)
         {
@@ -21,7 +21,7 @@ public class GameMiddleware
             return;
         }
         gameService.DicardInstance(gameSession);
-        sessionService.ClearGameId();
+        sessionManager.ClearGameId();
         await _next(context);
     }
 }

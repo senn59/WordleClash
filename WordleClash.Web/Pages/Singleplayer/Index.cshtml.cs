@@ -11,7 +11,7 @@ public class SingleplayerModel : PageModel
 {
     private readonly ILogger<SingleplayerModel> _logger;
     private GameService _gameService;
-    private SessionService _sessionService;
+    private SessionManager _sessionManager;
     private const int DefaultMaxTries = 6;
 
     [BindProperty] public string Guess { get; set; }
@@ -20,16 +20,16 @@ public class SingleplayerModel : PageModel
     public GameModel Game { get; set; }
     
     
-    public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionService sessionService)
+    public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionManager sessionManager)
     {
         _logger = logger;
         _gameService = gameService;
-        _sessionService = sessionService;
+        _sessionManager = sessionManager;
     }
 
     public void OnGet()
     {
-        var id = _sessionService.GetOrCreateGameId();
+        var id = _sessionManager.GetOrCreateGameId();
         var wordle = _gameService.GetOrCreate(id, DefaultMaxTries);
         if (wordle.Status == GameStatus.AwaitStart)
         {
@@ -41,14 +41,14 @@ public class SingleplayerModel : PageModel
 
     public IActionResult OnPostNewGame()
     {
-        var id = _sessionService.GetOrCreateGameId();
+        var id = _sessionManager.GetOrCreateGameId();
         _gameService.DicardInstance(id);
         return RedirectToPage("/Singleplayer/Index");
     }
 
     public PartialViewResult OnPost()
     {
-        var id = _sessionService.GetOrCreateGameId();
+        var id = _sessionManager.GetOrCreateGameId();
         var wordle = _gameService.GetOrCreate(id, DefaultMaxTries);
         _logger.LogInformation($"Got game {id} ");
         try
