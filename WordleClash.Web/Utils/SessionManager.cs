@@ -7,6 +7,7 @@ public class SessionManager
     private const string GameSessionKey = "_Game";
     private const string Player = "_Player";
     private const string Lobby = "_Lobby";
+    private const string User = "_User";
     
     private readonly ISession _session;
     private ILogger<SessionManager> _logger;
@@ -67,4 +68,13 @@ public class SessionManager
         _session.Remove(Player);
     }
 
+    public string? GetUserSession()
+    {
+        return _session.GetString(User);
+    }
+
+    public void SetUserSession(string id)
+    {
+        _session.SetString(User, id);
+    }
 }
