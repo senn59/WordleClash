@@ -17,8 +17,16 @@ public class UserService
         return _userRepository.Create(sessionId);
     }
 
-    public User Get(string sessionId)
+    public User? Get(string name)
     {
-        return _userRepository.GetBySessionId(sessionId);
+        try
+        {
+            return _userRepository.GetByName(name);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
     }
 }
