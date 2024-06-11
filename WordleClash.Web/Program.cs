@@ -29,7 +29,7 @@ builder.Services.AddScoped<GameService>(s => new GameService(s.GetRequiredServic
 builder.Services.AddScoped<LobbyService>(s => new LobbyService(s.GetRequiredService<IWordRepository>(), s.GetRequiredService<IMemoryCache>()));
 builder.Services.AddScoped<UserService>(s => new UserService(s.GetRequiredService<IUserRepository>()));
 
-builder.Services.AddTransient<SessionService>();
+builder.Services.AddTransient<SessionManager>();
 builder.Services.AddTransient<ServerEvents>();
 
 var app = builder.Build();

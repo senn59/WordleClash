@@ -11,7 +11,7 @@ public class IndexModel : PageModel
 {
     private ILogger<IndexModel> _logger;
     private LobbyService _lobbyService;
-    private SessionService _sessionService;
+    private SessionManager _sessionManager;
     private ServerEvents _serverEvents;
     private LobbyPlayer? _playerInfo;
 
@@ -20,14 +20,14 @@ public class IndexModel : PageModel
     public LobbyController? Lobby { get; set; }
     public Player? ThisPlayer { get; set; }
 
-    public IndexModel(ILogger<IndexModel> logger, SessionService sessionService, LobbyService lobbyService, ServerEvents serverEvents)
+    public IndexModel(ILogger<IndexModel> logger, SessionManager sessionManager, LobbyService lobbyService, ServerEvents serverEvents)
     {
         _logger = logger;
         _lobbyService = lobbyService;
-        _sessionService = sessionService;
+        _sessionManager = sessionManager;
         _serverEvents = serverEvents;
         
-        _playerInfo = _sessionService.GetPlayerInfo();
+        _playerInfo = _sessionManager.GetPlayerInfo();
         if (_playerInfo == null) return;
         Lobby = _lobbyService.GetPlayerLobby(_playerInfo);
         ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerInfo.PlayerId);

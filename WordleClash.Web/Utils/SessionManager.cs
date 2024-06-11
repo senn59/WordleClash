@@ -2,16 +2,16 @@ using WordleClash.Core;
 
 namespace WordleClash.Web.Services;
 
-public class SessionService
+public class SessionManager
 {
     private const string GameSessionKey = "_Game";
     private const string Player = "_Player";
     private const string Lobby = "_Lobby";
     
     private readonly ISession _session;
-    private ILogger<SessionService> _logger;
+    private ILogger<SessionManager> _logger;
     
-    public SessionService(IHttpContextAccessor httpContextAccessor, ILogger<SessionService> logger)
+    public SessionManager(IHttpContextAccessor httpContextAccessor, ILogger<SessionManager> logger)
     {
         _logger = logger;
         if (httpContextAccessor.HttpContext == null)

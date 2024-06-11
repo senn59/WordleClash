@@ -7,12 +7,12 @@ namespace WordleClash.Web.Pages.Profile;
 public class IndexModel : PageModel
 {
     private ILogger<IndexModel> _logger;
-    private SessionService _sessionService;
+    private SessionManager _sessionManager;
 
-    public IndexModel(ILogger<IndexModel> logger, SessionService sessionService)
+    public IndexModel(ILogger<IndexModel> logger, SessionManager sessionManager)
     {
         _logger = logger;
-        _sessionService = sessionService;
+        _sessionManager = sessionManager;
     }
 
     public void OnGet()

@@ -8,16 +8,16 @@ namespace WordleClash.Web.Pages.Lobby;
 public class CreateModel : PageModel
 {
     private ILogger<CreateModel> _logger;
-    private SessionService _sessionService;
+    private SessionManager _sessionManager;
     private LobbyService _lobby;
     
     [BindProperty]
     public string Name { get; set; }
 
-    public CreateModel(ILogger<CreateModel> logger, LobbyService lobby, SessionService sessionService)
+    public CreateModel(ILogger<CreateModel> logger, LobbyService lobby, SessionManager sessionManager)
     {
         _logger = logger;
-        _sessionService = sessionService;
+        _sessionManager = sessionManager;
         _lobby = lobby;
     }
     public void OnGet() {}
@@ -27,7 +27,7 @@ public class CreateModel : PageModel
         try
         {
             var playerInfo = _lobby.CreateVersusLobby(Name);
-            _sessionService.SetPlayerInfo(playerInfo);
+            _sessionManager.SetPlayerInfo(playerInfo);
             return RedirectToPage("/Play/Index", new {code = playerInfo.LobbyCode});
         }
         catch
