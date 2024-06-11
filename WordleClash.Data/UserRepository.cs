@@ -23,6 +23,7 @@ public class UserRepository: IUserRepository
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"INSERT INTO {UserTable} (session_id) VALUES (@sessionId)";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
+            conn.Open();
             cmd.ExecuteScalar();
         }
         catch (Exception e)
@@ -39,6 +40,7 @@ public class UserRepository: IUserRepository
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"SELECT * from {UserTable} WHERE session_id=@sessionId LIMIT 1";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
+            conn.Open();
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {

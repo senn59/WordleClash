@@ -34,6 +34,7 @@ public class GameLogRepository: IGameLogRepository
             cmd.Parameters.AddWithValue("@time", log.Time);
             cmd.Parameters.AddWithValue("@status", log.Status);
             cmd.Parameters.AddWithValue("@word", log.Word);
+            conn.Open();
             cmd.ExecuteScalar();
         }
         catch (Exception e)
