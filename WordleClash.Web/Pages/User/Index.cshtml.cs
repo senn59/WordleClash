@@ -12,7 +12,7 @@ public class IndexModel : PageModel
     private UserService _userService;
     
     [BindProperty]
-    public new Core.User User { get; set; }
+    public new required Core.User User { get; set; }
 
     public IndexModel(ILogger<IndexModel> logger, SessionManager sessionManager, UserService userService)
     {
@@ -23,7 +23,7 @@ public class IndexModel : PageModel
 
     public IActionResult OnGet(string username)
     {
-        _logger.LogInformation("Trying to retrieve account");
+        _logger.LogInformation($"Trying to retrieve account \"{username}\"");
         var user = _userService.Get(username);
         if (user == null)
         {
@@ -41,9 +41,8 @@ public class IndexModel : PageModel
         {
             return RedirectToPage("/Index");
         }
-        var result = _userService.Create();
-        Console.WriteLine(result.UserName);
+        var result = _userService.Create(); //TODO: catch
         _sessionManager.SetUserSession(result.SessionId);
-        return RedirectToPage("Index");
+        return RedirectToPage("Index", new {username = result.UserName});
     }
 }
