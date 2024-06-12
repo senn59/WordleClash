@@ -22,6 +22,11 @@
     font-size: 6.5em;
     color: black;
 }
+.game-end-overlay__container h2 {
+    position: relative;
+    top: -20px;
+    font-size: 1.8em;
+}
 .game-end-overlay__container p {
     font-weight: 600;
     font-size: 2em;

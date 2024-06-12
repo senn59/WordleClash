@@ -69,14 +69,14 @@ public class Game
         return result;
     }
 
-    public string GetTargetWord()
+    public string? GetTargetWord()
     {
         if (Status is GameStatus.Won or GameStatus.Lost)
         {
             return _wordHandler.Word;
         }
-
-        throw new GameInProgressException();
+        
+        return null;
     }
 
     private void ValidateMove(string input)
