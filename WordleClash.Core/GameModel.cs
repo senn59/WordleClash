@@ -8,6 +8,7 @@ public class GameModel
     public int MaxTries { get; init; }
     public GameStatus Status { get; init; }
     public IReadOnlyList<GuessResult> GuessHistory { get; init; } = [];
+    public string? TargetWord { get; set; }
     public static GameModel FromGame(Game game)
     {
         return new GameModel()
@@ -15,7 +16,8 @@ public class GameModel
             Tries = game.Tries,
             MaxTries = game.MaxTries,
             Status = game.Status,
-            GuessHistory = game.GuessHistory
+            GuessHistory = game.GuessHistory,
+            TargetWord = game.GetTargetWord()
         };
     }
 }
