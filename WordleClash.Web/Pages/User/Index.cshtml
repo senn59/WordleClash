@@ -4,8 +4,15 @@
 @{
     Layout = "Shared/_Layout";
 }
-<h1>@Model.User.Name</h1>
-<ul>
-    <li>@Model.User.Id</li>
-    <li>@Model.User.CreatedAt</li>
-</ul>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/pages/user.css" asp-append-version="true" />
+}
+<div class="page__container">
+    <div class="user__container">
+        <div class="user-top__container">
+            <h1>@Model.User.Name</h1>
+        </div>
+        <div class="user__seperator"></div>
+    </div>
+</div>
