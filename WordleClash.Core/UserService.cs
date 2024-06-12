@@ -29,4 +29,17 @@ public class UserService
             return null;
         }
     }
+
+    public User? GetFromSession(string sessionId)
+    {
+        try
+        {
+            return _userRepository.GetFromSessionId(sessionId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
 }
