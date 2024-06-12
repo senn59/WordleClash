@@ -1,5 +1,6 @@
 using MySql.Data.MySqlClient;
 using WordleClash.Core;
+using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
 using Exception = System.Exception;
 
@@ -43,11 +44,12 @@ public class UserRepository: IUserRepository
 
     public User GetByName(string name)
     {
+        const string nameColumn = "name";
         try
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT * from {UserTable} WHERE name=@name LIMIT 1";
+            cmd.CommandText = $"SELECT * from {UserTable} WHERE {nameColumn}=@name LIMIT 1";
             cmd.Parameters.AddWithValue("@name", name);
             conn.Open();
             using var rdr = cmd.ExecuteReader();
@@ -69,16 +71,17 @@ public class UserRepository: IUserRepository
         {
             Console.WriteLine(e.ToString());
         }
-        throw new Exception("User not found");
+        throw new UserNotFoundException(nameColumn, name);
     }
     
     public User GetFromSessionId(string sessionId)
     {
+        const string sessionColumn = "session_id";
         try
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT * from {UserTable} WHERE session_id=@sessionId LIMIT 1";
+            cmd.CommandText = $"SELECT * from {UserTable} WHERE {sessionColumn}=@sessionId LIMIT 1";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             conn.Open();
             using var rdr = cmd.ExecuteReader();
@@ -98,9 +101,9 @@ public class UserRepository: IUserRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.ToString());
+            throw new UserRetrievalException(e);
         }
-        throw new Exception("User not found");
+        throw new UserNotFoundException(sessionColumn, sessionId);
     }
 
     public void DeleteBySessionId(string sessionId)
