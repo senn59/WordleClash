@@ -71,6 +71,37 @@ public class UserRepository: IUserRepository
         }
         throw new Exception("User not found");
     }
+    
+    public User GetFromSessionId(string sessionId)
+    {
+        try
+        {
+            using var conn = new MySqlConnection(_connString);
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = $"SELECT * from {UserTable} WHERE sessionId=@sessionId LIMIT 1";
+            cmd.Parameters.AddWithValue("@sessionId", sessionId);
+            conn.Open();
+            using var rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                var id = rdr.GetInt32("id");
+                var name = rdr.GetString("name");
+                var creationDate = rdr.GetDateTime("created_at");
+                return new User
+                {
+                    Id = id,
+                    Name = name,
+                    SessionId = sessionId,
+                    CreatedAt = creationDate
+                };
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        throw new Exception("User not found");
+    }
 
     public void DeleteBySessionId(string sessionId)
     {
