@@ -1,6 +1,6 @@
 using Lib.AspNetCore.ServerSentEvents;
 
-namespace WordleClash.Web.Services;
+namespace WordleClash.Web.Utils;
 
 public class ServerEvents
 {
