@@ -1,6 +1,6 @@
 using WordleClash.Core;
 
-namespace WordleClash.Web.Services;
+namespace WordleClash.Web.Utils;
 
 public class SessionManager
 {

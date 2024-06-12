@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core;
 using WordleClash.Data;
-using WordleClash.Web.Services;
+using WordleClash.Web.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
