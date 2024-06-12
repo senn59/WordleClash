@@ -78,7 +78,7 @@ public class UserRepository: IUserRepository
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT * from {UserTable} WHERE sessionId=@sessionId LIMIT 1";
+            cmd.CommandText = $"SELECT * from {UserTable} WHERE session_id=@sessionId LIMIT 1";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             conn.Open();
             using var rdr = cmd.ExecuteReader();
