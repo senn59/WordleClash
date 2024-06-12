@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using WordleClash.Core
+@using WordleClash.Web.Services
+@inject UserService UserService
+@inject SessionManager SessionManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -23,11 +27,28 @@
     else
     {
         <div class="create-account__container">
-            <form method="post" asp-page="User/Index" asp-page-handler="Create">
-                <button>
-                    <h1>Create account</h1>
-                </button>
-            </form>
+            @{
+                var userSession = SessionManager.GetUserSession();
+                User? user = null;
+                if (userSession != null)
+                {
+                    user = UserService.GetFromSession(userSession);
+                }
+            }
+            @if (user == null)
+            {
+                <form method="post" asp-page="User/Index" asp-page-handler="Create">
+                    <button>
+                        <h1>Create account</h1>
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a asp-page="User/Index" asp-route-username="@user.Name">
+                    <h1>@user.Name</h1>
+                </a>
+            }
         </div>
     }
 </header>
