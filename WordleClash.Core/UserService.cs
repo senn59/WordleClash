@@ -16,7 +16,7 @@ public class UserService
     public CreateUserResult Create()
     {
         var sessionId = Guid.NewGuid().ToString();
-        return _userRepository.Create(sessionId, GenerateName(sessionId));
+        return _userRepository.Create(sessionId);
     }
 
     public User? Get(string name)
@@ -48,11 +48,5 @@ public class UserService
     public void AddGameLog(GameLog log, string sessionId)
     {
         _gameLogRepository.AddToUser(log, sessionId);
-    }
-    
-    private string GenerateName(string id)
-    {
-        var shortenedId = id.Substring(Math.Max(0, id.Length - 10));
-        return $"user-{shortenedId}";
     }
 }

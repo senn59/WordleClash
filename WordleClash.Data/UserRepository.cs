@@ -16,17 +16,27 @@ public class UserRepository: IUserRepository
         _connString = connString;
     }
     
-    public CreateUserResult Create(string sessionId, string username)
+    public CreateUserResult Create(string sessionId, string? username = null)
     {
         try
         {
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
+            using var transaction = conn.BeginTransaction();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"INSERT INTO {UserTable} (session_id, name) VALUES (@sessionId, @name)";
+            if (username == null)
+            {
+                cmd.CommandText = $"SELECT GROUP_CONCAT(entry ORDER BY RAND() SEPARATOR '') AS usrname " +
+                                  $"FROM (SELECT entry FROM word ORDER BY RAND() limit 2) AS rndwords";
+                username = cmd.ExecuteScalar()?.ToString() ?? "default";
+            }
+            
+            cmd.CommandText = $"INSERT INTO {UserTable} (session_id, name) VALUES (@sessionId, @name);";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             cmd.Parameters.AddWithValue("@name", username);
-            conn.Open();
             cmd.ExecuteScalar();
+            transaction.Commit();
+            
             return new CreateUserResult
             {
                 SessionId = sessionId,
@@ -108,11 +118,5 @@ public class UserRepository: IUserRepository
     public void DeleteBySessionId(string sessionId)
     {
         throw new NotImplementedException();
-    }
-
-    private string GenerateName(string id)
-    {
-        var shortenedId = id.Substring(Math.Max(0, id.Length - 10));
-        return $"user-{shortenedId}";
     }
 }
