@@ -5,10 +5,12 @@ namespace WordleClash.Core;
 public class UserService
 {
     private IUserRepository _userRepository;
+    private IGameLogRepository _gameLogRepository;
     
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IGameLogRepository gameLogRepository)
     {
         _userRepository = userRepository;
+        _gameLogRepository = gameLogRepository;
     }
 
     public CreateUserResult Create()
@@ -41,5 +43,10 @@ public class UserService
             Console.WriteLine(e);
             return null;
         }
+    }
+
+    public void AddGameLog(GameLog log, string sessionId)
+    {
+        _gameLogRepository.AddToUser(log, sessionId);
     }
 }
