@@ -5,13 +5,14 @@ using WordleClash.Core.Enums;
 using WordleClash.Web.Utils;
 using Exception = System.Exception;
 
-namespace WordleClash.Web.Pages;
+namespace WordleClash.Web.Pages.Singleplayer;
 
 public class SingleplayerModel : PageModel
 {
     private readonly ILogger<SingleplayerModel> _logger;
     private GameService _gameService;
     private SessionManager _sessionManager;
+    private UserService _userService;
     private const int DefaultMaxTries = 6;
 
     [BindProperty] public string Guess { get; set; }
@@ -20,11 +21,12 @@ public class SingleplayerModel : PageModel
     public GameModel Game { get; set; }
     
     
-    public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionManager sessionManager)
+    public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionManager sessionManager, UserService userService)
     {
         _logger = logger;
         _gameService = gameService;
         _sessionManager = sessionManager;
+        _userService = userService;
     }
 
     public void OnGet()
@@ -60,6 +62,28 @@ public class SingleplayerModel : PageModel
         {
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
         }
+        if (wordle.Status is GameStatus.Won or GameStatus.Lost)
+        {
+            try
+            {
+                var log = GameLog.FromGame(wordle);
+                TrySaveGameLog(log);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+            }
+        }
+
         return Partial("Partials/SingleplayerField", GameModel.FromGame(wordle));
+    }
+
+    private void TrySaveGameLog(GameLog log)
+    {
+        var userSession = _sessionManager.GetUserSession();
+        if (userSession == null) return;
+        var user = _userService.GetFromSession(userSession);
+        if (user == null) return;
+        _userService.AddGameLog(log, userSession);
     }
 }
