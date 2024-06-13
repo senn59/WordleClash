@@ -43,6 +43,6 @@ public class IndexModel : PageModel
         }
         var result = _userService.Create(); //TODO: catch
         _sessionManager.SetUserSession(result.SessionId);
-        return RedirectToPage("Index", new {username = result.UserName});
+        return RedirectToPage("Index", new {username = result.Username});
     }
 }

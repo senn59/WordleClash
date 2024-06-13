@@ -16,22 +16,21 @@ public class UserRepository: IUserRepository
         _connString = connString;
     }
     
-    public CreateUserResult Create(string sessionId)
+    public CreateUserResult Create(string sessionId, string username)
     {
-        var userName = GenerateName(sessionId);
         try
         {
             using var conn = new MySqlConnection(_connString);
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"INSERT INTO {UserTable} (session_id, name) VALUES (@sessionId, @name)";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
-            cmd.Parameters.AddWithValue("@name", userName);
+            cmd.Parameters.AddWithValue("@name", username);
             conn.Open();
             cmd.ExecuteScalar();
             return new CreateUserResult
             {
                 SessionId = sessionId,
-                UserName = userName
+                Username = username
             };
         }
         catch (Exception e)
