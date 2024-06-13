@@ -4,11 +4,11 @@ namespace WordleClash.Core;
 
 public class GameModel
 {
-    public int Tries { get; init; }
-    public int MaxTries { get; init; }
-    public GameStatus Status { get; init; }
-    public IReadOnlyList<GuessResult> GuessHistory { get; init; } = [];
-    public string? TargetWord { get; set; }
+    public required int Tries { get; init; }
+    public required int MaxTries { get; init; }
+    public required GameStatus Status { get; init; }
+    public required IReadOnlyList<GuessResult> GuessHistory { get; init; } = [];
+    public required string? TargetWord { get; init; }
     public static GameModel FromGame(Game game)
     {
         return new GameModel()
