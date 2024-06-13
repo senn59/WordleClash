@@ -26,7 +26,7 @@ header .create-account__container {
 }
 
 .back-button__container {
-    position: absolute;
+    position: fixed;
     left: 30px;
     bottom: 30px;
     display: flex;
