@@ -1,4 +1,5 @@
 @page "{username?}"
+@using WordleClash.Core
 @model WordleClash.Web.Pages.User.IndexModel
 
 @{
@@ -14,5 +15,26 @@
             <h1>@Model.User.Name</h1>
         </div>
         <div class="user__seperator"></div>
+        <table class="game-log__table">
+            <tr>
+                <th>WORD</th>
+                <th>ATTEMPTS</th>
+                <th>TIME</th>
+                <th>DATE</th>
+                <th>STATUS</th>
+            </tr>
+            @foreach (var log in Model.User.GameHistory)
+            {
+                var status = log.Status.ToString().ToUpper();
+                <tr class="log">
+                    <td>@log.Word</td>
+                    <td>@log.AttemptCount</td>
+                    <td>@(log.Time.HasValue ? log.Time : "N/A")</td>
+                    <td>@GameLog.GetTimeDifference(log.Date)</td>
+                    <td class="@status">@status</td>
+                </tr>
+                <tr class="break"></tr>
+            }
+        </table>
     </div>
 </div>
