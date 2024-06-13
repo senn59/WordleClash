@@ -12,10 +12,11 @@ public class GameLog
 
     public static GameLog FromGame(Game game)
     {
-        if (game.Status is not GameStatus.Won or GameStatus.Lost)
+        if (game.Status is GameStatus.Won or GameStatus.Lost)
         {
             throw new GameInProgressException();
         }
+        
         return new GameLog
         {
             AttemptCount = game.Tries,
