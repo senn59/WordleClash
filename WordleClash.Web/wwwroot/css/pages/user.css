@@ -10,12 +10,12 @@
 }
 .user-top__container {
     width: 95%;
-    margin-bottom: 15px;
 }
 .user__seperator {
     width: 100%;
     height: 5px;
     background-color: black;
+    margin: 22px 0;
 }
 
 table {
