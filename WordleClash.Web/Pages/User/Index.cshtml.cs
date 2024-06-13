@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
+using WordleClash.Core.Enums;
 using WordleClash.Web.Utils;
 
 namespace WordleClash.Web.Pages.User;
@@ -31,6 +32,13 @@ public class IndexModel : PageModel
         }
 
         User = user;
+        user.GameHistory.AddRange(Enumerable.Repeat<GameLog>(new GameLog
+        {
+            AttemptCount = 3,
+            Status = GameStatus.Won,
+            Time = null,
+            Word = "TABLE"
+        }, 10));
         return Page();
     }
 
