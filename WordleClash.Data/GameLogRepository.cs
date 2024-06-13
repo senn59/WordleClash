@@ -28,12 +28,13 @@ public class GameLogRepository: IGameLogRepository
                               "(attempt_count, time, status, word_id, user_id)" +
                               "VALUES " +
                               "(@attemptCount, @time, @status, " +
-                              "SELECT id from word WHERE word=@word," +
-                              "SELECT id FROM user WHERE session_id=@sessionid)";
+                              "(SELECT id from word WHERE entry=@word)," +
+                              "(SELECT id FROM user WHERE session_id=@sessionId))";
             cmd.Parameters.AddWithValue("@attemptCount", log.AttemptCount);
             cmd.Parameters.AddWithValue("@time", log.Time);
             cmd.Parameters.AddWithValue("@status", log.Status);
             cmd.Parameters.AddWithValue("@word", log.Word);
+            cmd.Parameters.AddWithValue("@sessionId", sessionId);
             conn.Open();
             cmd.ExecuteScalar();
         }
