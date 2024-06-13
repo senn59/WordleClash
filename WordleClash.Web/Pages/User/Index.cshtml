@@ -12,7 +12,15 @@
 <div class="page__container">
     <div class="user__container">
         <div class="user-top__container">
-            <h1>@Model.User.Name</h1>
+            <h1 contenteditable="true" class="user__name" id="username">@Model.User.Name</h1>
+            <button onclick="focusEditableContent()">edit</button>
+            <form hx-post="@Url.Page("/User/Index", "UpdateName")"
+                  hx-target="#username"
+                  hx-trigger="enter"
+                  id="usernameChangeForm"
+                  method="post">
+                <input type="hidden" name="NewUsername" id="usernameInput"/>
+            </form>
         </div>
         <div class="user__seperator"></div>
         <table class="game-log__table">
@@ -38,3 +46,29 @@
         </table>
     </div>
 </div>
+@section Scripts
+{
+    <script type="text/javascript">
+        const usernameEl = document.getElementById("username");
+        const usernameInputEl = document.getElementById("usernameInput");
+        const form = document.getElementById("usernameChangeForm");
+        function focusEditableContent() {
+            usernameEl.contentEditable = true;
+            usernameEl.focus();
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(usernameEl);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+        usernameEl.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                usernameEl.contentEditable = false;
+                usernameInputEl.value = usernameEl.innerText
+                htmx.trigger("#usernameChangeForm", "enter");
+            }
+        })
+    </script>
+}

@@ -11,9 +11,10 @@ public class IndexModel : PageModel
     private ILogger<IndexModel> _logger;
     private SessionManager _sessionManager;
     private UserService _userService;
-    
-    [BindProperty]
     public new required Core.User User { get; set; }
+
+    [BindProperty] 
+    public string NewUsername { get; set; } = "";
 
     public IndexModel(ILogger<IndexModel> logger, SessionManager sessionManager, UserService userService)
     {
@@ -32,7 +33,7 @@ public class IndexModel : PageModel
         }
 
         User = user;
-        user.GameHistory.AddRange(Enumerable.Repeat<GameLog>(new GameLog
+        user.GameHistory.AddRange(Enumerable.Repeat(new GameLog
         {
             AttemptCount = 3,
             Status = GameStatus.Won,
@@ -52,5 +53,12 @@ public class IndexModel : PageModel
         var result = _userService.Create(); //TODO: catch
         _sessionManager.SetUserSession(result.SessionId);
         return RedirectToPage("Index", new {username = result.Username});
+    }
+    
+    public IActionResult OnPostUpdateName()
+    {
+        Console.WriteLine(NewUsername);
+        Console.WriteLine(ModelState.IsValid);
+        return Content("test");
     }
 }
