@@ -115,6 +115,24 @@ public class UserRepository: IUserRepository
         throw new UserNotFoundException(sessionColumn, sessionId);
     }
 
+    public void ChangeName(string sessionId, string name)
+    {
+        try
+        {
+            using var conn = new MySqlConnection(_connString);
+            conn.Open();
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = $"UPDATE {UserTable} SET name=@name WHERE session_id=@sessionId";
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@sessionId", sessionId);
+            cmd.ExecuteScalar();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Failed to change username", e);
+        }
+    }
+
     public void DeleteBySessionId(string sessionId)
     {
         throw new NotImplementedException();
