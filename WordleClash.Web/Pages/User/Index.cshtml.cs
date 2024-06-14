@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Org.BouncyCastle.Crypto.Engines;
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
+using WordleClash.Core.Services;
 using WordleClash.Web.Utils;
 
 namespace WordleClash.Web.Pages.User;
@@ -13,7 +15,7 @@ public class IndexModel : PageModel
     private ILogger<IndexModel> _logger;
     private SessionManager _sessionManager;
     private UserService _userService;
-    public new required Core.User User { get; set; }
+    public new required Core.Entities.User User { get; set; }
 
     [BindProperty] 
     public string NewUsername { get; set; } = "";

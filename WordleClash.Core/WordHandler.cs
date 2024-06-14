@@ -1,3 +1,4 @@
+using WordleClash.Core.Entities;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
 
