@@ -45,6 +45,11 @@ public class UserService
         }
     }
 
+    public void ChangeUsername(string sessionId, string name)
+    {
+        _userRepository.ChangeName(sessionId, name);
+    }
+
     public void AddGameLog(GameLog log, string sessionId)
     {
         _gameLogRepository.AddToUser(log, sessionId);
