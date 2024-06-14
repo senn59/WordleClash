@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Core;
@@ -6,6 +8,8 @@ public class UserService
 {
     private IUserRepository _userRepository;
     private IGameLogRepository _gameLogRepository;
+    private const int MaxUsernameLength = 30; //defined as VARCHAR(30) in database
+    private const string UsernameRegexPattern = @"^[a-zA-Z0-9._^*()!$]+$";
     
     public UserService(IUserRepository userRepository, IGameLogRepository gameLogRepository)
     {
@@ -47,11 +51,26 @@ public class UserService
 
     public void ChangeUsername(string sessionId, string name)
     {
+        name = name.Trim();
+        ValidateUsername(name);
         _userRepository.ChangeName(sessionId, name);
     }
 
     public void AddGameLog(GameLog log, string sessionId)
     {
         _gameLogRepository.AddToUser(log, sessionId);
+    }
+
+    private void ValidateUsername(string name)
+    {
+        if (name.Length > MaxUsernameLength)
+        {
+            throw new UsernameTooLongException(MaxUsernameLength);
+        }
+        var regex = new Regex(UsernameRegexPattern);
+        if (!regex.IsMatch(name))
+        {
+            throw new UsernameInvalidException();
+        }
     }
 }
