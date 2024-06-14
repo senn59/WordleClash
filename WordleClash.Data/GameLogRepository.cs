@@ -23,6 +23,7 @@ public class GameLogRepository: IGameLogRepository
         try
         {
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"INSERT INTO {GameLogTable}" +
                               "(attempt_count, time, status, word_id, user_id)" +
@@ -35,7 +36,6 @@ public class GameLogRepository: IGameLogRepository
             cmd.Parameters.AddWithValue("@status", log.Status);
             cmd.Parameters.AddWithValue("@word", log.Word);
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
-            conn.Open();
             cmd.ExecuteScalar();
         }
         catch (Exception e)

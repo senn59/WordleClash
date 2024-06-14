@@ -21,6 +21,7 @@ public class WordRepository: IWordRepository
         try
         {
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"SELECT entry FROM {WordTable}";
             var rdr = cmd.ExecuteReader();
@@ -42,9 +43,9 @@ public class WordRepository: IWordRepository
         {
             
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"SELECT entry FROM {WordTable} ORDER BY RAND() LIMIT 1";
-            conn.Open();
             var res = cmd.ExecuteScalar();
             return res?.ToString() ?? throw new InvalidOperationException();
         }
@@ -61,10 +62,10 @@ public class WordRepository: IWordRepository
         try
         {
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"SELECT entry FROM {WordTable} WHERE UPPER(entry) = UPPER(@word)";
             cmd.Parameters.AddWithValue("@word", word);
-            conn.Open();
             var res = cmd.ExecuteScalar();
             return res?.ToString();
         }
@@ -80,10 +81,10 @@ public class WordRepository: IWordRepository
         try
         {
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"SELECT id FROM {WordTable} WHERE UPPER(entry) = UPPER(@word)";
             cmd.Parameters.AddWithValue("@word", word);
-            conn.Open();
             var res = cmd.ExecuteScalar();
             return int.Parse(res!.ToString()!);
         }
