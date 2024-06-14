@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Org.BouncyCastle.Crypto.Engines;
 using WordleClash.Core;
 using WordleClash.Core.Enums;
+using WordleClash.Core.Exceptions;
 using WordleClash.Web.Utils;
 
 namespace WordleClash.Web.Pages.User;
@@ -57,8 +59,35 @@ public class IndexModel : PageModel
     
     public IActionResult OnPostUpdateName()
     {
-        Console.WriteLine(NewUsername);
-        Console.WriteLine(ModelState.IsValid);
-        return Content("test");
+        if (!ModelState.IsValid)
+        {
+            return Content("ERROR!");
+        }
+
+        var userSession = _sessionManager.GetUserSession();
+        if (userSession == null) return Content("User not found!");
+        try
+        {
+            _userService.ChangeUsername(userSession, NewUsername);
+        }
+        catch (UsernameTakenException)
+        {
+            return Content($"already exists");
+        }
+        catch (UsernameTooLongException e)
+        {
+            return Content($"Max length is {e.MaxLength}");
+        }
+        catch (UsernameInvalidException)
+        {
+            return Content("Invalid username!");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.ToString());
+            return Content("ERROR!");
+        }
+        
+        return Content(NewUsername);
     }
 }
