@@ -57,10 +57,10 @@ public class UserRepository: IUserRepository
         try
         {
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"SELECT * from {UserTable} WHERE {nameColumn}=@name LIMIT 1";
             cmd.Parameters.AddWithValue("@name", name);
-            conn.Open();
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -89,10 +89,10 @@ public class UserRepository: IUserRepository
         try
         {
             using var conn = new MySqlConnection(_connString);
+            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"SELECT * from {UserTable} WHERE {sessionColumn}=@sessionId LIMIT 1";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
-            conn.Open();
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
