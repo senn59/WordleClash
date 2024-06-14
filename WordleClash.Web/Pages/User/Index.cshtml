@@ -69,7 +69,7 @@
                 event.preventDefault();
                 usernameEl.contentEditable = false;
                 usernameInputEl.value = usernameEl.innerText
-                newName = usernameEl.innerText;
+                newName = usernameEl.innerText.trim();
                 if (newName === originalName) return;
                 htmx.trigger("#usernameChangeForm", "enter");
             }
@@ -91,10 +91,17 @@
                         usernameEl.innerHTML = originalName;
                     }, 2000);
                 } else {
+                    changeUrl(newName);
                     originalName = newName;
                     newName = "";
                 }
             }
         });
+        const changeUrl = (username) => {
+            let thisUrl = window.location.href;
+            let urlArr = thisUrl.split("/");
+            urlArr[urlArr.length - 1] = username;
+            window.history.replaceState(null, "", urlArr.join("/"));
+        }
     </script>
 }
