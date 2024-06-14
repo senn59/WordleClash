@@ -52,6 +52,8 @@
         const usernameEl = document.getElementById("username");
         const usernameInputEl = document.getElementById("usernameInput");
         const form = document.getElementById("usernameChangeForm");
+        let originalName = usernameEl.innerText;
+        let newName = "";
         function focusEditableContent() {
             usernameEl.contentEditable = true;
             usernameEl.focus();
@@ -67,8 +69,20 @@
                 event.preventDefault();
                 usernameEl.contentEditable = false;
                 usernameInputEl.value = usernameEl.innerText
+                newName = usernameEl.innerText;
+                if (newName === originalName) return;
                 htmx.trigger("#usernameChangeForm", "enter");
             }
         })
+        
+        document.body.addEventListener('htmx:afterOnLoad', (event) => {
+            if (event.target.id === 'usernameChangeForm') {
+                if (usernameEl.innerText !== newName) {
+                    setTimeout(() => {
+                        usernameEl.innerHTML = originalName;
+                    }, 2000);
+                }
+            }
+        });
     </script>
 }
