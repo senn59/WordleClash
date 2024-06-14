@@ -10,6 +10,7 @@ public class UserRepository: IUserRepository
 {
     private readonly string _connString;
     private const string UserTable = "user";
+    private const int DuplicateEntryCode = 1062;
 
     public UserRepository(string connString)
     {
@@ -127,9 +128,14 @@ public class UserRepository: IUserRepository
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             cmd.ExecuteScalar();
         }
-        catch (Exception e)
+        catch (MySqlException e)
         {
-            throw new Exception("Failed to change username", e);
+            if (e.Number == DuplicateEntryCode)
+            {
+                throw new UsernameTakenException(name);
+            }
+
+            throw;
         }
     }
 
