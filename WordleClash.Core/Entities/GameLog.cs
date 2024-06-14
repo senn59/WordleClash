@@ -1,8 +1,7 @@
-using System.Runtime.CompilerServices;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 
-namespace WordleClash.Core;
+namespace WordleClash.Core.Entities;
 
 public class GameLog
 {

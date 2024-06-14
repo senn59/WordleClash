@@ -1,4 +1,4 @@
-namespace WordleClash.Core;
+namespace WordleClash.Core.Entities;
 
 public class LobbyPlayer
 {

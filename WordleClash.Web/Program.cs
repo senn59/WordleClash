@@ -2,6 +2,7 @@ using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.Extensions.Caching.Memory;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core;
+using WordleClash.Core.Services;
 using WordleClash.Data;
 using WordleClash.Web.Utils;
 

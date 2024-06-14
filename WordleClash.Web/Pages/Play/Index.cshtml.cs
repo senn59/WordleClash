@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Enums;
+using WordleClash.Core.Services;
 using WordleClash.Web.Utils;
 using Exception = System.Exception;
 

@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Caching.Memory;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Interfaces;
 
-namespace WordleClash.Core;
+namespace WordleClash.Core.Services;
 
 public class LobbyService
 {

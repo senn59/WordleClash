@@ -1,3 +1,4 @@
+using WordleClash.Core.Entities;
 using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Core;

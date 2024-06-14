@@ -1,8 +1,9 @@
 using System.Text.RegularExpressions;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
 
-namespace WordleClash.Core;
+namespace WordleClash.Core.Services;
 
 public class UserService
 {

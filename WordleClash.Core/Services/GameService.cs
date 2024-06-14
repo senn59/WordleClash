@@ -1,8 +1,7 @@
-using System.Collections.Concurrent;
 using Microsoft.Extensions.Caching.Memory;
 using WordleClash.Core.Interfaces;
 
-namespace WordleClash.Core;
+namespace WordleClash.Core.Services;
 
 public class GameService
 {

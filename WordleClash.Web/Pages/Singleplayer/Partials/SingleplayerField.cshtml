@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WordleClash.Core.Enums
 @using WordleClash.Web.Pages.Shared
-@model WordleClash.Core.GameModel
+@model WordleClash.Core.Entities.GameModel
 @if (Model.Status is GameStatus.Won or GameStatus.Lost)
 {
     <div class="game-end-overlay__container">
