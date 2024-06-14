@@ -1,5 +1,6 @@
 using MySql.Data.MySqlClient;
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Exceptions;
 using WordleClash.Core.Interfaces;
 using Exception = System.Exception;

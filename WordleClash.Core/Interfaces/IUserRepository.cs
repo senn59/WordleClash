@@ -1,3 +1,5 @@
+using WordleClash.Core.Entities;
+
 namespace WordleClash.Core.Interfaces;
 
 public interface IUserRepository

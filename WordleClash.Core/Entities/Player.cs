@@ -1,6 +1,6 @@
 using WordleClash.Core.Enums;
 
-namespace WordleClash.Core;
+namespace WordleClash.Core.Entities;
 
 public class Player
 {

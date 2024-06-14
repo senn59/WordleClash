@@ -1,4 +1,5 @@
 using WordleClash.Core;
+using WordleClash.Core.Services;
 
 namespace WordleClash.Web.Utils;
 

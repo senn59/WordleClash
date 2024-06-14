@@ -1,5 +1,6 @@
 using MySql.Data.MySqlClient;
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Interfaces;
 
 namespace WordleClash.Data;
