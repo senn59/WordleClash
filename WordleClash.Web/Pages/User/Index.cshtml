@@ -73,6 +73,15 @@
                 if (newName === originalName) return;
                 htmx.trigger("#usernameChangeForm", "enter");
             }
+            
+            if (event.ctrlKey && event.key === 'v' || event.metaKey && event.key === 'v') {
+                event.preventDefault();
+                return;
+            }
+            
+            if (event.key.length === 1 && !/[a-zA-Z0-9._^*()!$]/.test(event.key)) {
+                event.preventDefault();
+            }
         })
         
         document.body.addEventListener('htmx:afterOnLoad', (event) => {
@@ -81,6 +90,9 @@
                     setTimeout(() => {
                         usernameEl.innerHTML = originalName;
                     }, 2000);
+                } else {
+                    originalName = newName;
+                    newName = "";
                 }
             }
         });
