@@ -16,6 +16,7 @@ public class IndexModel : PageModel
     private SessionManager _sessionManager;
     private UserService _userService;
     public new required Core.Entities.User User { get; set; }
+    public bool IsSelectedUser { get; set; } = false;
 
     [BindProperty] 
     public string NewUsername { get; set; } = "";
@@ -37,6 +38,7 @@ public class IndexModel : PageModel
         }
 
         User = user;
+        IsSelectedUser = _sessionManager.GetUserSession() == User.SessionId;
         user.GameHistory.AddRange(Enumerable.Repeat(new GameLog
         {
             AttemptCount = 3,

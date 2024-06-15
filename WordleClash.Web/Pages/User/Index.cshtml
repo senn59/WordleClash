@@ -1,5 +1,4 @@
 @page "{username?}"
-@using WordleClash.Core
 @using WordleClash.Core.Entities
 @model WordleClash.Web.Pages.User.IndexModel
 
@@ -13,8 +12,11 @@
 <div class="page__container">
     <div class="user__container">
         <div class="user-top__container">
-            <h1 contenteditable="true" class="user__name" id="username">@Model.User.Name</h1>
-            <button onclick="focusEditableContent()">edit</button>
+            <h1 class="user__name" id="username">@Model.User.Name</h1>
+            @if (Model.IsSelectedUser)
+            {
+                <button onclick="focusEditableContent()">edit</button>
+            }
             <form hx-post="@Url.Page("/User/Index", "UpdateName")"
                   hx-target="#username"
                   hx-trigger="enter"
