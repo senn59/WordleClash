@@ -11,9 +11,30 @@
 .user-top__container {
     width: 95%;
 }
-.user__name:focus {
+#username {
+    font-size: 3em;
+    white-space: -moz-pre-wrap;
+}
+#username:focus {
     border: 0;
     outline: 0;
+}
+.username__container {
+    display: flex;
+    align-items: center;
+}
+.edit.btn__base {
+    padding: 0;
+    box-shadow: black 1px 2px 0 3px, black 0 0 0 3px;
+    border-radius: 5px;
+}
+.edit {
+    width: 25px;
+    height: 25px;
+    margin-left: 15px;
+}
+.edit img {
+    width: 100%;
 }
 .user__seperator {
     width: 100%;
