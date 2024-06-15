@@ -66,15 +66,12 @@ public class UserRepository: IUserRepository
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
-                var id = rdr.GetInt32("id");
-                var sessionId = rdr.GetString("session_id");
-                var creationDate = rdr.GetDateTime("created_at");
                 return new User
                 {
-                    Id = id,
-                    Name = name,
-                    SessionId = sessionId,
-                    CreatedAt = creationDate
+                    Id = rdr.GetInt32("id"),
+                    Name = rdr.GetString("name"),
+                    SessionId = rdr.GetString("session_id"),
+                    CreatedAt = rdr.GetDateTime("created_at")
                 };
             }
         }
