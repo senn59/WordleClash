@@ -12,11 +12,15 @@
 <div class="page__container">
     <div class="user__container">
         <div class="user-top__container">
-            <h1 class="user__name" id="username">@Model.User.Name</h1>
-            @if (Model.IsSelectedUser)
-            {
-                <button onclick="focusEditableContent()">edit</button>
-            }
+            <div class="username__container">
+                <h1 id="username">@Model.User.Name</h1>
+                @if (Model.IsSelectedUser)
+                {
+                    <button onclick="focusEditableContent()" class="btn__base btn__primary edit">
+                        <img src="~/icons/pencil.svg" alt="edit icon"/>
+                    </button>
+                }
+            </div>
             <form hx-post="@Url.Page("/User/Index", "UpdateName")"
                   hx-target="#username"
                   hx-trigger="enter"
