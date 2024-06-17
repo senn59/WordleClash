@@ -1,0 +1,32 @@
+@using WordleClash.Core.Entities
+@model WordleClash.Web.Pages.User.Partials.LogPartialModel
+
+@for (var i = 0; i < Model.Logs.Count; i++)
+{
+    var isLastRow = i == Model.Logs.Count - 1;
+    var log = Model.Logs[i];
+    var status = log.Status.ToString().ToUpper();
+    <tr class="log" 
+        @if (isLastRow)
+        {
+            @:hx-get="@Url.Page("/User/Index", "Log", new { id = Model.CurrentPage })" 
+            @:hx-trigger="revealed" 
+            @:hx-target="#break@(Model.CurrentPage)"
+            @:hx-swap="afterend"
+        }
+    >
+        <td>@log.Word</td>
+        <td>@log.AttemptCount</td>
+        <td>@(log.Time.HasValue ? log.Time : "N/A")</td>
+        <td>@GameLog.GetTimeDifference(log.Date)</td>
+        <td class="@status">@status</td>
+    </tr>
+    @if (isLastRow) 
+    {
+        <tr class="break" id="break@(Model.CurrentPage)"></tr>
+    }
+    else
+    {
+        <tr class="break"></tr>
+    }
+}

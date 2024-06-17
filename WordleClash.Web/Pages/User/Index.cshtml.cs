@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Org.BouncyCastle.Crypto.Engines;
-using WordleClash.Core;
 using WordleClash.Core.Entities;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 using WordleClash.Core.Services;
+using WordleClash.Web.Pages.User.Partials;
 using WordleClash.Web.Utils;
 
 namespace WordleClash.Web.Pages.User;
@@ -93,5 +92,32 @@ public class IndexModel : PageModel
         }
         
         return Content(NewUsername);
+    }
+
+    public IActionResult OnGetLog(string username, int id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Content("<h3>ERROR</h3>");
+        }
+
+        _logger.LogInformation(username);
+        _logger.LogInformation(id.ToString());
+        
+        var logs = Enumerable.Repeat(new GameLog
+        {
+            AttemptCount = 3,
+            Status = GameStatus.Won,
+            Time = null,
+            Word = "TABLE"
+        }, 10);
+        
+        var logModel = new LogPartialModel
+        {
+            Logs = logs.ToList(),
+            CurrentPage = id + 1
+        };
+
+        return Partial("Partials/Log", logModel);
     }
 }

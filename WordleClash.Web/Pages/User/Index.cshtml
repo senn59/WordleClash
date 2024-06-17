@@ -1,5 +1,6 @@
 @page "{username?}"
 @using WordleClash.Core.Entities
+@using WordleClash.Web.Pages.User.Partials
 @model WordleClash.Web.Pages.User.IndexModel
 
 @{
@@ -31,25 +32,25 @@
         </div>
         <div class="user__seperator"></div>
         <table class="game-log__table">
-            <tr>
-                <th>WORD</th>
-                <th>ATTEMPTS</th>
-                <th>TIME</th>
-                <th>DATE</th>
-                <th>STATUS</th>
-            </tr>
-            @foreach (var log in Model.User.GameHistory)
-            {
-                var status = log.Status.ToString().ToUpper();
-                <tr class="log">
-                    <td>@log.Word</td>
-                    <td>@log.AttemptCount</td>
-                    <td>@(log.Time.HasValue ? log.Time : "N/A")</td>
-                    <td>@GameLog.GetTimeDifference(log.Date)</td>
-                    <td class="@status">@status</td>
+            <thead>
+                <tr>
+                    <th>WORD</th>
+                    <th>ATTEMPTS</th>
+                    <th>TIME</th>
+                    <th>DATE</th>
+                    <th>STATUS</th>
                 </tr>
-                <tr class="break"></tr>
-            }
+            </thead>
+            <tbody>
+                @{
+                    var partialModel = new LogPartialModel
+                    {
+                        Logs = Model.User.GameHistory,
+                        CurrentPage = LogPartialModel.StartPage
+                    };
+                }
+                <partial name="Partials/Log" model="@partialModel"/>
+            </tbody>
         </table>
     </div>
 </div>
