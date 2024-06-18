@@ -11,7 +11,7 @@
         {
             @:hx-get="@Url.Page("/User/Index", "Log", new { id = Model.CurrentPage })" 
             @:hx-trigger="revealed" 
-            @:hx-target="#break@(Model.CurrentPage)"
+            @:hx-target="#break@(Model.CurrentPage)" 
             @:hx-swap="afterend"
         }
     >
@@ -21,12 +21,5 @@
         <td>@GameLog.GetTimeDifference(log.Date)</td>
         <td class="@status">@status</td>
     </tr>
-    @if (isLastRow) 
-    {
-        <tr class="break" id="break@(Model.CurrentPage)"></tr>
-    }
-    else
-    {
-        <tr class="break"></tr>
-    }
+    <tr class="break" @(!isLastRow ? "" : $"id=break{Model.CurrentPage}")></tr>
 }
