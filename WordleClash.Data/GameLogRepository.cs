@@ -24,11 +24,12 @@ public class GameLogRepository: IGameLogRepository
             using var conn = new MySqlConnection(_connString);
             conn.Open();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT gl.*, w.entry FROM {GameLogTable} as gl" +
-                              "INNER JOIN word AS w ON gl.word_id = w.id" +
+            cmd.CommandText = $"SELECT gl.*, w.entry FROM {GameLogTable} as gl " +
+                              "INNER JOIN word AS w ON gl.word_id = w.id " +
                               "WHERE user_id=@userId " +
-                              "ORDER BY id DESC" +
+                              "ORDER BY id DESC " +
                               "LIMIT @pageSize OFFSET @page";
+            cmd.Parameters.AddWithValue("@userId", userId);
             cmd.Parameters.AddWithValue("@pageSize", pageSize);
             cmd.Parameters.AddWithValue("@page", pageSize * (page - 1));
             var reader = cmd.ExecuteReader();

@@ -11,6 +11,8 @@ public class UserService
     private IGameLogRepository _gameLogRepository;
     private const int MaxUsernameLength = 30; //defined as VARCHAR(30) in database
     private const string UsernameRegexPattern = @"^[a-zA-Z0-9._^*()!$]+$";
+    private const int PageSize = 10;
+    private const int StartPage = 1;
     
     public UserService(IUserRepository userRepository, IGameLogRepository gameLogRepository)
     {
@@ -28,7 +30,10 @@ public class UserService
     {
         try
         {
-            return _userRepository.GetByName(name);
+            var user = _userRepository.GetByName(name);
+            var gameLogs = _gameLogRepository.GetFromUserIdByPage(user.Id, PageSize, StartPage);
+            user.GameHistory.AddRange(gameLogs);
+            return user;
         }
         catch (Exception e)
         {
@@ -37,11 +42,19 @@ public class UserService
         }
     }
 
+    public List<GameLog> GetLogsByPage(int userId, int page)
+    {
+        return _gameLogRepository.GetFromUserIdByPage(userId, PageSize, page);
+    }
+
     public User? GetFromSession(string sessionId)
     {
         try
         {
-            return _userRepository.GetFromSessionId(sessionId);
+            var user = _userRepository.GetFromSessionId(sessionId);
+            var gameLogs = _gameLogRepository.GetFromUserIdByPage(user.Id, PageSize, StartPage);
+            user.GameHistory.AddRange(gameLogs);
+            return user;
         }
         catch (Exception e)
         {
