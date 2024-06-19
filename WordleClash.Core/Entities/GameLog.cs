@@ -5,7 +5,7 @@ namespace WordleClash.Core.Entities;
 
 public class GameLog
 {
-    public required int AttemptCount { get; init; }
+    public required int Tries { get; init; }
     public required TimeSpan? Time { get; init; }
     public required GameStatus Status { get; init; }
     public DateTime Date { get; init; } = DateTime.Now.AddHours(-15);
@@ -20,7 +20,7 @@ public class GameLog
         
         return new GameLog
         {
-            AttemptCount = game.Tries,
+            Tries = game.Tries,
             Time = null,
             Status = game.Status,
             Word = game.GetTargetWord() ?? string.Empty //only null if game is still in progress

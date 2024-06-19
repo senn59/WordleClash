@@ -42,8 +42,8 @@ public class GameLogRepository: IGameLogRepository
                 }
                 logs.Add(new GameLog
                 {
-                    AttemptCount = reader.GetInt32("attempt_count"),
-                    Date = reader.GetDateTime("timestamp"),
+                    Tries = reader.GetInt32("tries"),
+                    Date = reader.GetDateTime("created_at"),
                     Status = (GameStatus)reader.GetByte("status"),
                     Time = timeVal,
                     Word = reader.GetString("entry")
@@ -66,12 +66,12 @@ public class GameLogRepository: IGameLogRepository
             conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = $"INSERT INTO {GameLogTable}" +
-                              "(attempt_count, time, status, word_id, user_id)" +
+                              "(tries, time, status, word_id, user_id)" +
                               "VALUES " +
-                              "(@attemptCount, @time, @status, " +
+                              "(@tries, @time, @status, " +
                               "(SELECT id from word WHERE entry=@word)," +
                               "(SELECT id FROM user WHERE session_id=@sessionId))";
-            cmd.Parameters.AddWithValue("@attemptCount", log.AttemptCount);
+            cmd.Parameters.AddWithValue("@tries", log.Tries);
             cmd.Parameters.AddWithValue("@time", log.Time);
             cmd.Parameters.AddWithValue("@status", log.Status);
             cmd.Parameters.AddWithValue("@word", log.Word);

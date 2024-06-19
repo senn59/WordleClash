@@ -20,7 +20,7 @@
         }
     >
         <td>@log.Word</td>
-        <td>@log.AttemptCount</td>
+        <td>@log.Tries</td>
         <td>@(log.Time.HasValue ? log.Time : "N/A")</td>
         <td>@GameLog.GetTimeDifference(log.Date)</td>
         <td class="@status">@status</td>
