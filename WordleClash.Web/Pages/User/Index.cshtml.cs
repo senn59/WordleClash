@@ -20,6 +20,9 @@ public class IndexModel : PageModel
     [BindProperty] 
     public string NewUsername { get; set; } = "";
 
+    // [BindProperty] 
+    // public string SessionId { get; set; } = "";
+
     public IndexModel(ILogger<IndexModel> logger, SessionManager sessionManager, UserService userService)
     {
         _logger = logger;
@@ -38,13 +41,13 @@ public class IndexModel : PageModel
 
         User = user;
         IsSelectedUser = _sessionManager.GetUserSession() == User.SessionId;
-        user.GameHistory.AddRange(Enumerable.Repeat(new GameLog
-        {
-            AttemptCount = 3,
-            Status = GameStatus.Won,
-            Time = null,
-            Word = "TABLE"
-        }, 10));
+        // user.GameHistory.AddRange(Enumerable.Repeat(new GameLog
+        // {
+        //     AttemptCount = 3,
+        //     Status = GameStatus.Won,
+        //     Time = null,
+        //     Word = "TABLE"
+        // }, 10));
         return Page();
     }
 
@@ -58,6 +61,11 @@ public class IndexModel : PageModel
         var result = _userService.Create(); //TODO: catch
         _sessionManager.SetUserSession(result.SessionId);
         return RedirectToPage("Index", new {username = result.Username});
+    }
+
+    public IActionResult OnPostLogin()
+    {
+        return RedirectToPage("/Index");
     }
     
     public IActionResult OnPostUpdateName()
@@ -104,17 +112,22 @@ public class IndexModel : PageModel
         _logger.LogInformation(username);
         _logger.LogInformation(id.ToString());
         
-        var logs = Enumerable.Repeat(new GameLog
+        // var logs = Enumerable.Repeat(new GameLog
+        // {
+        //     AttemptCount = 3,
+        //     Status = GameStatus.Won,
+        //     Time = null,
+        //     Word = "TABLE"
+        // }, 10);
+        var user = _userService.Get(username);
+        if (user == null)
         {
-            AttemptCount = 3,
-            Status = GameStatus.Won,
-            Time = null,
-            Word = "TABLE"
-        }, 10);
+            return Content("");
+        }
         
         var logModel = new LogPartialModel
         {
-            Logs = logs.ToList(),
+            Logs = _userService.GetLogsByPage(user.Id, id),
             CurrentPage = id + 1
         };
 
