@@ -13,7 +13,7 @@ public class GameLog
 
     public static GameLog FromGame(Game game)
     {
-        if (game.Status is GameStatus.Won or GameStatus.Lost)
+        if (game.Status is GameStatus.InProgress or GameStatus.AwaitStart)
         {
             throw new GameInProgressException();
         }
