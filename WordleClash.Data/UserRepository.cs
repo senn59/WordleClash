@@ -64,7 +64,7 @@ public class UserRepository: IUserRepository
             cmd.CommandText = $"SELECT * from {UserTable} WHERE {nameColumn}=@name LIMIT 1";
             cmd.Parameters.AddWithValue("@name", name);
             using var rdr = cmd.ExecuteReader();
-            while (rdr.Read())
+            if (rdr.Read())
             {
                 return new User
                 {
