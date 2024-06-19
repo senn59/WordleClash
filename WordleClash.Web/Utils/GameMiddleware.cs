@@ -17,10 +17,10 @@ public class GameMiddleware
         List<string> whiteListedPaths = new() { "/Singleplayer" };
         if (whiteListedPaths.Any(context.Request.Path.Value!.Contains) || gameSession == null)
         {
-            
             await _next(context);
             return;
         }
+        
         gameService.DicardInstance(gameSession);
         sessionManager.ClearGameId();
         await _next(context);
