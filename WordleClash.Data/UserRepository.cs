@@ -158,7 +158,7 @@ public class UserRepository: IUserRepository
             cmd.CommandText = "UPDATE user SET deleted_at=CURRENT_TIMESTAMP WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", userId);
             cmd.ExecuteScalar();
-            cmd.CommandText = "UPDATE game_log SET deleted_at=CURRENT_TIMESTAMP where id=@id";
+            cmd.CommandText = "UPDATE game_log SET deleted_at=CURRENT_TIMESTAMP where user_id=@id";
             cmd.ExecuteScalar();
             transaction.Commit();
         }
