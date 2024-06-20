@@ -1,4 +1,5 @@
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 
 namespace WordleClash.Web.Pages.Shared;
 

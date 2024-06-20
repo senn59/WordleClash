@@ -2,8 +2,9 @@ using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.Extensions.Caching.Memory;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core;
+using WordleClash.Core.Services;
 using WordleClash.Data;
-using WordleClash.Web.Services;
+using WordleClash.Web.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +23,15 @@ builder.Services.AddServerSentEvents();
 
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (connString == null) throw new ArgumentNullException($"Connection string cannot be null");
-builder.Services.AddSingleton<IDataAccess>(_ => new DataAccess(connString));
-builder.Services.AddSingleton<GameService>(s => new GameService(s.GetRequiredService<IDataAccess>(), s.GetRequiredService<IMemoryCache>()));
-builder.Services.AddSingleton<LobbyService>(s => new LobbyService(s.GetRequiredService<IDataAccess>(), s.GetRequiredService<IMemoryCache>()));
-builder.Services.AddTransient<SessionService>();
+builder.Services.AddScoped<IWordRepository>(_ => new WordRepository(connString));
+builder.Services.AddScoped<IUserRepository>(_ => new UserRepository(connString));
+builder.Services.AddScoped<IGameLogRepository>(_ => new GameLogRepository(connString));
+
+builder.Services.AddScoped<GameService>(s => new GameService(s.GetRequiredService<IWordRepository>(), s.GetRequiredService<IMemoryCache>()));
+builder.Services.AddScoped<LobbyService>(s => new LobbyService(s.GetRequiredService<IWordRepository>(), s.GetRequiredService<IMemoryCache>()));
+builder.Services.AddScoped<UserService>(s => new UserService(s.GetRequiredService<IUserRepository>(), s.GetRequiredService<IGameLogRepository>()));
+
+builder.Services.AddTransient<SessionManager>();
 builder.Services.AddTransient<ServerEvents>();
 
 var app = builder.Build();

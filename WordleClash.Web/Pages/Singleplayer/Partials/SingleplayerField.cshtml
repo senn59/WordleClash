@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WordleClash.Core.Enums
 @using WordleClash.Web.Pages.Shared
-@model WordleClash.Core.GameModel
+@model WordleClash.Core.Entities.GameModel
 @if (Model.Status is GameStatus.Won or GameStatus.Lost)
 {
     <div class="game-end-overlay__container">
@@ -15,6 +15,7 @@
                 else
                 {
                     <h1>YOU LOSE!</h1>
+                    <h2>Correct word: @Model.TargetWord</h2>
                 }
                 <div class="game-end-overlay__buttons">
                     <button class="btn__base btn__primary" type="submit">New Game</button>

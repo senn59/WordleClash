@@ -8,7 +8,7 @@ public class GameStatusTests
     [Test]
     public void NoCommonLetters()
     {
-        var dataAccess = new MockDataAccess("zzzzz", "xxxxx");
+        var dataAccess = new MockWordRepository("zzzzz", "xxxxx");
         var wordle = new Game(dataAccess, 6);
         wordle.Start();
         var res = wordle.TakeGuess(dataAccess.Guess);
@@ -19,7 +19,7 @@ public class GameStatusTests
     [Test]
     public void OneLetterOff()
     {
-        var dataAccess = new MockDataAccess("abcde", "abcdf");
+        var dataAccess = new MockWordRepository("abcde", "abcdf");
         var wordle = new Game(dataAccess, 6);
         wordle.Start();
         var res = wordle.TakeGuess(dataAccess.Guess);
@@ -30,7 +30,7 @@ public class GameStatusTests
     [Test]
     public void CorrectInput()
     {
-        var dataAccess = new MockDataAccess("abcde", "abcde");
+        var dataAccess = new MockWordRepository("abcde", "abcde");
         var wordle = new Game(dataAccess, 6);
         wordle.Start();
         var res = wordle.TakeGuess(dataAccess.TargetWord);
@@ -41,7 +41,7 @@ public class GameStatusTests
     [Test]
     public void TooManyTries()
     {
-        var dataAccess = new MockDataAccess("abcde", "vwxyz");
+        var dataAccess = new MockWordRepository("abcde", "vwxyz");
         var wordle = new Game(dataAccess, 3);
         wordle.Start();
         wordle.TakeGuess(dataAccess.Guess);
@@ -55,7 +55,7 @@ public class GameStatusTests
     [Test]
     public void GuessCorrectOnLastTry()
     {
-        var dataAccess = new MockDataAccess("abcde", "vwxyz");
+        var dataAccess = new MockWordRepository("abcde", "vwxyz");
         var wordle = new Game(dataAccess, 6);
         wordle.Start();
         wordle.TakeGuess(dataAccess.Guess);

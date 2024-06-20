@@ -1,9 +1,9 @@
-@using WordleClash.Web.Services
-@model IEnumerable<WordleClash.Core.Player>
-@inject SessionService SessionService
+@using WordleClash.Web.Utils
+@model IEnumerable<WordleClash.Core.Entities.Player>
+@inject SessionManager SessionManager
 <div>
 @foreach (var player in Model)
 {
-    <h2>@player.Id | @player.Name @(player.Id != SessionService.GetPlayerInfo()?.PlayerId ? "" : "You")</h2>
+    <h2>@player.Id | @player.Name @(player.Id != SessionManager.GetPlayerInfo()?.PlayerId ? "" : "You")</h2>
 }
 </div>
