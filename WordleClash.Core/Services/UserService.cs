@@ -75,6 +75,11 @@ public class UserService
         _gameLogRepository.AddToUser(log, sessionId);
     }
 
+    public void Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     private void ValidateUsername(string name)
     {
         if (name.Length > MaxUsernameLength)
