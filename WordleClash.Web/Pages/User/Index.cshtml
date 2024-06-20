@@ -12,14 +12,14 @@
 }
 <div class="page__container">
     <div class="user-danger-btns__container">
-        <form method="post" asp-page-handler="Delete" class="user-delete__container">
-            <button type="submit" class="btn__base btn__danger" onclick="confirmDelete(event)">
-                Delete
-            </button>
-        </form>
         <form method="post" asp-page-handler="ResetData">
             <button type="submit" class="btn__base btn__danger" onclick="confirmDelete(event)">
                 Reset Data
+            </button>
+        </form>
+        <form method="post" asp-page-handler="Delete" class="user-delete__container">
+            <button type="submit" class="btn__base btn__danger" onclick="confirmDelete(event)">
+                Delete Account
             </button>
         </form>
     </div>
