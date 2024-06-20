@@ -77,8 +77,9 @@ public class UserService
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        _userRepository.DeleteById(id);
     }
+    
 
     private void ValidateUsername(string name)
     {
