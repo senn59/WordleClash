@@ -74,6 +74,11 @@ public class SessionManager
         return _session.GetString(User);
     }
 
+    public void ClearUserSession()
+    {
+        _session.Remove(User);
+    }
+
     public void SetUserSession(string id)
     {
         _session.SetString(User, id);

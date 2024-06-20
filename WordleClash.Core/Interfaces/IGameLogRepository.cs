@@ -6,4 +6,5 @@ public interface IGameLogRepository
 {
    List<GameLog> GetFromUserIdByPage(int userId, int pageSize, int page);
    void AddToUser(GameLog log, string sessionId);
+   void RemoveFromUserById(int userId);
 }
