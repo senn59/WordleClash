@@ -37,6 +37,7 @@ public class UserService
         }
         catch (Exception e)
         {
+            Console.WriteLine("exception thrown");
             Console.WriteLine(e);
             return null;
         }
