@@ -1,0 +1,144 @@
+@page "{username?}"
+@using WordleClash.Core.Entities
+@using WordleClash.Web.Pages.User.Partials
+@model WordleClash.Web.Pages.User.IndexModel
+
+@{
+    Layout = "Shared/_Layout";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/pages/user.css" asp-append-version="true" />
+}
+<div class="page__container">
+    <div class="user-danger-btns__container">
+        @if (Model.IsSelectedUser)
+        {
+            <form method="post" asp-page-handler="ResetData">
+                <button type="submit" class="btn__base btn__danger" onclick="confirmDelete(event)">
+                    Reset Data
+                </button>
+            </form>
+            <form method="post" asp-page-handler="Delete" class="user-delete__container">
+                <button type="submit" class="btn__base btn__danger" onclick="confirmDelete(event)">
+                    Delete Account
+                </button>
+            </form>
+        }
+    </div>
+
+    <div class="user__container">
+        <div class="user-top__container">
+            <div class="username__container">
+                <h1 id="username">@Model.User.Name</h1>
+                @if (Model.IsSelectedUser)
+                {
+                    <button onclick="focusEditableContent()" class="btn__base btn__primary edit">
+                        <img src="~/icons/pencil.svg" alt="edit icon"/>
+                    </button>
+                }
+            </div>
+            <form hx-post="@Url.Page("/User/Index", "UpdateName")"
+                  hx-target="#username"
+                  hx-trigger="enter"
+                  id="usernameChangeForm"
+                  method="post">
+                <input type="hidden" name="NewUsername" id="usernameInput"/>
+            </form>
+        </div>
+        <div class="user__seperator"></div>
+        <table class="game-log__table">
+            <thead>
+            <tr>
+                <th>WORD</th>
+                <th>ATTEMPTS</th>
+                <th>TIME</th>
+                <th>DATE</th>
+                <th>STATUS</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{
+                var partialModel = new LogPartialModel
+                {
+                    Logs = Model.User.GameHistory,
+                    CurrentPage = LogPartialModel.StartPage
+                };
+            }
+            <partial name="Partials/Log" model="@partialModel"/>
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        const usernameEl = document.getElementById("username");
+        const usernameInputEl = document.getElementById("usernameInput");
+        const form = document.getElementById("usernameChangeForm");
+        let originalName = usernameEl.innerText;
+        let newName = "";
+        function focusEditableContent() {
+            usernameEl.contentEditable = true;
+            usernameEl.focus();
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(usernameEl);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+        usernameEl.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                usernameEl.contentEditable = false;
+                usernameInputEl.value = usernameEl.innerText
+                newName = usernameEl.innerText.trim();
+                if (newName === originalName) return;
+                htmx.trigger("#usernameChangeForm", "enter");
+            }
+            
+            if (event.ctrlKey && event.key === 'v' || event.metaKey && event.key === 'v') {
+                event.preventDefault();
+                return;
+            }
+            
+            if (event.key.length === 1 && !/[a-zA-Z0-9._^*()!$]/.test(event.key)) {
+                event.preventDefault();
+            }
+        })
+        
+        document.body.addEventListener('htmx:afterOnLoad', (event) => {
+            if (event.target.id === 'usernameChangeForm') {
+                if (usernameEl.innerText !== newName) {
+                    setTimeout(() => {
+                        usernameEl.innerHTML = originalName;
+                    }, 2000);
+                } else {
+                    changeUrl(newName);
+                    originalName = newName;
+                    newName = "";
+                }
+            }
+        });
+        const changeUrl = (username) => {
+            let thisUrl = window.location.href;
+            let urlArr = thisUrl.split("/");
+            urlArr[urlArr.length - 1] = username;
+            window.history.replaceState(null, "", urlArr.join("/"));
+        }
+    </script>
+    <script type="text/javascript">
+        const confirmDelete = (event) => {
+            const button = event.target;
+            const originalText = button.innerText;
+            const confirmText = "Are you sure?"
+            if (button.innerText === confirmText) {
+                button.innerText = originalText;
+                return true;
+            }
+            event.preventDefault();
+            button.innerText = confirmText;
+        }
+    </script>
+}

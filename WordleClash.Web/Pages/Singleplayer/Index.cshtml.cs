@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Enums;
-using WordleClash.Web.Services;
+using WordleClash.Core.Services;
+using WordleClash.Web.Utils;
 using Exception = System.Exception;
 
-namespace WordleClash.Web.Pages;
+namespace WordleClash.Web.Pages.Singleplayer;
 
 public class SingleplayerModel : PageModel
 {
     private readonly ILogger<SingleplayerModel> _logger;
     private GameService _gameService;
-    private SessionService _sessionService;
+    private SessionManager _sessionManager;
+    private UserService _userService;
     private const int DefaultMaxTries = 6;
 
     [BindProperty] public string Guess { get; set; }
@@ -20,16 +23,17 @@ public class SingleplayerModel : PageModel
     public GameModel Game { get; set; }
     
     
-    public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionService sessionService)
+    public SingleplayerModel(ILogger<SingleplayerModel> logger, GameService gameService, SessionManager sessionManager, UserService userService)
     {
         _logger = logger;
         _gameService = gameService;
-        _sessionService = sessionService;
+        _sessionManager = sessionManager;
+        _userService = userService;
     }
 
     public void OnGet()
     {
-        var id = _sessionService.GetOrCreateGameId();
+        var id = _sessionManager.GetOrCreateGameId();
         var wordle = _gameService.GetOrCreate(id, DefaultMaxTries);
         if (wordle.Status == GameStatus.AwaitStart)
         {
@@ -41,14 +45,14 @@ public class SingleplayerModel : PageModel
 
     public IActionResult OnPostNewGame()
     {
-        var id = _sessionService.GetOrCreateGameId();
+        var id = _sessionManager.GetOrCreateGameId();
         _gameService.DicardInstance(id);
         return RedirectToPage("/Singleplayer/Index");
     }
 
     public PartialViewResult OnPost()
     {
-        var id = _sessionService.GetOrCreateGameId();
+        var id = _sessionManager.GetOrCreateGameId();
         var wordle = _gameService.GetOrCreate(id, DefaultMaxTries);
         _logger.LogInformation($"Got game {id} ");
         try
@@ -60,6 +64,28 @@ public class SingleplayerModel : PageModel
         {
             _logger.LogWarning($"{e.GetType()} thrown while trying to make move.");
         }
+        if (wordle.Status is GameStatus.Won or GameStatus.Lost)
+        {
+            try
+            {
+                var log = GameLog.FromGame(wordle);
+                TrySaveGameLog(log);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+            }
+        }
+
         return Partial("Partials/SingleplayerField", GameModel.FromGame(wordle));
+    }
+
+    private void TrySaveGameLog(GameLog log)
+    {
+        var userSession = _sessionManager.GetUserSession();
+        if (userSession == null) return;
+        var user = _userService.GetFromSession(userSession);
+        if (user == null) return;
+        _userService.AddGameLog(log, userSession);
     }
 }
