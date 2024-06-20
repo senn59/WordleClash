@@ -64,8 +64,13 @@ public class UserRepository: IUserRepository
             cmd.CommandText = $"SELECT * from user WHERE {nameColumn}=@name LIMIT 1";
             cmd.Parameters.AddWithValue("@name", name);
             using var rdr = cmd.ExecuteReader();
-            while (rdr.Read())
+            if (rdr.Read())
             {
+                if (!rdr.IsDBNull(rdr.GetOrdinal("deleted_at")))
+                {
+                    throw new UserDeletedException();
+                }
+                
                 return new User
                 {
                     Id = rdr.GetInt32("id"),
@@ -74,6 +79,10 @@ public class UserRepository: IUserRepository
                     CreatedAt = rdr.GetDateTime("created_at")
                 };
             }
+        }
+        catch (UserDeletedException)
+        {
+            throw;
         }
         catch (Exception e)
         {
@@ -118,6 +127,7 @@ public class UserRepository: IUserRepository
         }
         catch (Exception e)
         {
+            Console.WriteLine(e);
             throw new UserRetrievalException(e);
         }
         throw new UserNotFoundException(sessionColumn, sessionId);
