@@ -10,7 +10,6 @@ namespace WordleClash.Data;
 public class UserRepository: IUserRepository
 {
     private readonly string _connString;
-    private const string UserTable = "user";
     private const int DuplicateEntryCode = 1062;
 
     public UserRepository(string connString)
@@ -29,12 +28,12 @@ public class UserRepository: IUserRepository
             cmd.Transaction = transaction;
             if (username == null)
             {
-                cmd.CommandText = $"SELECT GROUP_CONCAT(entry ORDER BY RAND() SEPARATOR '') AS usrname " +
-                                  $"FROM (SELECT entry FROM word ORDER BY RAND() limit 2) AS rndwords";
+                cmd.CommandText = "SELECT GROUP_CONCAT(entry ORDER BY RAND() SEPARATOR '') AS usrname " +
+                                  "FROM (SELECT entry FROM word ORDER BY RAND() limit 2) AS rndwords";
                 username = cmd.ExecuteScalar()?.ToString() ?? "default";
             }
             
-            cmd.CommandText = $"INSERT INTO {UserTable} (session_id, name) VALUES (@sessionId, @name);";
+            cmd.CommandText = "INSERT INTO user (session_id, name) VALUES (@sessionId, @name);";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             cmd.Parameters.AddWithValue("@name", username);
             cmd.ExecuteScalar();
@@ -62,7 +61,7 @@ public class UserRepository: IUserRepository
             using var conn = new MySqlConnection(_connString);
             conn.Open();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT * from {UserTable} WHERE {nameColumn}=@name LIMIT 1";
+            cmd.CommandText = $"SELECT * from user WHERE {nameColumn}=@name LIMIT 1";
             cmd.Parameters.AddWithValue("@name", name);
             using var rdr = cmd.ExecuteReader();
             while (rdr.Read())
@@ -91,11 +90,16 @@ public class UserRepository: IUserRepository
             using var conn = new MySqlConnection(_connString);
             conn.Open();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT * from {UserTable} WHERE {sessionColumn}=@sessionId LIMIT 1";
+            cmd.CommandText = $"SELECT * from user WHERE {sessionColumn}=@sessionId LIMIT 1";
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             using var rdr = cmd.ExecuteReader();
-            while (rdr.Read())
+            if (rdr.Read())
             {
+                if (!rdr.IsDBNull(rdr.GetOrdinal("deleted_at")))
+                {
+                    throw new UserDeletedException();
+                }
+
                 var id = rdr.GetInt32("id");
                 var name = rdr.GetString("name");
                 var creationDate = rdr.GetDateTime("created_at");
@@ -107,6 +111,10 @@ public class UserRepository: IUserRepository
                     CreatedAt = creationDate
                 };
             }
+        }
+        catch (UserDeletedException)
+        {
+            throw;
         }
         catch (Exception e)
         {
@@ -122,7 +130,7 @@ public class UserRepository: IUserRepository
             using var conn = new MySqlConnection(_connString);
             conn.Open();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"UPDATE {UserTable} SET name=@name WHERE session_id=@sessionId";
+            cmd.CommandText = "UPDATE user SET name=@name WHERE session_id=@sessionId";
             cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
             cmd.ExecuteScalar();
@@ -147,7 +155,7 @@ public class UserRepository: IUserRepository
             using var transaction = conn.BeginTransaction();
             using var cmd = conn.CreateCommand();
             cmd.Transaction = transaction;
-            cmd.CommandText = $"UPDATE {UserTable} SET deleted_at=CURRENT_TIMESTAMP WHERE id=@id";
+            cmd.CommandText = "UPDATE user SET deleted_at=CURRENT_TIMESTAMP WHERE id=@id";
             cmd.Parameters.AddWithValue("@id", userId);
             cmd.ExecuteScalar();
             cmd.CommandText = "UPDATE game_log SET deleted_at=CURRENT_TIMESTAMP where id=@id";
