@@ -1,3 +1,4 @@
+using WordleClash.Core.Entities;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
@@ -7,7 +8,7 @@ namespace WordleClash.Core;
 public class Versus: IMultiplayerGame
 {
     private const int MaxTries = 9;
-    private readonly IDataAccess _dataAccess;
+    private readonly IWordRepository _wordRepository;
     private Game _game;
 
     public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
@@ -15,10 +16,10 @@ public class Versus: IMultiplayerGame
     public int MaxPlayers => 2;
     public int RequiredPlayers => 2;
 
-    public Versus(IDataAccess dataAccess)
+    public Versus(IWordRepository wordRepository)
     {
-        _dataAccess = dataAccess;
-       _game = new Game(dataAccess, MaxTries);
+        _wordRepository = wordRepository;
+       _game = new Game(wordRepository, MaxTries);
     }
     
     public void Start()
@@ -99,7 +100,7 @@ public class Versus: IMultiplayerGame
     public void Restart()
     {
         if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
-        _game = new Game(_dataAccess, MaxTries);
+        _game = new Game(_wordRepository, MaxTries);
     }
 
     public List<GameModel> GetGames()

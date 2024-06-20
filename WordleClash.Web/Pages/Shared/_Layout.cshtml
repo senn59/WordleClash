@@ -1,22 +1,56 @@
-﻿<!DOCTYPE html>
+﻿@using WordleClash.Core
+@using WordleClash.Core.Entities
+@using WordleClash.Core.Services
+@using WordleClash.Web.Utils
+@inject UserService UserService
+@inject SessionManager SessionManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - WordleClash</title>
-    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/> *@
     <link rel="stylesheet" href="~/css/buttons.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/pages/layout.css" asp-append-version="true"/>
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
-<header class="logo">
+<header>
     @if (Url.RouteUrl(ViewContext.RouteData.Values) != "/")
     {
-        <a asp-page="/Index">
-            <h1>WORDLECLASH!</h1>
-        </a>
+        <div class="logo">
+            <a asp-page="/Index">
+                <h1>WORDLECLASH!</h1>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="create-account__container">
+            @{
+                var userSession = SessionManager.GetUserSession();
+                User? user = null;
+                if (userSession != null)
+                {
+                    user = UserService.GetFromSession(userSession);
+                }
+            }
+            @if (user == null)
+            {
+                <form method="post" asp-page="User/Index" asp-page-handler="Create">
+                    <button>
+                        <h1>Create account</h1>
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a asp-page="User/Index" asp-route-username="@user.Name">
+                    <h1>@user.Name</h1>
+                </a>
+            }
+        </div>
     }
 </header>
 
@@ -35,9 +69,6 @@
         </div>
     }
 </div>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/lib/htmx/htmx.min.js.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 

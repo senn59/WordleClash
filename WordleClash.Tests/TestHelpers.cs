@@ -1,4 +1,5 @@
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Interfaces;
 
@@ -8,7 +9,7 @@ public class TestHelpers
 {
     public static LetterFeedback[] ExtractFeedbackFromGuess(string targetWord, string guess)
     {
-        var dataAccess = new MockDataAccess(targetWord, guess);
+        var dataAccess = new MockWordRepository(targetWord, guess);
         var wordle = new Game(dataAccess, 6);
         wordle.Start();
         var res = wordle.TakeGuess(dataAccess.Guess);
@@ -21,9 +22,9 @@ public class TestHelpers
         return feedback;
     }
 
-    public static LobbyController CreateVersusLobby(IDataAccess dataAccess, int additionalPlayers = 0)
+    public static LobbyController CreateVersusLobby(IWordRepository wordRepository, int additionalPlayers = 0)
     {
-        IMultiplayerGame mode = new Versus(dataAccess);
+        IMultiplayerGame mode = new Versus(wordRepository);
         return new LobbyController(mode, "player1");
     }
 

@@ -1,3 +1,4 @@
+using WordleClash.Core.Entities;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
 
@@ -5,13 +6,13 @@ namespace WordleClash.Core;
 
 public class WordHandler
 {
-    private readonly IDataAccess _dataAccess;
+    private readonly IWordRepository _wordRepository;
     public string Word { get; private init; }
 
-    public WordHandler(IDataAccess dataAccess)
+    public WordHandler(IWordRepository wordRepository)
     {
-        _dataAccess = dataAccess;
-        Word = _dataAccess.GetRandomWord().ToUpper();
+        _wordRepository = wordRepository;
+        Word = _wordRepository.GetRandom().ToUpper();
     }
     
     public LetterResult[] GetFeedback(string guessedWord)
@@ -63,7 +64,7 @@ public class WordHandler
 
     public bool IsExistingWord(string input)
     {
-        return _dataAccess.GetWord(input) != null;
+        return _wordRepository.Get(input) != null;
     }
 
     public bool IsCorrectLength(string input)

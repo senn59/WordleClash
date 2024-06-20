@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
+using WordleClash.Core.Entities;
 using WordleClash.Core.Enums;
-using WordleClash.Web.Services;
+using WordleClash.Core.Services;
+using WordleClash.Web.Utils;
 using Exception = System.Exception;
 
 namespace WordleClash.Web.Pages.Play;
@@ -11,23 +13,23 @@ public class IndexModel : PageModel
 {
     private ILogger<IndexModel> _logger;
     private LobbyService _lobbyService;
-    private SessionService _sessionService;
+    private SessionManager _sessionManager;
     private ServerEvents _serverEvents;
-    private PlayerLobbyInfo? _playerInfo;
+    private LobbyPlayer? _playerInfo;
 
     [BindProperty]
     public string Guess { get; set; }
     public LobbyController? Lobby { get; set; }
     public Player? ThisPlayer { get; set; }
 
-    public IndexModel(ILogger<IndexModel> logger, SessionService sessionService, LobbyService lobbyService, ServerEvents serverEvents)
+    public IndexModel(ILogger<IndexModel> logger, SessionManager sessionManager, LobbyService lobbyService, ServerEvents serverEvents)
     {
         _logger = logger;
         _lobbyService = lobbyService;
-        _sessionService = sessionService;
+        _sessionManager = sessionManager;
         _serverEvents = serverEvents;
         
-        _playerInfo = _sessionService.GetPlayerInfo();
+        _playerInfo = _sessionManager.GetPlayerInfo();
         if (_playerInfo == null) return;
         Lobby = _lobbyService.GetPlayerLobby(_playerInfo);
         ThisPlayer = Lobby?.Players.FirstOrDefault(p => p.Id == _playerInfo.PlayerId);

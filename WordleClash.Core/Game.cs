@@ -1,3 +1,4 @@
+using WordleClash.Core.Entities;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
@@ -14,10 +15,10 @@ public class Game
     public IReadOnlyList<GuessResult> GuessHistory => _guessHistory.AsReadOnly();
     public GameStatus Status { get; private set; } = GameStatus.AwaitStart;
 
-    public Game(IDataAccess dataAccess, int maxTries)
+    public Game(IWordRepository wordRepository, int maxTries)
     {
         MaxTries = maxTries;
-        _wordHandler = new WordHandler(dataAccess);
+        _wordHandler = new WordHandler(wordRepository);
     }
     
     public void Start()
@@ -67,6 +68,16 @@ public class Game
         
         _guessHistory.Add(result);
         return result;
+    }
+
+    public string? GetTargetWord()
+    {
+        if (Status is GameStatus.Won or GameStatus.Lost)
+        {
+            return _wordHandler.Word;
+        }
+        
+        return null;
     }
 
     private void ValidateMove(string input)

@@ -1,0 +1,86 @@
+.page__container {
+    justify-content: flex-start;
+}
+.user__container {
+    margin-top: 15vh;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.user-top__container {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+}
+.user-danger-btns__container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    bottom: 15px;
+    right: 15px;
+}
+.user-danger-btns__container button {
+    margin-top: 25px;
+    width: 100%;
+}
+#username {
+    font-size: 3em;
+    white-space: -moz-pre-wrap;
+}
+#username:focus {
+    border: 0;
+    outline: 0;
+}
+.username__container {
+    display: flex;
+    align-items: center;
+}
+.edit.btn__base {
+    padding: 0;
+    box-shadow: black 1px 2px 0 3px, black 0 0 0 3px;
+    border-radius: 5px;
+}
+.edit {
+    width: 25px;
+    height: 25px;
+    margin-left: 15px;
+}
+.edit img {
+    width: 100%;
+}
+.user__seperator {
+    width: 100%;
+    height: 5px;
+    background-color: black;
+    margin: 22px 0;
+}
+
+table {
+    width: 95%;
+    border-collapse: collapse;
+}
+td, th {
+    padding: 10px;
+    font-weight: 900;
+    font-size: 2em;
+}
+th {
+    text-align: left;
+    padding-bottom: 20px;
+}
+table tr.log {
+    box-shadow: black 1px 2px 0 4px, black 0 0 0 4px;
+    background-color: white;
+}
+tr.break {
+    height: 35px;
+}
+
+td.WON {
+    color: green;
+}
+td.LOST {
+    color: #FE4D4D;
+}

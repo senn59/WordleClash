@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WordleClash.Core;
-using WordleClash.Web.Services;
+using WordleClash.Core.Services;
+using WordleClash.Web.Utils;
 
 namespace WordleClash.Web.Pages.Lobby;
 
@@ -9,18 +10,18 @@ public class JoinModel : PageModel
 {
     private ILogger<JoinModel> _logger;
     private LobbyService _lobby;
-    private SessionService _sessionService;
+    private SessionManager _sessionManager;
 
     [BindProperty]
     public string? Code { get; set; }
     [BindProperty]
     public string Name { get; set; }
     
-    public JoinModel(ILogger<JoinModel> logger, LobbyService lobbyService, SessionService sessionService)
+    public JoinModel(ILogger<JoinModel> logger, LobbyService lobbyService, SessionManager sessionManager)
     {
         _logger = logger;
         _lobby = lobbyService;
-        _sessionService = sessionService;
+        _sessionManager = sessionManager;
     }
     
     public IActionResult OnGet(string? code)
@@ -52,7 +53,7 @@ public class JoinModel : PageModel
         try
         {
             var playerInfo = _lobby.TryJoinLobby(Name, Code);
-            _sessionService.SetPlayerInfo(playerInfo);
+            _sessionManager.SetPlayerInfo(playerInfo);
             _logger.LogInformation($"Player {playerInfo.PlayerId} added to lobby {playerInfo.LobbyCode}");
             return RedirectToPage("/Play/Index", new {Code});
         }
