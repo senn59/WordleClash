@@ -13,9 +13,17 @@
     display: flex;
     justify-content: space-between;
 }
-.user-delete__container {
+.user-danger-btns__container {
+    position: fixed;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    width: 200px;
+    bottom: 15px;
+    right: 15px;
+}
+.user-danger-btns__container button {
+    margin-top: 25px;
+    width: 100%;
 }
 #username {
     font-size: 3em;
