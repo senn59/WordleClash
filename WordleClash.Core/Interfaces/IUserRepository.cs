@@ -8,5 +8,5 @@ public interface IUserRepository
    User GetByName(string name);
    User GetFromSessionId(string sessionId);
    void ChangeName(string sessionId, string name);
-   void DeleteBySessionId(string sessionId);
+   void DeleteById(int userId);
 }

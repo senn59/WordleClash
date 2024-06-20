@@ -29,6 +29,11 @@
                   method="post">
                 <input type="hidden" name="NewUsername" id="usernameInput"/>
             </form>
+            <form method="post" asp-page-handler="Delete" class="user-delete__container">
+                <button id="deleteBtn" type="submit" class="btn__base btn__danger">
+                    Delete
+                </button>
+            </form>
         </div>
         <div class="user__seperator"></div>
         <table class="game-log__table">
@@ -111,5 +116,18 @@
             urlArr[urlArr.length - 1] = username;
             window.history.replaceState(null, "", urlArr.join("/"));
         }
+    </script>
+    <script type="text/javascript">
+        const button = document.getElementById("deleteBtn");
+        const originalText = button.innerText;
+        const confirmText = "Are you sure?"
+        button.addEventListener("click", (event) => {
+            if (button.innerText === confirmText) {
+                button.innerText = originalText;
+                return true;
+            }
+            event.preventDefault();
+            button.innerText = confirmText;
+        })
     </script>
 }
