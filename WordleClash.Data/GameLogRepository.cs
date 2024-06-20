@@ -9,8 +9,6 @@ namespace WordleClash.Data;
 public class GameLogRepository: IGameLogRepository
 {
     private readonly string _connString;
-    private const string GameLogTable = "game_log";
-    private const int ResultsPerPage = 10;
     public GameLogRepository(string connString)
     {
         _connString = connString;
@@ -24,7 +22,7 @@ public class GameLogRepository: IGameLogRepository
             using var conn = new MySqlConnection(_connString);
             conn.Open();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"SELECT gl.*, w.entry FROM {GameLogTable} as gl " +
+            cmd.CommandText = "SELECT gl.*, w.entry FROM game_log as gl " +
                               "INNER JOIN word AS w ON gl.word_id = w.id " +
                               "WHERE user_id=@userId " +
                               "ORDER BY id DESC " +
@@ -65,7 +63,7 @@ public class GameLogRepository: IGameLogRepository
             using var conn = new MySqlConnection(_connString);
             conn.Open();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"INSERT INTO {GameLogTable}" +
+            cmd.CommandText = "INSERT INTO game_log" +
                               "(tries, time, status, word_id, user_id)" +
                               "VALUES " +
                               "(@tries, @time, @status, " +
@@ -76,6 +74,23 @@ public class GameLogRepository: IGameLogRepository
             cmd.Parameters.AddWithValue("@status", log.Status);
             cmd.Parameters.AddWithValue("@word", log.Word);
             cmd.Parameters.AddWithValue("@sessionId", sessionId);
+            cmd.ExecuteScalar();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
+    public void RemoveFromUserById(int userId)
+    {
+        try
+        {
+            using var conn = new MySqlConnection(_connString);
+            conn.Open();
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE game_log SET deleted_at=CURRENT_TIMESTAMP where id=@id";
+            cmd.Parameters.AddWithValue("@id", userId);
             cmd.ExecuteScalar();
         }
         catch (Exception e)
