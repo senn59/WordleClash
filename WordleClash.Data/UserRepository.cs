@@ -137,7 +137,7 @@ public class UserRepository: IUserRepository
         }
     }
 
-    public void DeleteBySessionId(string sessionId)
+    public void DeleteById(int userId)
     {
         throw new NotImplementedException();
     }

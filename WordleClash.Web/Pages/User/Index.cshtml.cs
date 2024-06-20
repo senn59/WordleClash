@@ -102,15 +102,29 @@ public class IndexModel : PageModel
         return Content(NewUsername);
     }
 
+    public IActionResult OnPostDelete()
+    {
+        var userSession = _sessionManager.GetUserSession();
+        if (userSession == null)
+        {
+            return RedirectToPage("/");
+        }
+
+        var user = _userService.GetFromSession(userSession);
+        if (user == null)
+        {
+            return RedirectToPage("/");
+        }
+        _userService.Delete(user.Id);
+        return RedirectToPage("/");
+    }
+
     public IActionResult OnGetLog(string username, int id)
     {
         if (!ModelState.IsValid)
         {
             return Content("<h3>ERROR</h3>");
         }
-
-        _logger.LogInformation(username);
-        _logger.LogInformation(id.ToString());
         
         // var logs = Enumerable.Repeat(new GameLog
         // {

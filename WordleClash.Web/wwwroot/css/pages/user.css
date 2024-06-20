@@ -10,6 +10,12 @@
 }
 .user-top__container {
     width: 95%;
+    display: flex;
+    justify-content: space-between;
+}
+.user-delete__container {
+    display: flex;
+    align-items: center;
 }
 #username {
     font-size: 3em;
