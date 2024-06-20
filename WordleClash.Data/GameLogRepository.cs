@@ -24,7 +24,7 @@ public class GameLogRepository: IGameLogRepository
             using var cmd = conn.CreateCommand();
             cmd.CommandText = "SELECT gl.*, w.entry FROM game_log as gl " +
                               "INNER JOIN word AS w ON gl.word_id = w.id " +
-                              "WHERE user_id=@userId " +
+                              "WHERE user_id=@userId AND gl.deleted_at IS NULL " +
                               "ORDER BY id DESC " +
                               "LIMIT @pageSize OFFSET @page";
             cmd.Parameters.AddWithValue("@userId", userId);
@@ -89,7 +89,7 @@ public class GameLogRepository: IGameLogRepository
             using var conn = new MySqlConnection(_connString);
             conn.Open();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = "UPDATE game_log SET deleted_at=CURRENT_TIMESTAMP where id=@id";
+            cmd.CommandText = "UPDATE game_log SET deleted_at=CURRENT_TIMESTAMP where user_id=@id";
             cmd.Parameters.AddWithValue("@id", userId);
             cmd.ExecuteScalar();
         }

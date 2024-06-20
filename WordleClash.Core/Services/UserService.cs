@@ -75,11 +75,15 @@ public class UserService
         _gameLogRepository.AddToUser(log, sessionId);
     }
 
-    public void Delete(int id)
+    public void Delete(int userId)
     {
-        _userRepository.DeleteById(id);
+        _userRepository.DeleteById(userId);
     }
-    
+
+    public void ResetData(int userId)
+    {
+        _gameLogRepository.RemoveFromUserById(userId);
+    }
 
     private void ValidateUsername(string name)
     {

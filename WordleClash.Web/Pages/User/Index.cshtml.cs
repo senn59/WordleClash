@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WordleClash.Core.Entities;
-using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 using WordleClash.Core.Services;
 using WordleClash.Web.Pages.User.Partials;
@@ -34,6 +32,7 @@ public class IndexModel : PageModel
     {
         _logger.LogInformation($"Trying to retrieve account \"{username}\"");
         var user = _userService.Get(username);
+        //TODO: catch exceptions
         if (user == null)
         {
             return RedirectToPage("/Index");
@@ -116,7 +115,25 @@ public class IndexModel : PageModel
             return RedirectToPage("/Index");
         }
         _userService.Delete(user.Id);
+        _sessionManager.ClearUserSession();
         return RedirectToPage("/Index");
+    }
+
+    public IActionResult OnPostResetData()
+    {
+        var userSession = _sessionManager.GetUserSession();
+        if (userSession == null)
+        {
+            return RedirectToPage("/Index");
+        }
+        
+        var user = _userService.GetFromSession(userSession);
+        if (user == null)
+        {
+            return RedirectToPage("/Index");
+        }
+        _userService.ResetData(user.Id);
+        return RedirectToPage("/User/Index");
     }
 
     public IActionResult OnGetLog(string username, int id)
