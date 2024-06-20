@@ -26,6 +26,7 @@ public class UserRepository: IUserRepository
             conn.Open();
             using var transaction = conn.BeginTransaction();
             using var cmd = conn.CreateCommand();
+            cmd.Transaction = transaction;
             if (username == null)
             {
                 cmd.CommandText = $"SELECT GROUP_CONCAT(entry ORDER BY RAND() SEPARATOR '') AS usrname " +
@@ -139,6 +140,23 @@ public class UserRepository: IUserRepository
 
     public void DeleteById(int userId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using var conn = new MySqlConnection(_connString);
+            conn.Open();
+            using var transaction = conn.BeginTransaction();
+            using var cmd = conn.CreateCommand();
+            cmd.Transaction = transaction;
+            cmd.CommandText = $"UPDATE {UserTable} SET deleted_at=CURRENT_TIMESTAMP WHERE id=@id";
+            cmd.Parameters.AddWithValue("@id", userId);
+            cmd.ExecuteScalar();
+            cmd.CommandText = "UPDATE game_log SET deleted_at=CURRENT_TIMESTAMP where id=@id";
+            cmd.ExecuteScalar();
+            transaction.Commit();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 }

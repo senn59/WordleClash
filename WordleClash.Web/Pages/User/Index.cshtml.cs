@@ -107,16 +107,16 @@ public class IndexModel : PageModel
         var userSession = _sessionManager.GetUserSession();
         if (userSession == null)
         {
-            return RedirectToPage("/");
+            return RedirectToPage("/Index");
         }
 
         var user = _userService.GetFromSession(userSession);
         if (user == null)
         {
-            return RedirectToPage("/");
+            return RedirectToPage("/Index");
         }
         _userService.Delete(user.Id);
-        return RedirectToPage("/");
+        return RedirectToPage("/Index");
     }
 
     public IActionResult OnGetLog(string username, int id)
