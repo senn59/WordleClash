@@ -17,7 +17,7 @@ public class WordHandler
     
     public LetterResult[] GetFeedback(string guessedWord)
     {
-        var feedbackList = new LetterResult[Word.Length];
+        var feedbackList = new List<LetterResult>();
         for (var i = 0; i < guessedWord.Length; i++)
         {
             LetterFeedback feedback;
@@ -34,15 +34,21 @@ public class WordHandler
             else
             {
                 feedback = LetterFeedback.IncorrectPosition;
+                var feedbackListLetterCount = feedbackList.Count(r => r.Letter == letter);
+                var wordLetterCount = Word.Count(c => c == letter);
+                if (feedbackListLetterCount >= wordLetterCount)
+                {
+                    feedback = LetterFeedback.IncorrectLetter;
+                }
             }
 
-            feedbackList[i] = new LetterResult
+            feedbackList.Add(new LetterResult
             {
                 Letter = letter,
                 Feedback = feedback
-            };
+            });
         }
-        return feedbackList;
+        return feedbackList.ToArray();
     }
     
     private List<int> GetAllIndexesOf(char letter)
