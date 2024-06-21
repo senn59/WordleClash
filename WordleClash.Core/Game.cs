@@ -46,7 +46,6 @@ public class Game
         Tries++;
         Console.WriteLine(_wordHandler.Word);
         
-        //not sure if the 2nd statement is necessary as it shouldnt really be possible anyways
         if (_wordHandler.IsMatchingWord(input) && Tries <= MaxTries) 
         {
             Status = GameStatus.Won;
