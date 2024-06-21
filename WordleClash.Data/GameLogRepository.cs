@@ -14,7 +14,7 @@ public class GameLogRepository: IGameLogRepository
         _connString = connString;
     }
     
-    public List<GameLog> GetFromUserIdByPage(int userId, int pageSize, int page)
+    public List<GameLog> GetByUserIdAndPage(int userId, int pageSize, int page)
     {
         var logs = new List<GameLog>();
         try
@@ -82,7 +82,7 @@ public class GameLogRepository: IGameLogRepository
         }
     }
 
-    public void RemoveFromUserById(int userId)
+    public void DeleteByUserId(int userId)
     {
         try
         {
