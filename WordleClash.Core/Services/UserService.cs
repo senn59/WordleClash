@@ -48,7 +48,7 @@ public class UserService
         return _gameLogRepository.GetByUserIdAndPage(userId, PageSize, page);
     }
 
-    public User? GetFromSession(string sessionId)
+    public User? GetBySession(string sessionId)
     {
         try
         {
