@@ -91,7 +91,7 @@ public class UserRepository: IUserRepository
         throw new UserNotFoundException(nameColumn, name);
     }
     
-    public User GetFromSessionId(string sessionId)
+    public User GetBySessionId(string sessionId)
     {
         const string sessionColumn = "session_id";
         try
@@ -133,7 +133,7 @@ public class UserRepository: IUserRepository
         throw new UserNotFoundException(sessionColumn, sessionId);
     }
 
-    public void ChangeName(string sessionId, string name)
+    public void UpdateName(string sessionId, string name)
     {
         try
         {

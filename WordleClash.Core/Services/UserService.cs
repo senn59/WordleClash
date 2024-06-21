@@ -31,7 +31,7 @@ public class UserService
         try
         {
             var user = _userRepository.GetByName(name);
-            var gameLogs = _gameLogRepository.GetFromUserIdByPage(user.Id, PageSize, StartPage);
+            var gameLogs = _gameLogRepository.GetByUserIdAndPage(user.Id, PageSize, StartPage);
             user.GameHistory.AddRange(gameLogs);
             return user;
         }
@@ -45,15 +45,15 @@ public class UserService
 
     public List<GameLog> GetLogsByPage(int userId, int page)
     {
-        return _gameLogRepository.GetFromUserIdByPage(userId, PageSize, page);
+        return _gameLogRepository.GetByUserIdAndPage(userId, PageSize, page);
     }
 
     public User? GetFromSession(string sessionId)
     {
         try
         {
-            var user = _userRepository.GetFromSessionId(sessionId);
-            var gameLogs = _gameLogRepository.GetFromUserIdByPage(user.Id, PageSize, StartPage);
+            var user = _userRepository.GetBySessionId(sessionId);
+            var gameLogs = _gameLogRepository.GetByUserIdAndPage(user.Id, PageSize, StartPage);
             user.GameHistory.AddRange(gameLogs);
             return user;
         }
@@ -68,7 +68,7 @@ public class UserService
     {
         name = name.Trim();
         ValidateUsername(name);
-        _userRepository.ChangeName(sessionId, name);
+        _userRepository.UpdateName(sessionId, name);
     }
 
     public void AddGameLog(GameLog log, string sessionId)
@@ -83,7 +83,7 @@ public class UserService
 
     public void ResetData(int userId)
     {
-        _gameLogRepository.RemoveFromUserById(userId);
+        _gameLogRepository.DeleteByUserId(userId);
     }
 
     private void ValidateUsername(string name)
