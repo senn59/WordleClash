@@ -78,5 +78,50 @@ public class WordFeedBackTests
         ];
         Assert.That(feedback, Is.EqualTo(expectedFeedback));
     }
+    
+    [Test]
+    public void SameLetterIncorrectPositions()
+    {
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("tophe", "trees");
+        LetterFeedback[] expectedFeedback =
+        [
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.IncorrectLetter,
+            LetterFeedback.IncorrectPosition,
+            LetterFeedback.IncorrectLetter,
+            LetterFeedback.IncorrectLetter,
+        ];
+        Assert.That(feedback, Is.EqualTo(expectedFeedback));
+    }
+    
+    [Test]
+    public void SameLetterIncorrectAndCorrect()
+    {
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("glued", "bleed");
+        LetterFeedback[] expectedFeedback =
+        [
+            LetterFeedback.IncorrectLetter,
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.IncorrectPosition,
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.CorrectPosition,
+        ];
+        Assert.That(feedback, Is.EqualTo(expectedFeedback));
+    }
+    
+    [Test]
+    public void InconsistentCasing()
+    {
+        var feedback = TestHelpers.ExtractFeedbackFromGuess("aBcDe", "AbCdE");
+        LetterFeedback[] expectedFeedback =
+        [
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.CorrectPosition,
+            LetterFeedback.CorrectPosition,
+        ];
+        Assert.That(feedback, Is.EqualTo(expectedFeedback));
+    }
 
 }
