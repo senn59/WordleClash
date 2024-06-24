@@ -9,9 +9,14 @@ public class WordHandler
     private readonly IWordRepository _wordRepository;
     public string Word { get; private init; }
 
-    public WordHandler(IWordRepository wordRepository)
+    public WordHandler(IWordRepository wordRepository, string? word = null)
     {
         _wordRepository = wordRepository;
+        if (word != null)
+        {
+            Word = word.ToUpper();
+            return;
+        }
         Word = _wordRepository.GetRandom().ToUpper();
     }
     
