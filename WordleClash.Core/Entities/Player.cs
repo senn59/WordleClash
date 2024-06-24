@@ -16,9 +16,9 @@ public class Player
         IsTurn = value;
     }
 
-    public void SetWinner()
+    public void SetWinner(bool value = true)
     {
-        IsWinner = true;
+        IsWinner = value;
     }
 
     public void SetOwner()

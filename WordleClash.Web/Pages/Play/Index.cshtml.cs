@@ -54,10 +54,12 @@ public class IndexModel : PageModel
 
     public async void OnPostNewGame()
     {
+        Console.WriteLine("post new game");
         if (_playerInfo == null || Lobby == null || ThisPlayer?.IsOwner != true || Lobby.State != LobbyState.PostGame)
         {
             return;
         }
+        Console.WriteLine("before restart");
         Lobby.Restart();
         await _serverEvents.UpdateField(Lobby.Code);
     }

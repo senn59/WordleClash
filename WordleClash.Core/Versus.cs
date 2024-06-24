@@ -106,8 +106,11 @@ public class Versus: IMultiplayerGame
 
     public void Restart()
     {
-        if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
         _game = new Game(_wordRepository, MaxTries);
+        foreach (var player in Players)
+        {
+            player.SetWinner(false);
+        }
     }
 
     public List<GameModel> GetGames()
