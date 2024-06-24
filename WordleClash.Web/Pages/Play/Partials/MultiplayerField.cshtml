@@ -29,7 +29,7 @@
                 <div class="game-end-overlay__icon">&#127942;</div>
             }
             <h1>@GetPostGameText()</h1>
-            @if (Model.Lobby?.Winner == null)
+            @if (Model.Lobby?.Winner != null)
             {
                 <h2>Target word: @Model.Lobby?.Games[0].TargetWord</h2>
             }
