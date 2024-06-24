@@ -14,6 +14,11 @@
 <div class="page__container">
     <div class="grid__container" hx-sse="connect:/updates">
         <div class="grid__left">
+            <div
+                hx-trigger="sse:FieldUpdate/@Model.Lobby!.Code"
+                hx-get="@Url.Page("/Play/Index", "Overview")">
+                <partial name="Shared/LetterOverview" model="Model.Lobby.Games[0].GuessHistory"/>
+            </div>
         </div>
         <div class="grid__middle">
             <div
@@ -38,13 +43,12 @@
                 hx-get="@Url.Page("/Play/Index", "Opponent")">
                 <partial name="Partials/Opponent" model="@Model.GetOpponent()"/>
             </div>
-            <form method="post" id="guessForm" hx-post="" hx-swap="none">
-                <input type="hidden" id="guessInput" name="Guess"/>
-            </form>
         </div>
     </div>
 </div>
-
+<form method="post" id="guessForm" hx-post="" hx-swap="none">
+    <input type="hidden" id="guessInput" name="Guess"/>
+</form>
 @section Scripts
 {
     <script src="~/js/WriteInTiles.js" asp-append-version="true"></script>

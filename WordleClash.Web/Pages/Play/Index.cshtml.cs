@@ -128,6 +128,19 @@ public class IndexModel : PageModel
         }
         return Partial("Partials/MultiplayerField", this);
     }
+    
+    public PartialViewResult OnGetOverview()
+    {
+        if (_playerInfo == null)
+        {
+            throw new Exception("player id = null");
+        }
+        if (Lobby == null)
+        {
+            throw new Exception($"player {_playerInfo} is not apart of any lobby");
+        }
+        return Partial("Shared/LetterOverview", Lobby.Games[0].GuessHistory);
+    }
 
     public Player? GetOpponent()
     {
