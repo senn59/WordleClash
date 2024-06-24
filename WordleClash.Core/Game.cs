@@ -15,9 +15,13 @@ public class Game
     public IReadOnlyList<GuessResult> GuessHistory => _guessHistory.AsReadOnly();
     public GameStatus Status { get; private set; } = GameStatus.AwaitStart;
 
-    public Game(IWordRepository wordRepository, int maxTries)
+    public Game(IWordRepository wordRepository, int maxTries, string? word = null)
     {
         MaxTries = maxTries;
+        if (word != null)
+        {
+            _wordHandler = new WordHandler(wordRepository, word);
+        }
         _wordHandler = new WordHandler(wordRepository);
     }
     
