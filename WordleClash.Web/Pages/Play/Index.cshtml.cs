@@ -64,7 +64,10 @@ public class IndexModel : PageModel
 
     public async void OnPost()
     {
-        if (Lobby == null || ThisPlayer == null || !ModelState.IsValid) return;
+        if (Lobby == null || ThisPlayer == null || !ModelState.IsValid)
+        {
+            return;
+        }
         try
         {
             Lobby.HandleGuess(ThisPlayer, Guess);
@@ -78,13 +81,9 @@ public class IndexModel : PageModel
     
     public async Task<IActionResult> OnGet(string code)
     {
-        if (_playerInfo == null)
+        if (_playerInfo == null || Lobby == null || Lobby.Code != code)
         {
-            return RedirectToPage("/Index");
-        }
-        if (Lobby == null || Lobby.Code != code)
-        {
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Lobby/Join", new { code });
         }
         
         await _serverEvents.UpdatePlayers(code);
