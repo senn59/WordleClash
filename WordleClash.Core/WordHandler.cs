@@ -1,6 +1,7 @@
 using WordleClash.Core.Entities;
 using WordleClash.Core.Interfaces;
 using WordleClash.Core.Enums;
+using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Core;
 
@@ -9,9 +10,18 @@ public class WordHandler
     private readonly IWordRepository _wordRepository;
     public string Word { get; private init; }
 
-    public WordHandler(IWordRepository wordRepository)
+    public WordHandler(IWordRepository wordRepository, string? word = null)
     {
         _wordRepository = wordRepository;
+        if (word != null)
+        {
+            if (wordRepository.Get(word) == null)
+            {
+                throw new InvalidWordException($"{word} was assigned as the target word but is not found in the datasource");
+            }
+            Word = word.ToUpper();
+            return;
+        }
         Word = _wordRepository.GetRandom().ToUpper();
     }
     
