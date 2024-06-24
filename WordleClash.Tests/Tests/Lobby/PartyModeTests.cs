@@ -1,5 +1,6 @@
 using WordleClash.Core;
 using WordleClash.Core.Entities;
+using WordleClash.Core.Enums;
 using WordleClash.Core.Exceptions;
 
 namespace WordleClash.Tests.Tests.Lobby;
@@ -130,5 +131,35 @@ public class PartyModeTests
         game.Start();
         game.HandleGuess(players[0], dataAccess.TargetWord);
         Assert.That(players[0].IsWinner, Is.EqualTo(true));
+    }
+    
+    [Test]
+    public void NoWinners()
+    {
+        var dataAccess = new MockWordRepository("abcde", "fghij");
+        var game = new Party(dataAccess);
+        var players = new List<Player>()
+        {
+            new Player { Name = "player1" },
+            new Player { Name = "player2" }
+        };
+        
+        game.SetPlayers(players);
+        game.Start();
+        GuessResult? playerOneResult = null;
+        GuessResult? playerTwoResult = null;
+        for (var i = 0; i < game.MaxTries; i++)
+        {
+            playerOneResult = game.HandleGuess(players[0], dataAccess.Guess);
+            playerTwoResult = game.HandleGuess(players[1], dataAccess.Guess);
+        }
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(players[0].IsWinner, Is.EqualTo(false));
+            Assert.That(players[1].IsWinner, Is.EqualTo(false));
+            Assert.That(playerOneResult?.Status, Is.EqualTo(GameStatus.Lost));
+            Assert.That(playerTwoResult?.Status, Is.EqualTo(GameStatus.Lost));
+        });
     }
 }
