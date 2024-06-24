@@ -64,6 +64,7 @@ public class LobbyController
 
     public void Restart()
     {
+        Console.WriteLine("restarting");
         _gameMode.Restart();
         State = LobbyState.InLobby;
     }
