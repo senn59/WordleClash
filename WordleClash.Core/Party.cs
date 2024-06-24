@@ -21,6 +21,7 @@ public class Party: IMultiplayerGame
     
     public void Start()
     {
+        ValidatePlayers();
         if (Players.Any(p => p.Game == null))
         {
             SetPlayerGames();
@@ -33,7 +34,23 @@ public class Party: IMultiplayerGame
 
     public GuessResult HandleGuess(Player player, string guess)
     {
-        return player.Game!.TakeGuess(guess);
+        if (!Players.Contains(player))
+        {
+            throw new InvalidPlayerException();
+        }
+        
+        if (player.Game == null)
+        {
+            throw new GameNotStartedException();
+        }
+        
+        var result = player.Game.TakeGuess(guess);
+        if (result.Status == GameStatus.Won)
+        {
+            player.SetWinner();
+        }
+
+        return result;
     }
 
     public void SetPlayers(IReadOnlyList<Player> players)
