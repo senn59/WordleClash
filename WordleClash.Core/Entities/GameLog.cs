@@ -8,7 +8,7 @@ public class GameLog
     public required int Tries { get; init; }
     public required TimeSpan? Time { get; init; }
     public required GameStatus Status { get; init; }
-    public DateTime Date { get; init; } = DateTime.Now.AddHours(-15);
+    public DateTime Date { get; init; }
     public required string Word { get; init; }
 
     public static GameLog FromGame(Game game)

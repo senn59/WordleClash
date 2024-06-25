@@ -33,7 +33,7 @@
                 User? user = null;
                 if (userSession != null)
                 {
-                    user = UserService.GetFromSession(userSession);
+                    user = UserService.GetBySession(userSession);
                 }
             }
             @if (user == null)

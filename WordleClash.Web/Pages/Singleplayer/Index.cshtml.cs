@@ -84,7 +84,7 @@ public class SingleplayerModel : PageModel
     {
         var userSession = _sessionManager.GetUserSession();
         if (userSession == null) return;
-        var user = _userService.GetFromSession(userSession);
+        var user = _userService.GetBySession(userSession);
         if (user == null) return;
         _userService.AddGameLog(log, userSession);
     }

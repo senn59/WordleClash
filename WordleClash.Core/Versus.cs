@@ -45,7 +45,7 @@ public class Versus: IMultiplayerGame
         {
             player.SetWinner();
         }
-        SetNextTurn();
+        SetNextTurn(player);
         return guessResult;
     }
 
@@ -58,13 +58,20 @@ public class Versus: IMultiplayerGame
         Players = players;
     }
 
-    private void SetNextTurn()
+    private void SetNextTurn(Player player)
     {
-        //only works when we make the assumption that there are only 2 players
-        foreach (var player in Players)
+        var playerIndex = Players.ToList().IndexOf(player);
+        int nextPlayerIndex;
+        if (playerIndex == Players.Count - 1)
         {
-            player.SetTurn(!player.IsTurn);
+            nextPlayerIndex = 0;
         }
+        else
+        {
+            nextPlayerIndex = playerIndex + 1;
+        }
+        ResetTurnState();
+        Players[nextPlayerIndex].SetTurn(true);
     }
 
     private void SetFirstTurn()
@@ -98,8 +105,11 @@ public class Versus: IMultiplayerGame
 
     public void Restart()
     {
-        if (_game.Status is not (GameStatus.Lost or GameStatus.Won)) return;
         _game = new Game(_wordRepository, MaxTries);
+        foreach (var player in Players)
+        {
+            player.SetWinner(false);
+        }
     }
 
     public List<GameModel> GetGames()

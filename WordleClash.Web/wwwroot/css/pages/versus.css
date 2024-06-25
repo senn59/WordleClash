@@ -5,6 +5,11 @@
 .grid__left, .grid__right {
     flex: 1;
 }
+.grid__left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
 .grid__middle {
     display: flex;
     flex-direction: column;
@@ -66,3 +71,8 @@
     outline-width: 5px;
 }
 
+.letters__container {
+    width: 350px;
+    position: static;
+    margin-right: 20px;
+}
