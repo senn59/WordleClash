@@ -54,17 +54,22 @@ public class IndexModel : PageModel
 
     public async void OnPostNewGame()
     {
+        Console.WriteLine("post new game");
         if (_playerInfo == null || Lobby == null || ThisPlayer?.IsOwner != true || Lobby.State != LobbyState.PostGame)
         {
             return;
         }
+        Console.WriteLine("before restart");
         Lobby.Restart();
         await _serverEvents.UpdateField(Lobby.Code);
     }
 
     public async void OnPost()
     {
-        if (Lobby == null || ThisPlayer == null || !ModelState.IsValid) return;
+        if (Lobby == null || ThisPlayer == null || !ModelState.IsValid)
+        {
+            return;
+        }
         try
         {
             Lobby.HandleGuess(ThisPlayer, Guess);
@@ -78,13 +83,9 @@ public class IndexModel : PageModel
     
     public async Task<IActionResult> OnGet(string code)
     {
-        if (_playerInfo == null)
+        if (_playerInfo == null || Lobby == null || Lobby.Code != code)
         {
-            return RedirectToPage("/Index");
-        }
-        if (Lobby == null || Lobby.Code != code)
-        {
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Lobby/Join", new { code });
         }
         
         await _serverEvents.UpdatePlayers(code);
@@ -128,6 +129,19 @@ public class IndexModel : PageModel
             throw new Exception($"player {_playerInfo} is not apart of any lobby");
         }
         return Partial("Partials/MultiplayerField", this);
+    }
+    
+    public PartialViewResult OnGetOverview()
+    {
+        if (_playerInfo == null)
+        {
+            throw new Exception("player id = null");
+        }
+        if (Lobby == null)
+        {
+            throw new Exception($"player {_playerInfo} is not apart of any lobby");
+        }
+        return Partial("Shared/LetterOverview", Lobby.Games[0].GuessHistory);
     }
 
     public Player? GetOpponent()

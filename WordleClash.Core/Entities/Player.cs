@@ -17,14 +17,14 @@ public class Player
         IsTurn = value;
     }
 
+    public void SetWinner(bool value = true)
+    {
+        IsWinner = value;
+    }
+    
     public void SetGame(Game game)
     {
         Game = game;
-    }
-
-    public void SetWinner()
-    {
-        IsWinner = true;
     }
 
     public void SetOwner()

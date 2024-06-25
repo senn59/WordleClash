@@ -18,9 +18,6 @@ public class IndexModel : PageModel
     [BindProperty] 
     public string NewUsername { get; set; } = "";
 
-    // [BindProperty] 
-    // public string SessionId { get; set; } = "";
-
     public IndexModel(ILogger<IndexModel> logger, SessionManager sessionManager, UserService userService)
     {
         _logger = logger;
@@ -32,7 +29,6 @@ public class IndexModel : PageModel
     {
         _logger.LogInformation($"Trying to retrieve account \"{username}\"");
         var user = _userService.Get(username);
-        //TODO: catch exceptions
         if (user == null)
         {
             return RedirectToPage("/Index");
@@ -40,13 +36,6 @@ public class IndexModel : PageModel
 
         User = user;
         IsSelectedUser = _sessionManager.GetUserSession() == User.SessionId;
-        // user.GameHistory.AddRange(Enumerable.Repeat(new GameLog
-        // {
-        //     AttemptCount = 3,
-        //     Status = GameStatus.Won,
-        //     Time = null,
-        //     Word = "TABLE"
-        // }, 10));
         return Page();
     }
 
@@ -57,7 +46,7 @@ public class IndexModel : PageModel
         {
             return RedirectToPage("/Index");
         }
-        var result = _userService.Create(); //TODO: catch
+        var result = _userService.Create();
         _sessionManager.SetUserSession(result.SessionId);
         return RedirectToPage("Index", new {username = result.Username});
     }
@@ -109,7 +98,7 @@ public class IndexModel : PageModel
             return RedirectToPage("/Index");
         }
 
-        var user = _userService.GetFromSession(userSession);
+        var user = _userService.GetBySession(userSession);
         if (user == null)
         {
             return RedirectToPage("/Index");
@@ -127,7 +116,7 @@ public class IndexModel : PageModel
             return RedirectToPage("/Index");
         }
         
-        var user = _userService.GetFromSession(userSession);
+        var user = _userService.GetBySession(userSession);
         if (user == null)
         {
             return RedirectToPage("/Index");
@@ -143,13 +132,6 @@ public class IndexModel : PageModel
             return Content("<h3>ERROR</h3>");
         }
         
-        // var logs = Enumerable.Repeat(new GameLog
-        // {
-        //     AttemptCount = 3,
-        //     Status = GameStatus.Won,
-        //     Time = null,
-        //     Word = "TABLE"
-        // }, 10);
         var user = _userService.Get(username);
         if (user == null)
         {
