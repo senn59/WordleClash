@@ -12,14 +12,13 @@ public class Versus: IMultiplayerGame
     private Game _game;
 
     public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
-    
     public int MaxPlayers => 2;
     public int RequiredPlayers => 2;
 
     public Versus(IWordRepository wordRepository)
     {
         _wordRepository = wordRepository;
-       _game = new Game(wordRepository, MaxTries);
+        _game = new Game(wordRepository, MaxTries);
     }
     
     public void Start()
