@@ -51,7 +51,6 @@ public class WordRepository: IWordRepository
         }
         catch (Exception e)
         {
-            //TODO: throw custom exception with e as inner exception
             Console.WriteLine(e.ToString());
         }
         throw new CouldNotFindWordException();
